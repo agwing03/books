@@ -1,12 +1,15 @@
 package project.books.club.main;
 
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
+import ch.qos.logback.core.model.Model;
 import lombok.RequiredArgsConstructor;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
 public class MainController {
 	
@@ -18,11 +21,10 @@ public class MainController {
 	 * @param 
 	 * @return
 	 */
-	@PostMapping("/main.do")
-	public String main() {
-		System.out.println("main.do");
-		
-		return "/main";
+	@RequestMapping("/")
+	public String test() {
+		System.out.println("test");
+		return "/meetingList";
 	}
 	
 	/**
@@ -32,14 +34,33 @@ public class MainController {
 	 * @return
 	 * @throws Exception 
 	 */
-	@PostMapping("/main.do")
-	public String getMeetingList(
-			@RequestBody MainVO vo
+	@RequestMapping("/main.do")
+	public String main(
 		) throws Exception {
 		
 		System.out.println("main.do");
+		//vo = mainService.selectMeetingList(vo);
+		
+		return "index";
+	}
+	
+	/**
+	 * 메인 페이지
+	 * 
+	 * @param 
+	 * @return
+	 * @throws Exception 
+	 */
+	@RequestMapping("/getMeetingList.do")
+	public String getMeetingList(
+			@RequestBody MainVO vo,
+			Model model
+		) throws Exception {
+		
+		System.out.println("getMeetingList.do");
 		vo = mainService.selectMeetingList(vo);
 		
 		return "/main";
 	}
 }
+ 

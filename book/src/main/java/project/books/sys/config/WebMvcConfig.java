@@ -16,13 +16,12 @@ public class WebMvcConfig implements WebMvcConfigurer{
         registry.addInterceptor(new LoggerInterceptor())
         .excludePathPatterns("/css/**", "/fonts/**", "/plugin/**", "/scripts/**","/images/**");
 	}
-	*/
+	
 
 	@Override
 	public void addResourceHandlers(final ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/**") // '/'포함된 모든 리소스
-				.addResourceLocations("classpath:/templates/","classpath:/static/"); // view 위치 추가
-				
-		
+				.addResourceLocations("classpath:/static/"); // view 위치 추가
 	}
+	*/
 }
