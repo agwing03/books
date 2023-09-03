@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="project.books.club.main.MainMapper">
-				   
-	<select id="selectMeetingList" parameterType="project.books.club.main.MainVO" resultType="project.books.sys.cmmn.CamelMap">
+	
+	<!-- 모임 목록 -->
+	<select id="selectMeetingList" parameterType="project.books.club.main.MainVO" resultMap="project.books.sys.cmmn.CamelMap">
+		/*MainMapper.selectMeetingList*/
 		select * 
 		  from meeting m 
 		<include refid="meeingListWhere"></include>
 	</select>
-	
 	<select id="selectMeetingListCnt" parameterType="project.books.club.main.MainVO" resultType="Integer">
+		/*MainMapper.selectMeetingListCnt*/
 		select count(*) 
 		  from meeting m
 		<include refid="meeingListWhere"></include>
 	</select>
-	
 	<sql id="meeingListWhere">
 		where 1=1
 	</sql>
-	
 </mapper>
