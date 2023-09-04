@@ -1,4 +1,4 @@
-package project.books.sys.cmmn;
+package project.books.sys.util;
 /**
  * 입력 문자열에 대하여 Camel 표기법으로 변환을 지원하는 Utility Class 이다.
  * @author 실행환경 개발팀 우병훈

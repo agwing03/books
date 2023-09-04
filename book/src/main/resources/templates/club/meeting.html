@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>HTML5 Document type</title>
+    <script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+		$(document).ready(function(){
+			var data = meetingList()
+			console.log("data")
+    		console.log(data)
+  		});
+  		
+		async function meetingList() {
+		  	const response = await fetch('/club/getMeetingList.do', {
+		    	method: 'POST',
+		    	headers: {
+		    		"Content-Type": 'application/json',
+		    	},
+		    	body: JSON.stringify({clubNo:'1'}),
+			}).then(response => {
+				console.log("response")
+		  		console.log(response.json())
+		  		return response.json();  
+		  	}).catch(error => {
+			  	console.log("error")
+		  		console.log(error)
+		  	});
+		}
+		
+	</script>
+</head>
+<body>
+   templates/club/meetingList
+   <a href="#" id="clickTest">목록조회</a>
+</body>
+</html>
+
+

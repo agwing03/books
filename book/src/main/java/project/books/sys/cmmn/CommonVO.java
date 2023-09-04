@@ -4,12 +4,13 @@ import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
+import project.books.sys.util.CamelMap;
 
 @Getter
 @Setter
 public class CommonVO {
 	//페이징 공통
-	private int totCnt;
+	private int totCnt = 0;
 	
 	//검색 PARAM
 	private String srchKey;
@@ -22,6 +23,6 @@ public class CommonVO {
 	private CamelMap dataMap;
 	
 	//공통 필드
-	private String regNo; 				// 생성자ID
+	private int regNo; 				// 생성자ID
     private String regDt;				// 생성일자
 }

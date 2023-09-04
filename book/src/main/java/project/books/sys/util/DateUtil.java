@@ -1,4 +1,4 @@
-package project.books.sys.cmmn;
+package project.books.sys.util;
 
 import java.security.SecureRandom;
 import java.text.ParseException;

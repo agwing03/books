@@ -1,4 +1,4 @@
-package project.books.club.main;
+package project.books.club.member;
 
 import org.springframework.web.bind.annotation.RestController;
 
@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-public class MainController {
+public class MemberController {
 	
 	//private final MainService mainService;
 	
