@@ -1,9 +1,12 @@
 /* header, footer, aside, nav */
 $(document).ready(function(){
-    document.getElementById("header").innerHTML='<object type="text/html" data="/cmmn/header.html"></object>';
-    document.getElementById("nav").innerHTML='<object type="text/html" data="/cmmn/nav.html"></object>';
-    document.getElementById("aside").innerHTML='<object type="text/html" data="/cmmn/aside.html"></object>';
-    document.getElementById("footer").innerHTML='<object type="text/html" data="/cmmn/footer.html"></object>';
+	$('#header').load('/cmmn/header.html');
+	$('#nav').load('/cmmn/nav.html');
+	$('#aside').load('/cmmn/aside.html');
+	$('#footer').load('/cmmn/footer.html');
+	
+	const menuList = fetchApi('/sys/getMenuList.do', 'POST', '')
+	console.log(menuList)
 })
 
 /* ajax 데이터 통신 */
