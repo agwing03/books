@@ -1,6 +1,5 @@
 package project.books.sys.menu;
 
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,7 +17,7 @@ public class MenuController {
 	 */
 	@RequestMapping("/sys/getMenuList.do")
 	public MenuVO getMenuList(
-			@RequestBody MenuVO vo
+			MenuVO vo
 		) throws Exception {
 		vo = menuService.selectMenuList(vo);
 		return vo;

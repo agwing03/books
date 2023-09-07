@@ -23,6 +23,7 @@ public class CommonVO {
 	private CamelMap dataMap;
 	
 	//공통 필드
-	private int regNo; 				// 생성자ID
-    private String regDt;				// 생성일자
+	private int clubNo;			// 클럽 NO
+	private int regNo; 			// 생성자ID
+    private String regDt;		// 생성일자
 }
