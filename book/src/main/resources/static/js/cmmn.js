@@ -23,7 +23,7 @@ async function fetchApi(url, method, body, gbn, headers = {}) {
 		if (gbn === 'nav'){
 			nav(data.dataList);
 		} else if (gbn === 'aside'){
-			nav(data.dataList);
+			aside(data.dataList);
 		}
 	} else {
     	throw Error(data)
@@ -86,9 +86,6 @@ function aside(data){
 		//2.대메뉴 생성
 		if(data[i].menuLv == 1){
 			navHtml += 	
-				'	<li class="dropdown">'+
-				'		<div class="dropdown-menu">'+data[i].menuNm+'</div>'+
-				'		<div class="dropdown-content">'
 				'	<li>'+
       			'		<a href="#"><i class="fa-solid fa-cat"></i>'+data[i].menuNm+'</a>'+
       			'		<ul>'	

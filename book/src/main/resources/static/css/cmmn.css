@@ -26,7 +26,7 @@ nav {
 } 
 nav ul {
 	width: 100%;
-	background-color: rgba(44,42,39,0.983);
+	background-color: black;
 	list-style-type: none;
 	margin: 0;
 	padding: 0;
@@ -82,7 +82,7 @@ nav ul li{
 	display: none;	
 }
 .dropdown-menu:hover:not(.home .alarm) {
-	background-color: darkgoldenrod;
+	background-color: #555;
 	color: white;	
 }
 .dropdown:hover .dropdown-content {
@@ -212,7 +212,7 @@ body {
 .side-bar ul > li > a {
   display: block;
   color: white;
-  font-size: 1.4rem;
+  font-size: 16px;
   font-weight: bold;
   padding-top: 20px;
   padding-bottom: 20px;
