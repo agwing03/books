@@ -1,35 +1,181 @@
+/* 폰트 */
+@font-face {
+  font-family : '한글폰트1';
+  src : url(/font/GrandifloraOne-Regular.ttf)
+}
+@font-face {
+  font-family : '영어폰트1';
+  src : url(/font/RussoOne-Regular.ttf)
+}
+
+
 /* 공통 */
 body {
 	margin: 0;
 	padding: 0;
 }
+tC{text-align: center;}
+tR{text-align: right;}
+tL{text-align: left;}
+
 
 /* header */
 header {
-	width: 100%;
-	height: 100px;
+	width: 1200px;
+	margin: auto;
+	height: 65px;
+	text-align: center;
+}
+.club-img {
+	margin: 0px 0px 0px 0px; line-height: 120%;
+	font-family: '영어폰트1';
+	float: left;
+	height:auto;
+	font-weight: bold;
+}
+.club-title {
+	float: left;
+	width: 40%;
+	height: auto;
+	margin-left: 300px;
+}
+.club-title p {
+	margin: 0px 0px 0px 0px; line-height: 120%;
+}
+.club-title .title{
+	margin: auto;
+	font-family: '한글폰트1';
+	margin-top: 10px;
+	font-size: 25px;
+	font-weight: bold;
+}
+.club-subTitle .title{
+	font-size: 8px;
+}
+.club-user {
+	position: relative;
+	float: right;
+	margin-top: 15px;
+	width: 25%;
+	color: darkgray;
+	height: auto;
+	text-align: right;
+}
+.club-user .userName {
+	font-size: 16px;
+}
+.club-user .userAuthor {
+	font-size: 12px;
+}
+.club-user .userAuthor img{
+	position: absolute;
+    right: 60px;
+    top: -2px;
+}
+.club-user .setting {
+	padding-left: 30px;
 }
 
 
 /* footer */
 footer {
-	width: 100%;
+	width: 1200px;
+	margin: auto;
 	height: 100px;
-	background-color: cornflowerblue;
+}
+
+
+/* section */
+section {
+	width: 1000px;
+	margin: auto;
+	margin-top: 15px;
+	padding:1.5em;
+ 	background: #f5f5f5
+}
+section h3{
+	margin: 0;
+	margin-bottom: 10px;
+}
+section table {
+  	border: 1px #a39485 solid;
+  	font-size: .9em;
+  	box-shadow: 0 2px 5px rgba(0,0,0,.25);
+  	width: 100%;
+  	border-collapse: collapse;
+  	border-radius: 5px;
+  	overflow: hidden;
+}
+section th {
+  	text-align: center;
+}
+section thead {
+  	font-weight: bold;
+  	color: #fff;
+  	background: black;
+}
+section td, th {
+	padding: 1em .5em;
+  	vertical-align: middle;
+}
+td {
+	text-align: center;
+  	border-bottom: 1px solid rgba(0,0,0,.1);
+  	background: #fff;
+}
+a {
+	color: #73685d;
+}
+  
+@media all and (max-width: 768px) {
+  	table, thead, tbody, th, td, tr {
+    	display: block;
+  	}
+  	th {
+	    text-align: right;
+  	}	
+  	table {
+    	position: relative; 
+    	padding-bottom: 0;
+    	border: none;
+    	box-shadow: 0 0 10px rgba(0,0,0,.2);
+  	}
+  	thead {
+    	float: left;
+    	white-space: nowrap;
+  	}
+  	tbody {
+    	overflow-x: auto;
+    	overflow-y: hidden;
+    	position: relative;
+    	white-space: nowrap;
+  	}
+  	tr {
+    	display: inline-block;
+    	vertical-align: top;
+  	}
+  	th {
+    	border-bottom: 1px solid #a39485;
+	}
+	td{
+    	border-bottom: 1px solid #e5e5e5;
+	}
 }
 
 
 /* nav */
 nav {
-	width: 100%;
+	width: 1200px;
+	margin-top: 3px;
+	margin: auto;
 	height: auto;
 } 
 nav ul {
 	width: 100%;
 	background-color: black;
 	list-style-type: none;
-	margin: 0;
 	padding: 0;
+	margin: 0;
 	text-align: center;
 }
 nav ul li{
@@ -97,13 +243,13 @@ nav ul li{
 
 /* aside */
 /* 노멀라이즈 시작 */
-body, ul, li {
+aside ul, li {
   margin: 0;
   padding: 0;
   list-style: none;   /* 해당 태그의 list-style을 none으로 하는 것으로 ●을 제거한다 */
 }
 
-a {
+aside a {
   color: inherit;   /* 부모 엘리먼트의 값을 물려받는다 */
   text-decoration: none;    /* 해당 태그의 text-decoration 속성을 none 값으로 하는 것으로 밑줄을 제거한다 */
 }/* 노멀라이즈 끝 */
@@ -116,15 +262,14 @@ a {
 /* 사이트의 높이를 5000px로 만들어 스크롤 생성 */
 body {
   height: 5000px;
-  background-color: #444;
 }
 
 /* 사이드바 시작 */
-
 /* 사이드바의 너비와 높이를 변수를 통해 통제 */
 :root {
   --side-bar-width: 270px;
   --side-bar-height: 90vh;
+  --side-bar__icon: .5s;
 }
 
 .side-bar {
@@ -148,10 +293,6 @@ body {
   margin: 15px;
   margin-top: 20px;
   transition: .5s;
-}
-
-:root {
-  --side-bar__icon: .5s;
 }
 
 .side-bar-icon > div {
@@ -254,5 +395,6 @@ body {
 }
 /* 사이드바 끝 */
 /* 커스텀 끝 */
+
 
 

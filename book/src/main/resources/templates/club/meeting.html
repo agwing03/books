@@ -9,7 +9,7 @@
     
     <script>
 		$(document).ready(function(){
-			//meetingList();
+			meetingList();
 		})
 		
 		function meetingList(){
@@ -23,13 +23,41 @@
 	</script>
 </head>
 <body>
-   <header id="header"></header>
-   <nav id="nav"></nav>
-   <aside id="aside"></aside>
-   <section>
-	   <article></article>
-   </section>
-   <footer id="footer"></footer>
+   	<header><!--공통 헤더--></header>
+   	<nav><!--공통 네비--></nav>
+   	<aside><!--공통 사이드 메뉴--></aside>
+   	<section>
+		<article>
+			<h3>모임 목록</h3>	
+			<table>
+				<thead>
+					<tr>
+						<th>번호</th>
+						<th>모임명</th>
+						<th>모임일</th>
+						<th>모임구분</th>
+						<th>모임장소</th>
+						<th>주최자</th>
+						<th>참석자수</th>
+						<th>성생일</th>
+					</tr>
+				</thead>
+				<tbody id="dataList">
+					<tr>
+						<td>1</td>
+						<td><a href="#">9월 둘째주 독서모임</a></td>
+						<td class="tL">2023-09-11 19:00</td>
+						<td>정기모임</td>
+						<td>책과삶</td>
+						<td>박지열</td>
+						<td>8/8</td>
+						<td>2023-09-11 19:17:11</td>
+					</tr>
+				</tbody>
+			</table>
+		</article>
+   	</section>
+   	<footer><!--공통 풋터--></footer>
 </body>
 </html>
 

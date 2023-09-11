@@ -1,8 +1,7 @@
 /* header, footer, aside, nav */
 $(document).ready(function(){
-	$('#header').load('/cmmn/header.html');
-	$('#footer').load('/cmmn/footer.html');
-	//$('#aside').load('/cmmn/aside.html');
+	$('header').load('/cmmn/header.html');
+	//$('footer').load('/cmmn/footer.html');
 	
 	//nav
 	fetchApi('/sys/getMenuList.do', 'POST', {clubNo:'1'}, 'nav')
@@ -58,7 +57,7 @@ function nav(data){
 		}	
 	}	
 	navHtml += '<li class="alarm"><a href="#">알림</a></li></ul>'
-    $("#nav").append(navHtml);
+    $("nav").append(navHtml);
 }
 
 /* 사이드 메뉴 생성 */
@@ -66,13 +65,13 @@ function aside(data){
 	let menuUpperNo = ''
 	let navHtml = 
 		'<div class="side-bar">'+
- 		'	<section class="side-bar-icon-box">'+
-    	'		<section class="side-bar-icon">'+
+ 		'	<div class="side-bar-icon-box">'+
+    	'		<div class="side-bar-icon">'+
       	'			<div></div>'+
       	'			<div></div>'+
       	'			<div></div>'+
-    	'		</section>'+
-  		'	</section>'+
+    	'		</div>'+
+  		'	</div>'+
   		'	<ul>'
 	for(var i = 0; i < data.length; i++){
 		//4.대메뉴 닫기
@@ -96,5 +95,5 @@ function aside(data){
 		}	
 	}	
 	navHtml += '</ul></div>'
-    $("#aside").append(navHtml);
+    $("aside").append(navHtml);
 }
