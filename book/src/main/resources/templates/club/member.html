@@ -4,13 +4,65 @@
     <meta charset="UTF-8">
     <title>HTML5 Document type</title>
     <script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="/js/cmmn.js"></script>
+    <link rel="stylesheet" href="/css/cmmn.css"/>
+    
     <script>
 		$(document).ready(function(){
-    		
-  		});
+			memberList();
+		})
+		function memberList(){
+			const param = {clubNo:'1'}
+			let listHtml = null
+			fetchApi('/member/getMemberList.do', 'POST', param, 'dataList')
+				.then((data) => {
+					$("#dataList").empty()
+					for(var i = 0; i < data.length; i++){
+						listHtml += 	
+							'<tr>'+
+							'	<td>'+data[i].memberNo+'</td>'+
+							'	<td>'+data[i].memberNm+'</td>'+
+							'	<td class="tL"><a href="#">'+data[i].nickNm+'</a></td>'+
+							'	<td>'+data[i].sex+'</td>'+
+							'	<td>'+data[i].brthday+'</td>'+
+							'	<td>'+data[i].area+'</td>'+
+							'	<td>'+data[i].phonNo+'</td>'+
+							'	<td>'+data[i].joinDt+'</td>'+
+							'	<td>'+data[i].frstRegDt+'</td>'+
+							'</tr>'
+					}
+					$("#dataList").append(listHtml);
+				}).catch((error) => console.log(error))
+		}
 	</script>
 </head>
 <body>
-   templates/club/memberList1
+   	<header><!--공통 헤더--></header>
+   	<nav><!--공통 네비--></nav>
+   	<aside><!--공통 사이드 메뉴--></aside>
+   	<section>
+		<article>
+			<h3>맴버 목록</h3>	
+			<table>
+				<thead>
+					<tr>
+						<th>회원번호</th>
+						<th>이름</th>
+						<th>닉네임</th>
+						<th>성별</th>
+						<th>생년월일</th>
+						<th>지역</th>
+						<th>휴대폰번호</th>
+						<th>가입일</th>
+						<th>최종활동일</th>
+					</tr>
+				</thead>
+				<tbody id="dataList"></tbody>
+			</table>
+		</article>
+   	</section>
+   	<footer><!--공통 풋터--></footer>
 </body>
 </html>
+
+

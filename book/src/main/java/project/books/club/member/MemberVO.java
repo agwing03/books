@@ -8,16 +8,14 @@ import project.books.sys.cmmn.CommonVO;
 @Setter
 public class MemberVO extends CommonVO{
 	
-	private String comCd;				// 회사코드
-
-	private String deptCd;				// 부서코드
-	private String deptNm;				// 부서이름
-    private String upperDeptCd;			// 상위부서코드
-    private String deptLevel;			// 부서레벨
-    private String useYn;				// 사용여부
- 
-    private String regId;				// 생성자ID
-    private String regDate;				// 생성일자
-    private String updId;				// 수정자ID
-    private String updDate;				// 수정일자
+	private int memberNo;		//회원코드
+	private String memberNm;	//회원이름
+	private String nickNm;		//닉네임
+    private int sex;			//성별
+    private String area;		//지역
+    private String phonNo;		//폰번호
+    private String joinDt;		//가입일
+    private String frstRegDt;	//생성일
+    private int clubAuthorNo;	//모임직위
+    
 }

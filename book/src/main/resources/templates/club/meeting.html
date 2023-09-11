@@ -11,15 +11,29 @@
 		$(document).ready(function(){
 			meetingList();
 		})
-		
 		function meetingList(){
 			const param = {clubNo:'1'}
-			fetchApi('/club/getMeetingList.do', 'POST', param)
-				.then((data) => console.log(data))
-				.catch((error) => console.log(error))
+			let listHtml = null
+			fetchApi('/club/getMeetingList.do', 'POST', param, 'dataList')
+				.then((data) => {
+					$("#dataList").empty()
+					for(var i = 0; i < data.length; i++){
+						listHtml += 	
+							'<tr>'+
+							'	<td>'+data[i].meetingNo+'</td>'+
+							'	<td class="tL"><a href="#">'+data[i].title+'</a></td>'+
+							'	<td>'+data[i].meetingGbn+'</td>'+
+							'	<td>'+data[i].dday+'</td>'+
+							'	<td>'+data[i].time+'</td>'+
+							'	<td>'+data[i].place+'</td>'+
+							'	<td>'+data[i].hostNm+'</td>'+
+							'	<td>8/8</td>'+
+							'	<td>'+data[i].frstRegDt+'</td>'+
+							'</tr>'
+					}
+					$("#dataList").append(listHtml);
+				}).catch((error) => console.log(error))
 		}
-		
-		
 	</script>
 </head>
 <body>
@@ -34,26 +48,16 @@
 					<tr>
 						<th>번호</th>
 						<th>모임명</th>
-						<th>모임일</th>
 						<th>모임구분</th>
+						<th>모임일</th>
+						<th>모임시간</th>
 						<th>모임장소</th>
 						<th>주최자</th>
 						<th>참석자수</th>
 						<th>성생일</th>
 					</tr>
 				</thead>
-				<tbody id="dataList">
-					<tr>
-						<td>1</td>
-						<td><a href="#">9월 둘째주 독서모임</a></td>
-						<td class="tL">2023-09-11 19:00</td>
-						<td>정기모임</td>
-						<td>책과삶</td>
-						<td>박지열</td>
-						<td>8/8</td>
-						<td>2023-09-11 19:17:11</td>
-					</tr>
-				</tbody>
+				<tbody id="dataList"></tbody>
 			</table>
 		</article>
    	</section>

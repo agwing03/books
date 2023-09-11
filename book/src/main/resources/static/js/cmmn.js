@@ -9,6 +9,9 @@ $(document).ready(function(){
 	fetchApi('/sys/getMenuList.do', 'POST', {clubNo:'1'}, 'aside')
 })
 
+/* 전역변수 */
+let list = null;
+
 /* fetch 데이터 통신 */
 async function fetchApi(url, method, body, gbn, headers = {}) {
 	const options = {
@@ -23,6 +26,8 @@ async function fetchApi(url, method, body, gbn, headers = {}) {
 			nav(data.dataList);
 		} else if (gbn === 'aside'){
 			aside(data.dataList);
+		} else if (gbn === 'dataList'){
+			return data.dataList;
 		}
 	} else {
     	throw Error(data)
@@ -96,4 +101,9 @@ function aside(data){
 	}	
 	navHtml += '</ul></div>'
     $("aside").append(navHtml);
+}
+
+/* 데이터 목록 */
+function dataList(data){
+	list = JSON.parse(JSON.stringify(data)); 
 }

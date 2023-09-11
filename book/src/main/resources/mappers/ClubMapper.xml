@@ -5,21 +5,30 @@
 	<!-- 모임 목록 -->
 	<select id="selectMeetingList" parameterType="project.books.club.club.ClubVO" resultType="project.books.sys.util.CamelMap">
 		/*ClubMapper.selectMeetingList*/
-		select * 
-		  from meeting m 
+		select mt.meeting_no
+		     , mt.title
+		     , mt.club_no 
+		     , (select nick_nm from member m where m.member_no = mt.host_no) as host_nm
+		     , (select ccd.code_dtl_nm from cmmn_code_dtl ccd where ccd.code_dtl_id = mt.meeting_gbn) as meeting_gbn
+		     , date_format(mt.dday, '%Y-%m-%d') as dday
+		     , concat(substr(mt.time,1,2),':',substr(mt.time,3,4)) as time
+		     , mt.place 
+		     , concat((select count(*) from meeting_member mm where mm.meeting_no = mt.meeting_no), '/', mt.attend_cnt) as attend_cnt
+		     , date_format(mt.frst_reg_dt, '%Y-%m-%d %H:%i:%S') as frst_reg_dt
+		  from meeting mt  
 		<include refid="meeingListWhere"></include>
-		 order by m.dday desc
+		 order by mt.dday desc, mt.time desc 
 	</select>
 	<select id="selectMeetingListCnt" parameterType="project.books.club.club.ClubVO" resultType="Integer">
 		/*ClubMapper.selectMeetingListCnt*/
 		select count(*) 
-		  from meeting m
+		  from meeting mt
 		<include refid="meeingListWhere"></include>
 	</select>
 	<sql id="meeingListWhere">
 		where 1=1
 		<if test='clubNo != null and clubNo != ""'>
-		  and m.club_no = #{clubNo}
+		  and mt.club_no = #{clubNo}
 		</if>
 	</sql>
 </mapper>

@@ -14,9 +14,9 @@ body {
 	margin: 0;
 	padding: 0;
 }
-tC{text-align: center;}
-tR{text-align: right;}
-tL{text-align: left;}
+.tC{text-align: center;}
+.tR{text-align: right;}
+.tL{text-align: left;}
 
 
 /* header */
@@ -259,16 +259,16 @@ aside a {
   display: none;
 }
 
-/* 사이트의 높이를 5000px로 만들어 스크롤 생성 */
+/* 사이트의 높이를 5000px로 만들어 스크롤 생성
 body {
   height: 5000px;
-}
+} */
 
 /* 사이드바 시작 */
 /* 사이드바의 너비와 높이를 변수를 통해 통제 */
 :root {
   --side-bar-width: 270px;
-  --side-bar-height: 90vh;
+  --side-bar-height: 50vh;
   --side-bar__icon: .5s;
 }
 
@@ -395,6 +395,4 @@ body {
 }
 /* 사이드바 끝 */
 /* 커스텀 끝 */
-
-
 

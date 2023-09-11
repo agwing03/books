@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="project.books.club.member.MemberMapper">
+	
+	<!-- 모임 목록 -->
+	<select id="selectMemberList" parameterType="project.books.club.member.MemberVO" resultType="project.books.sys.util.CamelMap">
+		/*MemberMapper.selectMemberList*/
+		select cm.member_no 
+		     , m.name as member_nm
+		     , m.nick_nm 
+		     , (select ccd.code_dtl_nm from cmmn_code_dtl ccd where ccd.code_dtl_id = m.sex) as sex
+		     , m.brthday 
+		     , concat(m.action_area_lv1, ' ', m.action_area_lv1) as area
+		     , m.phon_no 
+		     , date_format(cm.join_dt, '%Y-%m-%d') as join_dt 
+		     , date_format(cm.frst_reg_dt, '%Y-%m-%d %H:%i:%S') as frst_reg_dt
+		     , club_author_no
+		  from club_member cm 
+		       left join member m on cm.member_no = m.member_no 
+		<include refid="memberListWhere"></include>
+		 order by cm.club_author_no, cm.join_dt desc 
+	</select>
+	<select id="selectMemberListCnt" parameterType="project.books.club.member.MemberVO" resultType="Integer">
+		/*MemberMapper.selectMemberListCnt*/
+		select count(*) 
+		  from club_member cm
+		<include refid="memberListWhere"></include>
+	</select>
+	<sql id="memberListWhere">
+		where 1=1
+		<if test='clubNo != null and clubNo != ""'>
+		  and cm.club_no = #{clubNo}
+		</if>
+	</sql>
+</mapper>
