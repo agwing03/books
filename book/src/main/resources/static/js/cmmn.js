@@ -165,7 +165,7 @@ function search(){
 /* 레이어 팝업 */
 function layerPopup(){
 	$("#layer_shadow").show()
-	$("#layerPupup").fadeIn(1000);
+	$("#layerPupup").fadeIn();
  	//화면 중앙 띄우기
 	let target = $("#layerPupup");
 	var left = ( $(window).scrollLeft() + ($(window).width() - target.width()) / 2 );

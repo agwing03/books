@@ -19,19 +19,21 @@
 		<include refid="meeingListWhere"></include>
 		 order by mt.dday desc, mt.time desc 
 	</select>
+	<!-- 모임 목록 수 -->
 	<select id="selectMeetingListCnt" parameterType="project.books.club.club.ClubVO" resultType="Integer">
 		/*ClubMapper.selectMeetingListCnt*/
 		select count(*) 
 		  from meeting mt
 		<include refid="meeingListWhere"></include>
 	</select>
+	<!-- 모임 목록 Where -->
 	<sql id="meeingListWhere">
 		where 1=1
 		<if test='clubNo != null and clubNo != ""'>
 		  and mt.club_no = #{clubNo}
 		</if>
 		<!-- 텍스트 검색 -->
-		<if test='srchGbn != null and srchGbn != ""'>
+		<if test='srchGbn != null and srchGbn != "" and srchText != null and srchText != ""'>
 			<if test='"M".equals(srchGbn)'>
 		  and mt.title like concat('%',#{srchText},'%')
 			</if>

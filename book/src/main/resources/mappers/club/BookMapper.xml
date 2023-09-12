@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="project.books.club.book.BookMapper">
+	
+	<!-- 도서 목록 -->
+	<select id="selectBookList" parameterType="project.books.club.book.BookVO" resultType="project.books.sys.util.CamelMap">
+		/*BookMapper.selectBookList*/
+		select * from (
+			select b.book_no 
+			     , b.book_title 
+			     , b.book_writer
+			     , (select count(*) from books_eval be where b.book_no = be.book_no) as book_app
+			     , ifnull((select avg(be.book_score) from books_eval be where b.book_no = be.book_no), 0) as book_avg
+			     , date_format(b.frst_reg_dt, '%Y-%m-%d %H:%i:%S') as frst_reg_dt  
+			  from books b
+			<include refid="bookListWhere"></include>
+		       ) b
+		 order by b.book_app desc, b.book_avg desc, b.book_title asc
+	</select>
+	<select id="selectBookListCnt" parameterType="project.books.club.book.BookVO" resultType="Integer">
+		/*BookMapper.selectBookListCnt*/
+		select count(*) 
+		  from books b
+		<include refid="bookListWhere"></include>
+	</select>
+	<sql id="bookListWhere">
+		where 1=1
+		<!-- 텍스트 검색 -->
+		<if test='srchGbn != null and srchGbn != "" and srchText != null and srchText != ""'>
+			<if test='"B".equals(srchGbn)'>
+		  and b.book_title like concat('%',#{srchText},'%')
+			</if>
+			<if test='"W".equals(srchGbn)'>
+		  and b.book_writer like concat('%',#{srchText},'%')
+			</if>
+		</if>
+	</sql>
+</mapper>

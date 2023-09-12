@@ -57,7 +57,6 @@
 			<div id="srchBox">
 				<!-- 검색조건 -->
 				<select id="srchGbn">
-					<option value="">전체</option>
 					<option value="M">모임명</option>
 					<option value="H">주최자</option>
 					<option value="P">모임장소</option>
@@ -69,7 +68,6 @@
 				<input type="date" id="srchStartDt">~<input type="date" id="srchEndDt">
 				<!-- 검색 -->
 				<a href="javascript:search();" id="serch" class="w-btn-neon2" type="button">검색</a>
-				<a href="javascript:layerPopup();">레이어팡업</a>
 			</div>
 			<!-- 데이터 테이블 -->	
 			<table>
@@ -90,17 +88,23 @@
 			</table>
 		</article>
    	</section>
+   	<a href="javascript:layerPopup();">레이어팡업</a>
    	<!--공통 풋터-->
    	<footer></footer>
    	
    	<!-- 모임등록 레이어 팝업 -->
    	<div id="layerPupup">
 	    <div class="pop-layer">
-            <p>Thank you.<br>
-                Your registration was submitted successfully.<br>
-                Selected invitees will be notified by e-mail on JANUARY 24th.<br><br>
-                Hope to see you soon!
-            </p>
+            <div class="dataInput">
+			    <input type="text" required>
+			    <label>모임명</label>
+			    <span></span>
+            </div>
+            <div class="dataInput">
+			    <input type="text" required>
+			    <label>주최자</label>
+			    <span></span>
+            </div>
             <a href="javascript:layerClose();">Close</a>
 		</div>
 	</div>
@@ -113,9 +117,9 @@
 	height: 700px;
 	position: absolute;
 	text-align: center;
-	background-color:#3d3d3d;
-	border: 1px solid #000;
-	color: #fff;
+	background-color:white;
+	border: 1px solid #aaaaaa;
+	color: rgb(57, 57, 57);
 	display: none;
 }
 .pop-layer {
@@ -130,6 +134,62 @@
 	width: 100%;
 	height: 100vh;
 	display: none
+}
+
+/* input */
+.dataInput {
+  position: relative;
+  width: 300px;
+  margin-left: 50px;
+  margin-top: 100px;
+}
+
+.dataInput input {
+  font-size: 15px;
+  color: #222222;
+  width: 300px;
+  border: none;
+  border-bottom: solid #aaaaaa 1px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  position: relative;
+  background: none;
+  z-index: 5;
+}
+
+.dataInput input::placeholder { color: #aaaaaa; }
+.dataInput input:focus { outline: none; }
+
+.dataInput span {
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 0%;  /* right로만 바꿔주면 오 - 왼 */
+  background-color: #666;
+  width: 0;
+  height: 2px;
+  border-radius: 2px;
+  transition: 0.5s;
+}
+
+.dataInput label {
+  position: absolute;
+  color: #aaa;
+  left: 10px;
+  font-size: 20px;
+  bottom: 8px;
+  transition: all .2s;
+}
+
+.dataInput input:focus ~ label, input:valid ~ label {
+  font-size: 16px;
+  bottom: 40px;
+  color: #666;
+  font-weight: bold;
+}
+
+.dataInput input:focus ~ span, input:valid ~ span {
+  width: 100%;
 }
 </style>
  

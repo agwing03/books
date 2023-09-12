@@ -4,13 +4,78 @@
     <meta charset="UTF-8">
     <title>HTML5 Document type</title>
     <script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="/js/cmmn.js"></script>
+    <link rel="stylesheet" href="/css/cmmn.css"/>
     <script>
 		$(document).ready(function(){
-    		
+    		//데이터 목록 검색
+			search()
   		});
+  		
+  		// 목록 데이터 조회
+		function srchList(params){
+			let listHtml = null
+			fetchApi('/book/getBookList.do', 'POST', params, 'dataList')
+				.then((data) => {
+					$("#dataList").empty()
+					if(data != null){
+						for(var i = 0; i < data.length; i++){
+							listHtml += 	
+								'<tr>'+
+								'	<td>'+data[i].bookNo+'</td>'+
+								'	<td class="tL"><a href="#">'+data[i].bookTitle+'</a></td>'+
+								'	<td class="tL">'+data[i].bookWriter+'</td>'+
+								'	<td>'+data[i].bookApp+'</td>'+
+								'	<td>'+data[i].bookAvg+'</td>'+
+								'	<td>'+data[i].frstRegDt+'</td>'+
+								'</tr>'
+						}
+						$("#dataList").append(listHtml);						
+					}else{
+						$("#dataList").append('<tr><td colspan="9">데이터가 존재하지 않습니다.</td></tr>');
+					}
+				}).catch((error) => console.log(error))
+		}
 	</script>
 </head>
 <body>
-   templates/club/bookList
+   <!--공통 헤더-->
+   	<header></header>
+   	<!--공통 네비-->
+   	<nav></nav>
+   	<!--공통 사이드 메뉴-->
+   	<aside></aside>
+   	<section>
+		<article>
+			<h3>독서 목록</h3>
+			<!-- 검색 -->
+			<div id="srchBox">
+				<!-- 검색조건 -->
+				<select id="srchGbn">
+					<option value="B">도서명</option>
+					<option value="W">작가</option>
+				</select>
+				<input type="text" id="srchText">
+				<!-- 검색 -->
+				<a href="javascript:search();" id="serch" class="w-btn-neon2" type="button">검색</a>
+			</div>
+			<!-- 데이터 테이블 -->	
+			<table>
+				<thead>
+					<tr>
+						<th style="width: 8%;">번호</th>
+						<th style="width: 27%;">도서명</th>
+						<th style="width: 38%;">작가</th>
+						<th style="width: 7%;">참석수</th>
+						<th style="width: 5%;">평점</th>
+						<th style="width: 15%;">생성일</th>
+					</tr>
+				</thead>
+				<tbody id="dataList"></tbody>
+			</table>
+		</article>
+   	</section>
+   	<!--공통 풋터-->
+   	<footer></footer>
 </body>
 </html>

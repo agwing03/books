@@ -20,16 +20,35 @@
 		<include refid="memberListWhere"></include>
 		 order by cm.club_author_no, cm.join_dt desc 
 	</select>
+	<!-- 모임 목록 수 -->
 	<select id="selectMemberListCnt" parameterType="project.books.club.member.MemberVO" resultType="Integer">
 		/*MemberMapper.selectMemberListCnt*/
 		select count(*) 
 		  from club_member cm
+		  	   left join member m on cm.member_no = m.member_no
 		<include refid="memberListWhere"></include>
 	</select>
+	<!-- 모임 목록 Where -->
 	<sql id="memberListWhere">
 		where 1=1
+		<!-- 클럽번호 -->
 		<if test='clubNo != null and clubNo != ""'>
 		  and cm.club_no = #{clubNo}
+		</if>
+		<!-- 텍스트 검색 -->
+		<if test='srchGbn != null and srchGbn != "" and srchText != null and srchText != ""'>
+			<if test='"NIC".equals(srchGbn)'>
+		  and m.nick_nm like concat('%',#{srchText},'%')
+			</if>
+			<if test='"NAME".equals(srchGbn)'>
+		  and m.name like concat('%',#{srchText},'%')
+			</if>
+			<if test='"BRTH".equals(srchGbn)'>
+		  and m.brthday like concat('%',#{srchText},'%')
+			</if>
+			<if test='"PHON".equals(srchGbn)'>
+		  and m.phon_no like concat('%',#{srchText},'%')
+			</if>
 		</if>
 	</sql>
 </mapper>

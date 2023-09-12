@@ -9,29 +9,35 @@
     
     <script>
 		$(document).ready(function(){
-			memberList();
+			search();
 		})
-		function memberList(){
+		// 목록 데이터 조회
+		function srchList(params){
 			const param = {clubNo:'1'}
 			let listHtml = null
-			fetchApi('/member/getMemberList.do', 'POST', param, 'dataList')
+			console.log(params)
+			fetchApi('/member/getMemberList.do', 'POST', params, 'dataList')
 				.then((data) => {
 					$("#dataList").empty()
-					for(var i = 0; i < data.length; i++){
-						listHtml += 	
-							'<tr>'+
-							'	<td>'+data[i].memberNo+'</td>'+
-							'	<td>'+data[i].memberNm+'</td>'+
-							'	<td class="tL"><a href="#">'+data[i].nickNm+'</a></td>'+
-							'	<td>'+data[i].sex+'</td>'+
-							'	<td>'+data[i].brthday+'</td>'+
-							'	<td>'+data[i].area+'</td>'+
-							'	<td>'+data[i].phonNo+'</td>'+
-							'	<td>'+data[i].joinDt+'</td>'+
-							'	<td>'+data[i].frstRegDt+'</td>'+
-							'</tr>'
+					if(data != null){
+						for(var i = 0; i < data.length; i++){
+							listHtml += 	
+								'<tr>'+
+								'	<td>'+data[i].memberNo+'</td>'+
+								'	<td>'+data[i].memberNm+'</td>'+
+								'	<td class="tL"><a href="#">'+data[i].nickNm+'</a></td>'+
+								'	<td>'+data[i].sex+'</td>'+
+								'	<td>'+data[i].brthday+'</td>'+
+								'	<td>'+data[i].area+'</td>'+
+								'	<td>'+data[i].phonNo+'</td>'+
+								'	<td>'+data[i].joinDt+'</td>'+
+								'	<td>'+data[i].frstRegDt+'</td>'+
+								'</tr>'
+						}
+						$("#dataList").append(listHtml);
+					}else{
+						$("#dataList").append('<tr><td colspan="9">데이터가 존재하지 않습니다.</td></tr>');
 					}
-					$("#dataList").append(listHtml);
 				}).catch((error) => console.log(error))
 		}
 	</script>
@@ -42,7 +48,20 @@
    	<aside><!--공통 사이드 메뉴--></aside>
    	<section>
 		<article>
-			<h3>맴버 목록</h3>	
+			<h3>맴버 목록</h3>
+			<!-- 검색 -->
+			<div id="srchBox">
+				<!-- 검색조건 -->
+				<select id="srchGbn">
+					<option value="NIC">닉네임</option>
+					<option value="NAME">이름</option>
+					<option value="BRTH">생년월일</option>
+					<option value="PHON">휴대폰번호</option>
+				</select>
+				<input type="text" id="srchText">
+				<!-- 검색 -->
+				<a href="javascript:search();" id="serch" class="w-btn-neon2" type="button">검색</a>
+			</div>	
 			<table>
 				<thead>
 					<tr>
