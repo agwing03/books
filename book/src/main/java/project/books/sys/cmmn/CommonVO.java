@@ -14,6 +14,10 @@ public class CommonVO {
 	
 	//검색 PARAM
 	private String srchKey;
+	private String srchGbn;
+	private String srchText;
+	private String srchStartDt;
+	private String srchEndDt;
 	private String srchParam1;
 	private String srchParam2;
 	private String srchParam3;

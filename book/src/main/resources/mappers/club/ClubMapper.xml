@@ -30,5 +30,25 @@
 		<if test='clubNo != null and clubNo != ""'>
 		  and mt.club_no = #{clubNo}
 		</if>
+		<!-- 텍스트 검색 -->
+		<if test='srchGbn != null and srchGbn != ""'>
+			<if test='"M".equals(srchGbn)'>
+		  and mt.title like concat('%',#{srchText},'%')
+			</if>
+			<if test='"H".equals(srchGbn)'>
+		  and mt.nick_nm like concat('%',#{srchText},'%')
+			</if>
+			<if test='"P".equals(srchGbn)'>
+		  and mt.place like concat("%",#{srchText},'%')
+			</if>
+		</if>
+		<!-- 모임 구분 -->
+		<if test='srchParam1 != null and srchParam1 != ""'>
+		  and mt.meeting_gbn = #{srchParam1}
+		</if>
+		<!-- 검색 기간 -->
+		<if test='srchStartDt != null and srchStartDt != ""'>
+		  and mt.dday between replace(#{srchStartDt},'-','') and replace(#{srchEndDt},'-','')
+		</if>
 	</sql>
 </mapper>

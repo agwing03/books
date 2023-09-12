@@ -1,4 +1,4 @@
-package project.books.sys.menu;
+package project.books.sys.api.menu;
 
 import lombok.Getter;
 import lombok.Setter;

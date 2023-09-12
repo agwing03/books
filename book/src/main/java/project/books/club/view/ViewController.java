@@ -51,5 +51,11 @@ public class ViewController {
 	 */
 	@RequestMapping("/admin.do")
 	public String admin() {return "/club/admin";}
+	
+	/**
+	 * test 샘플
+	 */
+	@RequestMapping("/sample.do")
+	public String sample() {return "/sample/sample";}
 }
  

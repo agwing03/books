@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="project.books.sys.api.code.CodeMapper">
+	
+	<!-- 공통 코드 목록(상세) -->
+	<select id="selectCmmnCodeDtlList" parameterType="project.books.sys.api.code.CodeVO" resultType="project.books.sys.util.CamelMap">
+		/*CodeMapper.selectCmmnCodeDtlList*/
+		select code_dtl_id as code  
+		     , code_dtl_nm as code_nm
+		  from cmmn_code_dtl ccd 
+		<if test='codeId != null and codeId != ""'>
+		   where 1=1
+   			 and ccd.code_id = #{codeId}
+		</if>
+		   order by ccd.code_dtl_order asc 
+	</select>
+</mapper>

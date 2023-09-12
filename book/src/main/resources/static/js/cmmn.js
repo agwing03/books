@@ -103,7 +103,79 @@ function aside(data){
     $("aside").append(navHtml);
 }
 
-/* 데이터 목록 */
-function dataList(data){
-	list = JSON.parse(JSON.stringify(data)); 
+/**
+ *  공통코드 조회
+ *  필수 param : 코드ID, option 삽입할 태그ID 
+ */
+async function cmmnCode(codeId, target, headers = {}) {
+	const param = {codeId:codeId}
+	let optionHtml = null 
+	const options = {
+		method: 'POST',
+		headers: {"Content-Type": "application/json", ...headers},
+    	body: JSON.stringify(param)
+    }
+	const res = await fetch('/code/getCmmnCodeDtlList.do', options)
+	const data = await res.json()
+	if (res.ok) {
+		if(data.dataList.length > 0){
+			optionHtml = '<option value="">전체</option>'
+			for(var i = 0; i < data.dataList.length; i++){
+				optionHtml += '<option value="'+data.dataList[i].code+'">'+data.dataList[i].codeNm+'</option>'
+			}
+			$("#"+target).append(optionHtml);
+		}
+	} else {
+    	throw Error(data)
+	}
+}
+
+// 목록 데이터 조회
+function search(){
+	let params = {clubNo:'1'}
+	
+    let srchGbn = $('#srchGbn').val()
+    if(srchGbn != '' && srchGbn != undefined){
+		params.srchGbn = srchGbn 
+	}
+    let srchText = $('#srchText').val()
+    if(srchText != '' && srchText != undefined){
+		params.srchText = srchText 
+	}
+    let srchStartDt = $('#srchStartDt').val()
+    if(srchStartDt != '' && srchStartDt != undefined){
+		params.srchStartDt = srchStartDt 
+	}
+    let srchEndDt = $('#srchEndDt').val()
+    if(srchEndDt != '' && srchEndDt != undefined){
+		params.srchEndDt = srchEndDt
+	}
+    let srchParam1 = $('#srchParam1').val()
+    if(srchParam1 != '' && srchParam1 != undefined){
+		params.srchParam1 = srchParam1
+	}
+    let srchParam2 = $('#srchParam2').val()
+    if(srchParam2 != '' && srchParam2 != undefined){
+		params.srchParam2 = srchParam2
+	}
+	//화면 목록 조회
+	srchList(params)
+}
+
+/* 레이어 팝업 */
+function layerPopup(){
+	$("#layer_shadow").show()
+	$("#layerPupup").fadeIn(1000);
+ 	//화면 중앙 띄우기
+	let target = $("#layerPupup");
+	var left = ( $(window).scrollLeft() + ($(window).width() - target.width()) / 2 );
+	var top = ( $(window).scrollTop() + ($(window).height() - target.height()) / 2 );
+	//CSS
+	target.css({'left':left,'top':top, 'position':'absolute'});
+	$('body').css('position','relative').append(target);
+}
+/* 레이어 팝업 닫기 */
+function layerClose(){
+	$("#layer_shadow").hide()
+	$('#layerPupup').hide();
 }

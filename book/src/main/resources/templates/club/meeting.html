@@ -9,40 +9,69 @@
     
     <script>
 		$(document).ready(function(){
-			meetingList();
+			//검색 공통코드 조회
+			cmmnCode('meeting_gbn', 'srchParam1')
+			//데이터 목록 검색
+			search()
 		})
-		function meetingList(){
-			const param = {clubNo:'1'}
+		// 목록 데이터 조회
+		function srchList(params){
 			let listHtml = null
-			fetchApi('/club/getMeetingList.do', 'POST', param, 'dataList')
+			fetchApi('/club/getMeetingList.do', 'POST', params, 'dataList')
 				.then((data) => {
 					$("#dataList").empty()
-					for(var i = 0; i < data.length; i++){
-						listHtml += 	
-							'<tr>'+
-							'	<td>'+data[i].meetingNo+'</td>'+
-							'	<td class="tL"><a href="#">'+data[i].title+'</a></td>'+
-							'	<td>'+data[i].meetingGbn+'</td>'+
-							'	<td>'+data[i].dday+'</td>'+
-							'	<td>'+data[i].time+'</td>'+
-							'	<td>'+data[i].place+'</td>'+
-							'	<td>'+data[i].hostNm+'</td>'+
-							'	<td>8/8</td>'+
-							'	<td>'+data[i].frstRegDt+'</td>'+
-							'</tr>'
+					if(data != null){
+						for(var i = 0; i < data.length; i++){
+							listHtml += 	
+								'<tr>'+
+								'	<td>'+data[i].meetingNo+'</td>'+
+								'	<td class="tL"><a href="#">'+data[i].title+'</a></td>'+
+								'	<td>'+data[i].meetingGbn+'</td>'+
+								'	<td>'+data[i].dday+'</td>'+
+								'	<td>'+data[i].time+'</td>'+
+								'	<td>'+data[i].place+'</td>'+
+								'	<td>'+data[i].hostNm+'</td>'+
+								'	<td>8/8</td>'+
+								'	<td>'+data[i].frstRegDt+'</td>'+
+								'</tr>'
+						}
+						$("#dataList").append(listHtml);						
+					}else{
+						$("#dataList").append('<tr><td colspan="9">데이터가 존재하지 않습니다.</td></tr>');
 					}
-					$("#dataList").append(listHtml);
 				}).catch((error) => console.log(error))
 		}
 	</script>
 </head>
 <body>
-   	<header><!--공통 헤더--></header>
-   	<nav><!--공통 네비--></nav>
-   	<aside><!--공통 사이드 메뉴--></aside>
+	<!--공통 헤더-->
+   	<header></header>
+   	<!--공통 네비-->
+   	<nav></nav>
+   	<!--공통 사이드 메뉴-->
+   	<aside></aside>
    	<section>
 		<article>
-			<h3>모임 목록</h3>	
+			<h3>모임 목록</h3>
+			<!-- 검색 -->
+			<div id="srchBox">
+				<!-- 검색조건 -->
+				<select id="srchGbn">
+					<option value="">전체</option>
+					<option value="M">모임명</option>
+					<option value="H">주최자</option>
+					<option value="P">모임장소</option>
+				</select>
+				<input type="text" id="srchText">
+				<!-- 모임 구분 -->
+				<select id="srchParam1"></select>
+				<!-- 검색 기간 -->
+				<input type="date" id="srchStartDt">~<input type="date" id="srchEndDt">
+				<!-- 검색 -->
+				<a href="javascript:search();" id="serch" class="w-btn-neon2" type="button">검색</a>
+				<a href="javascript:layerPopup();">레이어팡업</a>
+			</div>
+			<!-- 데이터 테이블 -->	
 			<table>
 				<thead>
 					<tr>
@@ -61,8 +90,48 @@
 			</table>
 		</article>
    	</section>
-   	<footer><!--공통 풋터--></footer>
+   	<!--공통 풋터-->
+   	<footer></footer>
+   	
+   	<!-- 모임등록 레이어 팝업 -->
+   	<div id="layerPupup">
+	    <div class="pop-layer">
+            <p>Thank you.<br>
+                Your registration was submitted successfully.<br>
+                Selected invitees will be notified by e-mail on JANUARY 24th.<br><br>
+                Hope to see you soon!
+            </p>
+            <a href="javascript:layerClose();">Close</a>
+		</div>
+	</div>
+	<div id="layer_shadow"></div>
 </body>
 </html>
+<style>
+#layerPupup {
+	width: 500px;
+	height: 700px;
+	position: absolute;
+	text-align: center;
+	background-color:#3d3d3d;
+	border: 1px solid #000;
+	color: #fff;
+	display: none;
+}
+.pop-layer {
+	position: relative;
+	
+}
+#layer_shadow{
+	position: fixed;
+	left: 0;
+	top: 0;
+	background: rgba(0, 0, 0, 0.52);
+	width: 100%;
+	height: 100vh;
+	display: none
+}
+</style>
+ 
 
 
