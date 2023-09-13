@@ -4,9 +4,26 @@
   src : url(/font/GrandifloraOne-Regular.ttf)
 }
 @font-face {
+  font-family : '한글폰트2';
+  src : url(/font/Dongle-Bold.ttf)
+}
+@font-face {
+  font-family : '한글폰트3';
+  src : url(/font/Dongle-Regular.ttf)
+}
+@font-face {
+  font-family : '한글굵은1';
+  src : url(/font/BlackHanSans-Regular.ttf)
+}
+@font-face {
+  font-family : '나눔고딕에코';
+  src : url(/font/NanumGothicEco.ttf.ttf)
+}
+@font-face {
   font-family : '영어폰트1';
   src : url(/font/RussoOne-Regular.ttf)
 }
+
 
 
 /* 공통 */
@@ -16,7 +33,6 @@ body {
 }
 a {
 	text-decoration: none;
-	font-weight: bold;
 }
 input[type=text]{
 	width: 180px;
@@ -37,71 +53,23 @@ select{
 	padding-top: 10px;
 	vertical-align: middle;
 }
+.tC {text-align: center;}
+.tL {text-align: left;}
+.tR {text-align: right;}
 
-
-/* header */
-header {
-	width: 1200px;
-	margin: auto;
-	height: 65px;
-	text-align: center;
-}
-.club-img {
-	margin: 0px 0px 0px 0px; line-height: 120%;
-	font-family: '영어폰트1';
-	float: left;
-	height:auto;
-	font-weight: bold;
-}
-.club-title {
-	float: left;
-	width: 40%;
-	height: auto;
-	margin-left: 300px;
-}
-.club-title p {
-	margin: 0px 0px 0px 0px; line-height: 120%;
-}
-.club-title .title{
-	margin: auto;
-	font-family: '한글폰트1';
+.btnDiv {
 	margin-top: 10px;
-	font-size: 25px;
-	font-weight: bold;
-}
-.club-subTitle .title{
-	font-size: 8px;
-}
-.club-user {
-	position: relative;
 	float: right;
-	margin-top: 15px;
-	width: 25%;
-	color: darkgray;
-	height: auto;
-	text-align: right;
 }
-.club-user .userName {
-	font-size: 16px;
-}
-.club-user .userAuthor {
-	font-size: 12px;
-}
-.club-user .userAuthor img{
-	position: absolute;
-    right: 60px;
-    top: -2px;
-}
-.club-user .setting {
-	padding-left: 30px;
-}
-
-
-/* footer */
-footer {
-	width: 1200px;
-	margin: auto;
-	height: 100px;
+.btn {
+	float: right;
+	display:block;
+    width:80px;
+    line-height:30px;
+    text-align:center;
+    background-color:black;
+    color:#fff;
+    margin-left: 15px;
 }
 
 
@@ -109,7 +77,6 @@ footer {
 section {
 	width: 1200px;
 	margin: auto;
-	margin-top: 15px;
 	padding:1.5em;
  	background: white;
 }
@@ -146,7 +113,7 @@ section .listTable tbody {
 	overflow-y:auto;
 	overflow-x:hidden;
 	display: block;
-    height: 600px;
+    height: 700px;
 }
 section td, th {
 	padding: 0.5em .58em;
@@ -157,6 +124,18 @@ section td, th {
   	border-bottom: 1px solid rgba(0,0,0,.1);
   	background: #fff;
 }
+.listTable tr:nth-child(even){
+  background-color:#aaaaaa;
+  color:#000000;
+}
+.listTable tr:nth-child(odd){
+  background-color:black;
+}
+.listTable tr:hover td{
+  background-color:#f3e9e9 !important;
+  color:#303f39 !important;
+}
+
 section .inputTable{
 	border: 1px #a39485 solid;
   	font-size: .9em;
@@ -170,13 +149,6 @@ section .inputTable{
 	width: 100%;
 	height: 25px;
 }
-a {
-	color: #73685d;
-}
-.btnDiv {
-	float: right;
-}
-
   
 @media all and (max-width: 768px) {
   	table, thead, tbody, th, td, tr {
@@ -250,7 +222,7 @@ nav ul li{
 	display: block;
 	text-decoration: none;
 	color: white;
-	padding: 16px 16px;
+	padding: 10px 10px;
 }
 .dropdown {
 	position: relative;	
@@ -259,7 +231,7 @@ nav ul li{
 	min-width: 90px;
 	text-align: center;
 	color: white;
-	padding: 16px;
+	padding: 10px;
 	font-size: 16px;
 	cursor: pointer;
 }
@@ -448,92 +420,75 @@ body {
 /* 커스텀 끝 */
 
 
+/* header */
+header {
+	width: 1200px;
+	margin: auto;
+	height: 65px;
+	text-align: center;
+}
+.club-img {
+	margin: 0px 0px 0px 0px; line-height: 120%;
+	font-family : '한글폰트2';
+	float: left;
+	height:auto;
+	font-weight: bold;
+}
+.club-title {
+	float: left;
+	width: 40%;
+	height: auto;
+	margin-left: 350px;
+}
+.club-title p {
+	margin: 0px 0px 0px 0px; line-height: 120%;
+}
+.club-title .title{
+	margin: auto;
+	font-family : '한글폰트2';
+	margin-top: 10px;
+	font-size: 45px;
+	font-weight: bold;
+}
+.club-subTitle .title{
+	font-size: 8px;
+}
+.club-user {
+	position: relative;
+	float: right;
+	margin-top: 15px;
+	width: 25%;
+	color: black;
+	height: auto;
+	text-align: right;
+}
+.club-user .userName {
+	font-family : '나눔고딕에코';
+	font-size: 18px;
+}
+.club-user .userAuthor {
+	color: rgb(194, 101, 16);
+	font-size: 12px;
+	font-family : '나눔고딕에코';
+	font-weight: bold;
+}
+.club-user .userAuthor img{
+	position: absolute;
+    right: 60px;
+    top: -2px;
+}
+.club-user .setting {
+	padding-left: 30px;
+}
+
+
+/* footer */
+footer {
+	width: 1200px;
+	margin: auto;
+	height: 100px;
+}
+
+
+
 /* 버튼 */
-#sampleBtn  {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-#sampleBtn {
-    text-align: center;
-    padding: 100px;
-    background: whitesmoke;
-    display: table-cell;
-}
-
-#sampleBtn button {
-    margin: 20px;
-}
-@keyframes gradient1 {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
-}
-
-@keyframes gradient2 {
-    0% {
-        background-position: 100% 50%;
-    }
-    50% {
-        background-position: 0% 50%;
-    }
-    100% {
-        background-position: 100% 50%;
-    }
-}
-
-@keyframes ring {
-    0% {
-        width: 30px;
-        height: 30px;
-        opacity: 1;
-    }
-    100% {
-        width: 300px;
-        height: 300px;
-        opacity: 0;
-    }
-}
-
-
-.w-btn-neon2 {
-    position: relative;
-    border: none;
-    min-width: 140px;
-    min-height: 30px;
-    background: linear-gradient(
-        90deg,
-        rgba(129, 230, 217, 1) 0%,
-        rgba(79, 209, 197, 1) 100%
-    );
-    border-radius: 1000px;
-    color: darkslategray;
-    cursor: pointer;
-    box-shadow: 12px 12px 24px rgba(79, 209, 197, 0.64);
-    font-weight: 700;
-    transition: 0.3s;
-}
-
-.w-btn-neon2:hover {
-    transform: scale(1.2);
-}
-
-.w-btn-neon2:hover::after {
-    content: "";
-    width: 30px;
-    height: 30px;
-    border-radius: 100%;
-    border: 6px solid #00ffcb;
-    position: absolute;
-    z-index: -1;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    animation: ring 1.5s infinite;
-}
