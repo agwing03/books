@@ -12,7 +12,13 @@ $(document).ready(function(){
 /* 전역변수 */
 let list = null;
 
-/* fetch 데이터 통신 */
+/** 
+ *  fetch 데이터 통신
+ *  URL
+ *  method  : POST, GET, PUT, DELETE
+ *  body	: json
+ *  gbn		: nav, aside, dataList, save
+ */
 async function fetchApi(url, method, body, gbn, headers = {}) {
 	const options = {
 		method: method,
@@ -22,12 +28,15 @@ async function fetchApi(url, method, body, gbn, headers = {}) {
 	const res = await fetch(url, options)
 	const data = await res.json()
 	if (res.ok) {
-		if (gbn === 'nav'){
+		if (gbn === 'nav'){ //nav html 생성
 			nav(data.dataList);
-		} else if (gbn === 'aside'){
+		} else if (gbn === 'aside'){ //side html 생성
 			aside(data.dataList);
-		} else if (gbn === 'dataList'){
+		} else if (gbn === 'dataList'){ //list 데이터 리턴
 			return data.dataList;
+		} else if (gbn === 'save'){ //DB 데이터 적재
+			alert('저장 되었씁니다.')
+			search()
 		}
 	} else {
     	throw Error(data)
@@ -105,7 +114,8 @@ function aside(data){
 
 /**
  *  공통코드 조회
- *  필수 param : 코드ID, option 삽입할 태그ID 
+ *  공통코드		: 코드ID
+ *  화면 HTML ID	: 태그ID 
  */
 async function cmmnCode(codeId, target, headers = {}) {
 	const param = {codeId:codeId}
@@ -130,7 +140,16 @@ async function cmmnCode(codeId, target, headers = {}) {
 	}
 }
 
-// 목록 데이터 조회
+/**
+ *  SEARCH 데이터 조회
+ *  텍스트 구분 	: srchGbn
+ *  텍스트 	: srchText 
+ *  기간 시작일 	: srchStartDt 
+ * 	기간 종료일 	: srchEndDt
+ * 	기타 조건1	: srchParam1 
+ * 	기간 조건2 	: srchParam2 
+ * 	기간 조건3 	: srchParam3  
+ */
 function search(){
 	let params = {clubNo:'1'}
 	
@@ -160,6 +179,35 @@ function search(){
 	}
 	//화면 목록 조회
 	srchList(params)
+}
+
+/**
+ *  SAVE 데이터 조회
+ *  URL	
+ *  gbn : I, U, D
+ */
+function save(url, gbn){
+	let params = {clubNo:'1'}//클럽번호
+	let data = $("#saveData tr") //엘리먼트
+	let dataString = '';
+	if(data.length > 0){
+		for(var i = 0; i < data.length; i++){
+			let dataTr = data.eq(i)
+			for(var j = 0; j < dataTr.children('td').length; j++){
+				let dataTd = dataTr.children('td').eq(j).find('input').val()
+				if(j == 0 && gbn != 'I'){
+					dataString += dataTd
+				}else if(gbn != 'D'){//삭제는 key만 필요함
+					dataString += ','+dataTd	
+				}
+			}
+			dataString += '/'
+		}			
+	}
+	params.saveGbn = gbn
+	params.dataString = dataString
+	//데이터 저장 조회
+	fetchApi(url, 'POST', params, 'save')
 }
 
 /* 레이어 팝업 */

@@ -17,12 +17,16 @@
 		       ) b
 		 order by b.book_app desc, b.book_avg desc, b.book_title asc
 	</select>
+	
+	<!-- 도서 목록 수 -->
 	<select id="selectBookListCnt" parameterType="project.books.club.book.BookVO" resultType="Integer">
 		/*BookMapper.selectBookListCnt*/
 		select count(*) 
 		  from books b
 		<include refid="bookListWhere"></include>
 	</select>
+	
+	<!-- 도서 목록 Where -->
 	<sql id="bookListWhere">
 		where 1=1
 		<!-- 텍스트 검색 -->
@@ -35,4 +39,44 @@
 			</if>
 		</if>
 	</sql>
+	
+	<!-- 도서 등록 -->
+	<insert id="insertBook" parameterType="java.util.HashMap">
+		/*BookMapper.insertBook*/
+		insert into books (
+			  book_title
+			, book_writer
+			, public_dt
+			, frst_reg_no
+			, frst_reg_dt
+			, last_upd_no
+			, last_upd_dt
+		) values (
+			  #{data1}
+			, #{data2}
+			, #{data3}
+			, #{userNo}
+			, now()
+			, #{userNo}
+			, now()
+		)
+	</insert>
+	
+	<!-- 도서 수정 -->
+	<update id="updateBook" parameterType="java.util.HashMap">
+		/*BookMapper.updateBook*/
+		update books 
+		   set book_title 	= #{data2}
+			 , book_writer	= #{data3}
+			 , public_dt	= #{data4}
+		 where book_no 		= #{data1}
+	</update>
+	
+	<!-- 도서 삭제 -->
+	<delete id="deleteBook" parameterType="java.util.HashMap">
+		/*BookMapper.deleteBook*/
+		delete from books 
+		 where book_no = #{data1}
+	</delete>
+	
 </mapper>

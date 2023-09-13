@@ -22,5 +22,15 @@ public class BookController {
 		) throws Exception {
 		return bookService.selectBookList(vo);
 	}
+	
+	/**
+	 * 도서 등록
+	 * @param bookNo
+	 */
+	@RequestMapping("/book/setBook.do")
+	public void setBook(
+			@RequestBody BookVO vo
+		) throws Exception {
+		bookService.saveBook(vo);
+	}
 }
- 
