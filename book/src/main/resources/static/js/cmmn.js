@@ -1,16 +1,11 @@
-/* header, footer, aside, nav */
+ /**
+  *  layout 생성
+  *  1. 메뉴생성 nav
+  */
 $(document).ready(function(){
-	$('header').load('/cmmn/header.html');
-	//$('footer').load('/cmmn/footer.html');
-	
 	//nav
 	fetchApi('/sys/getMenuList.do', 'POST', {clubNo:'1'}, 'nav')
-	//aside
-	fetchApi('/sys/getMenuList.do', 'POST', {clubNo:'1'}, 'aside')
 })
-
-/* 전역변수 */
-let list = null;
 
 /** 
  *  fetch 데이터 통신
@@ -28,7 +23,7 @@ async function fetchApi(url, method, body, gbn, headers = {}) {
 	const res = await fetch(url, options)
 	const data = await res.json()
 	if (res.ok) {
-		if (gbn === 'nav'){ //nav html 생성
+		if (gbn === 'nav'){ //side-nav html 생성
 			nav(data.dataList);
 		} else if (gbn === 'aside'){ //side html 생성
 			aside(data.dataList);
@@ -43,50 +38,37 @@ async function fetchApi(url, method, body, gbn, headers = {}) {
 	}
 }
 
-/* 네비 메뉴 생성 */
+/**
+ *  사이드 메뉴 생성
+ *  사이트 및 모바일 동시 생성 
+ */
 function nav(data){
 	let menuUpperNo = ''
-	let navHtml = 
-		'<ul>'+
-		'	<li class="home"><a href="#">HOME</a></li>'
-	for(var i = 0; i < data.length; i++){
-		//4.대메뉴 닫기
-		if(i != 0 && menuUpperNo != data[i].menuUpperNo){
-			navHtml += '</div></li>'
-		}
-		//1.대메뉴 > 상위메뉴번호 담기
-		if(data[i].menuLv == 1){ 
-			menuUpperNo = data[i].menuNo  
-		}
-		//2.대메뉴 생성
-		if(data[i].menuLv == 1){
-			navHtml += 	
-				'	<li class="dropdown">'+
-				'		<div class="dropdown-menu">'+data[i].menuNm+'</div>'+
-				'		<div class="dropdown-content">'	
-		}
-		//3.상위메뉴번호 같을 경우 소메뉴 생성
-		if(data[i].menuLv == 2 && menuUpperNo == data[i].menuUpperNo){
-			navHtml += '<a href="'+data[i].menuUrl+'">'+data[i].menuNm+'</a>'
-		}	
-	}	
-	navHtml += '<li class="alarm"><a href="#">알림</a></li></ul>'
-    $("nav").append(navHtml);
-}
-
-/* 사이드 메뉴 생성 */
-function aside(data){
-	let menuUpperNo = ''
-	let navHtml = 
-		'<div class="side-bar">'+
- 		'	<div class="side-bar-icon-box">'+
-    	'		<div class="side-bar-icon">'+
-      	'			<div></div>'+
-      	'			<div></div>'+
-      	'			<div></div>'+
-    	'		</div>'+
-  		'	</div>'+
-  		'	<ul>'
+	let navHtml = ''
+	/* 모바일 메뉴 */
+	
+	
+	/* 사이드 메뉴 */
+	menuUpperNo = ''
+	navHtml = ''
+	navHtml = 
+		'<a href="" class="intro-x flex items-center pl-5 pt-4">'+ 
+		'	<span class="hidden xl:block text-white text-lg ml-3"> 책과 사람 사이 </span>'+ 
+        '</a>'+ 
+		'<div class="side-nav__devider my-6"></div>'+ 
+		'	<ul>'+ 
+        '		<li>'+
+        '			<a href="/main.do" class="side-menu side-menu--active">'+
+		'				<div class="side-menu__icon">'+
+		'						<i data-lucide="home"></i>'+
+		'				</div>'+
+    	'				<div class="side-menu__title">HOME'+
+		'					<div class="side-menu__sub-icon>'+
+		'						<i data-lucide="chevron-down"></i>'+ 
+		'					</div>'+
+		'				</div>'+
+		'			</a>'+
+		'		</li>'
 	for(var i = 0; i < data.length; i++){
 		//4.대메뉴 닫기
 		if(i != 0 && menuUpperNo != data[i].menuUpperNo){
@@ -94,23 +76,66 @@ function aside(data){
 		}
 		//1.대메뉴 > 상위메뉴번호 담기
 		if(data[i].menuLv == 1){ 
-			menuUpperNo = data[i].menuNo  
-		}
+			menuUpperNo = data[i].menuNo
+			//1.주메뉴 구분선
+			if(data[i].menuLv == 1 && data[i].menuOrder == 6){
+				navHtml += '<li class="side-nav__devider my-6"></li>'
+			}	
+		}  
+		
 		//2.대메뉴 생성
 		if(data[i].menuLv == 1){
 			navHtml += 	
-				'	<li>'+
-      			'		<a href="#"><i class="fa-solid fa-cat"></i>'+data[i].menuNm+'</a>'+
-      			'		<ul>'	
+				'<li>'+
+		        '	<a href="javascript:void(0);" class="side-menu">'+
+				'		<div class="side-menu__icon">'+
+				'			<i data-lucide="'+data[i].icon+'"></i>'+
+				'		</div>'+
+		    	'		<div class="side-menu__title">'+data[i].menuNm+
+				'			<div class="side-menu__sub-icon>'+ 
+				'				<i data-lucide="chevron-down"></i>'+
+				'			</div>'+
+				'		</div>'+
+				'	</a>'+
+				'	<ul class="">'
 		}
 		//3.상위메뉴번호 같을 경우 소메뉴 생성
 		if(data[i].menuLv == 2 && menuUpperNo == data[i].menuUpperNo){
-			navHtml +='<li><a href="'+data[i].menuUrl+'">'+data[i].menuNm+'</a></li>' 	
+			navHtml +=
+				'	<li>'+
+				'		<a href="'+data[i].menuUrl+'" class="side-menu">'+
+                '			<div class="side-menu__icon">'+
+                '				<i data-lucide="'+data[i].icon+'"></i>'+
+                '			</div>'+
+				'			<div class="side-menu__title">'+data[i].menuNm+'</div>'+
+				'		</a>'+
+				'	</li>' 	
 		}	
 	}	
 	navHtml += '</ul></div>'
-    $("aside").append(navHtml);
+    $("#side-nav").append(navHtml);
+    
+    //디자인 코어 js 반영
+    const script = document.createElement('script');
+    script.src = 'dist/js/app.js';
+    document.body.appendChild(script);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /**
  *  공통코드 조회
@@ -227,3 +252,4 @@ function layerClose(){
 	$("#layer_shadow").hide()
 	$('#layerPupup').hide();
 }
+
