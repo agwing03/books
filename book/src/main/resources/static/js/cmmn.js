@@ -9,19 +9,91 @@ $(document).ready(function(){
 
 
 /**
- * Menu 페이지 이동 
+ *  SEARCH 데이터 조회
+ *  텍스트 구분 	: srchGbn
+ *  텍스트 	: srchText 
+ *  기간 시작일 	: srchStartDt 
+ * 	기간 종료일 	: srchEndDt
+ * 	기타 조건1	: srchParam1 
+ * 	기간 조건2 	: srchParam2 
+ * 	기간 조건3 	: srchParam3  
  */
-function pageMove(subMenu, menu, menuNm, menuUpperNm){
-	//메뉴 클래스 적용
-	$('.menuUl').removeClass('side-menu__sub-open').css('display','none')
-	$('.side-menu').removeClass('side-menu--active')
-	$('#menu'+menu).addClass('side-menu--active')
-	$(subMenu).addClass('side-menu--active')
-	$('#menuUl'+menu).addClass('side-menu__sub-open').css('display','block')
+function search(){
+	let params = {clubNo:'1'}
 	
-	//이동경로
-	$('#breadcrumb1').text(menuUpperNm)
-	$('#breadcrumb2').text(menuNm)
+    let srchGbn = $('#srchGbn').val()
+    if(srchGbn != '' && srchGbn != undefined){
+		params.srchGbn = srchGbn 
+	}
+    let srchText = $('#srchText').val()
+    if(srchText != '' && srchText != undefined){
+		params.srchText = srchText 
+	}
+    let srchStartDt = $('#srchStartDt').val()
+    if(srchStartDt != '' && srchStartDt != undefined){
+		params.srchStartDt = srchStartDt 
+	}
+    let srchEndDt = $('#srchEndDt').val()
+    if(srchEndDt != '' && srchEndDt != undefined){
+		params.srchEndDt = srchEndDt
+	}
+    let srchParam1 = $('#srchParam1').val()
+    if(srchParam1 != '' && srchParam1 != undefined){
+		params.srchParam1 = srchParam1
+	}
+    let srchParam2 = $('#srchParam2').val()
+    if(srchParam2 != '' && srchParam2 != undefined){
+		params.srchParam2 = srchParam2
+	}
+	//화면 목록 조회
+	srchList(params)
+}
+
+/**
+ *  SAVE 데이터 조회
+ *  URL	
+ *  gbn : I, U, D
+ */
+function save(url, gbn){
+	let params = {clubNo:'1'}//클럽번호
+	let data = $("#saveData tr") //엘리먼트
+	let dataString = '';
+	if(data.length > 0){
+		for(var i = 0; i < data.length; i++){
+			let dataTr = data.eq(i)
+			for(var j = 0; j < dataTr.children('td').length; j++){
+				let dataTd = dataTr.children('td').eq(j).find('input').val()
+				if(j == 0 && gbn != 'I'){
+					dataString += dataTd
+				}else if(gbn != 'D'){//삭제는 key만 필요함
+					dataString += ','+dataTd	
+				}
+			}
+			dataString += '/'
+		}			
+	}
+	params.saveGbn = gbn
+	params.dataString = dataString
+	//데이터 저장 조회
+	fetchApi(url, 'POST', params, 'save')
+}
+
+/* 레이어 팝업 */
+function layerPopup(){
+	$("#layer_shadow").show()
+	$("#layerPupup").fadeIn();
+ 	//화면 중앙 띄우기
+	let target = $("#layerPupup");
+	var left = ( $(window).scrollLeft() + ($(window).width() - target.width()) / 2 );
+	var top = ( $(window).scrollTop() + ($(window).height() - target.height()) / 2 );
+	//CSS
+	target.css({'left':left,'top':top, 'position':'absolute'});
+	$('body').css('position','relative').append(target);
+}
+/* 레이어 팝업 닫기 */
+function layerClose(){
+	$("#layer_shadow").hide()
+	$('#layerPupup').hide();
 }
 
 
@@ -55,6 +127,69 @@ async function fetchApi(url, method, body, gbn, headers = {}) {
     	throw Error(data)
 	}
 }
+
+ 
+/** 
+ *  fetch HTML 삽입
+ */
+async function fetchHtml(url) {
+    return await (await fetch(url)).text();
+}
+
+async function importPage(target) {
+
+}
+
+/**
+ *  공통코드 조회
+ *  공통코드		: 코드ID
+ *  화면 HTML ID	: 태그ID 
+ */
+async function cmmnCode(codeId, target, headers = {}) {
+	const param = {codeId:codeId}
+	let optionHtml = null 
+	const options = {
+		method: 'POST',
+		headers: {"Content-Type": "application/json", ...headers},
+    	body: JSON.stringify(param)
+    }
+	const res = await fetch('/code/getCmmnCodeDtlList.do', options)
+	const data = await res.json()
+	if (res.ok) {
+		if(data.dataList.length > 0){
+			optionHtml = '<option value="">전체</option>'
+			for(var i = 0; i < data.dataList.length; i++){
+				optionHtml += '<option value="'+data.dataList[i].code+'">'+data.dataList[i].codeNm+'</option>'
+			}
+			$("#"+target).append(optionHtml);
+		}
+	} else {
+    	throw Error(data)
+	}
+}
+
+
+
+/**
+ * 메뉴 페이지 이동 
+ */
+async function pageMove(subMenu, menu, menuNm, menuUpperNm, menuUrl){
+	//Html 삽입
+	let html = await fetchHtml(menuUrl+'.html')
+	$('#importHtml').html(html)
+	
+	//메뉴 클래스 적용
+	$('.menuUl').removeClass('side-menu__sub-open').css('display','none')
+	$('.side-menu').removeClass('side-menu--active')
+	$('#menu'+menu).addClass('side-menu--active')
+	$(subMenu).addClass('side-menu--active')
+	$('#menuUl'+menu).addClass('side-menu__sub-open').css('display','block')
+	
+	//이동경로
+	$('#breadcrumb1').text(menuUpperNm)
+	$('#breadcrumb2').text(menuNm)
+}
+
 
 
 /**
@@ -168,7 +303,7 @@ function nav(data){
 					'		<div class="side-menu__icon">'+
 					'			<i data-lucide="'+data[i].icon+'"></i>'+
 					'		</div>'+
-			    	'		<div class="side-menu__title">'+data[i].menuNm
+			    	'		<div class="side-menu__title">'+data[i].menuNm+
 					'			<div class="side-menu__sub-icon"><i data-lucide="chevron-down"></i></div>'+
 					'		</div>'+
 					'	</a>'+
@@ -176,13 +311,11 @@ function nav(data){
 			}else{
 				html += 	
 					'<li>'+
-			        '	<a href="javascript:void(0);" class="side-menu" id="menu'+menuUpperNo+'" onclick="pageMove(this,'+menuUpperNo+',\''+data[i].menuNm+'\',\'\');">'+
+			        '	<a href="javascript:void(0);" class="side-menu" id="menu'+menuUpperNo+'" onclick="pageMove(this,'+menuUpperNo+',\''+data[i].menuNm+'\',\'\',\''+data[i].menuUrl+'\');">'+
 					'		<div class="side-menu__icon">'+
 					'			<i data-lucide="'+data[i].icon+'"></i>'+
 					'		</div>'+
-			    	'		<div class="side-menu__title">'+data[i].menuNm
-					'			<div class="side-menu__sub-icon"><i data-lucide="chevron-down"></i></div>'+
-					'		</div>'+
+			    	'		<div class="side-menu__title">'+data[i].menuNm+'</div>'+
 					'	</a>'+
 					'	<ul id="menuUl'+menuUpperNo+'" class="menuUl">'
 			}
@@ -192,7 +325,7 @@ function nav(data){
 		if(data[i].menuLv == 2 && menuUpperNo == data[i].menuUpperNo){
 			html +=
 				'	<li>'+
-				'		<a href="javascript:void(0);" class="side-menu" onclick="pageMove(this,'+menuUpperNo+',\''+data[i].menuNm+'\',\''+menuUpperNm+'\');">'+
+				'		<a href="javascript:void(0);" class="side-menu" onclick="pageMove(this,'+menuUpperNo+',\''+data[i].menuNm+'\',\''+menuUpperNm+'\',\''+data[i].menuUrl+'\');">'+
                 '			<div class="side-menu__icon"><i data-lucide="'+data[i].icon+'"></i></div>'+
 				'			<div class="side-menu__title">'+data[i].menuNm+'</div>'+
 				'		</a>'+
@@ -214,121 +347,4 @@ function nav(data){
     const script = document.createElement('script');
     script.src = 'dist/js/app.js';
     document.body.appendChild(script);
-} 
-
-/**
- *  공통코드 조회
- *  공통코드		: 코드ID
- *  화면 HTML ID	: 태그ID 
- */
-async function cmmnCode(codeId, target, headers = {}) {
-	const param = {codeId:codeId}
-	let optionHtml = null 
-	const options = {
-		method: 'POST',
-		headers: {"Content-Type": "application/json", ...headers},
-    	body: JSON.stringify(param)
-    }
-	const res = await fetch('/code/getCmmnCodeDtlList.do', options)
-	const data = await res.json()
-	if (res.ok) {
-		if(data.dataList.length > 0){
-			optionHtml = '<option value="">전체</option>'
-			for(var i = 0; i < data.dataList.length; i++){
-				optionHtml += '<option value="'+data.dataList[i].code+'">'+data.dataList[i].codeNm+'</option>'
-			}
-			$("#"+target).append(optionHtml);
-		}
-	} else {
-    	throw Error(data)
-	}
 }
-
-/**
- *  SEARCH 데이터 조회
- *  텍스트 구분 	: srchGbn
- *  텍스트 	: srchText 
- *  기간 시작일 	: srchStartDt 
- * 	기간 종료일 	: srchEndDt
- * 	기타 조건1	: srchParam1 
- * 	기간 조건2 	: srchParam2 
- * 	기간 조건3 	: srchParam3  
- */
-function search(){
-	let params = {clubNo:'1'}
-	
-    let srchGbn = $('#srchGbn').val()
-    if(srchGbn != '' && srchGbn != undefined){
-		params.srchGbn = srchGbn 
-	}
-    let srchText = $('#srchText').val()
-    if(srchText != '' && srchText != undefined){
-		params.srchText = srchText 
-	}
-    let srchStartDt = $('#srchStartDt').val()
-    if(srchStartDt != '' && srchStartDt != undefined){
-		params.srchStartDt = srchStartDt 
-	}
-    let srchEndDt = $('#srchEndDt').val()
-    if(srchEndDt != '' && srchEndDt != undefined){
-		params.srchEndDt = srchEndDt
-	}
-    let srchParam1 = $('#srchParam1').val()
-    if(srchParam1 != '' && srchParam1 != undefined){
-		params.srchParam1 = srchParam1
-	}
-    let srchParam2 = $('#srchParam2').val()
-    if(srchParam2 != '' && srchParam2 != undefined){
-		params.srchParam2 = srchParam2
-	}
-	//화면 목록 조회
-	srchList(params)
-}
-
-/**
- *  SAVE 데이터 조회
- *  URL	
- *  gbn : I, U, D
- */
-function save(url, gbn){
-	let params = {clubNo:'1'}//클럽번호
-	let data = $("#saveData tr") //엘리먼트
-	let dataString = '';
-	if(data.length > 0){
-		for(var i = 0; i < data.length; i++){
-			let dataTr = data.eq(i)
-			for(var j = 0; j < dataTr.children('td').length; j++){
-				let dataTd = dataTr.children('td').eq(j).find('input').val()
-				if(j == 0 && gbn != 'I'){
-					dataString += dataTd
-				}else if(gbn != 'D'){//삭제는 key만 필요함
-					dataString += ','+dataTd	
-				}
-			}
-			dataString += '/'
-		}			
-	}
-	params.saveGbn = gbn
-	params.dataString = dataString
-	//데이터 저장 조회
-	fetchApi(url, 'POST', params, 'save')
-}
-
-/* 레이어 팝업 */
-function layerPopup(){
-	$("#layer_shadow").show()
-	$("#layerPupup").fadeIn();
- 	//화면 중앙 띄우기
-	let target = $("#layerPupup");
-	var left = ( $(window).scrollLeft() + ($(window).width() - target.width()) / 2 );
-	var top = ( $(window).scrollTop() + ($(window).height() - target.height()) / 2 );
-	//CSS
-	target.css({'left':left,'top':top, 'position':'absolute'});
-	$('body').css('position','relative').append(target);
-}
-/* 레이어 팝업 닫기 */
-function layerClose(){
-	$("#layer_shadow").hide()
-	$('#layerPupup').hide();
-}
-

@@ -11,6 +11,40 @@
         <meta name="author" content="LEFT4CODE">
         <title>책과 사람 사이</title>
         <script src="/js/cmmn.js"></script>
+        
+        <script>
+		$(document).ready(function(){
+			
+  		});
+  		
+  		
+  		// 목록 데이터 조회
+		function srchList(params){
+			let listHtml = null
+			fetchApi('/book/getBookList.do', 'POST', params, 'dataList')
+				.then((data) => {
+					$("#dataList").empty()
+					if(data != null){
+						for(var i = 0; i < data.length; i++){
+							listHtml += 	
+								'<tr onclick="viewForm('+data[i].bookNo+');" id="'+data[i].bookNo+'">'+
+								'	<td width="8%">'+data[i].bookNo+'</td>'+
+								'	<td width="27%" style="text-align:left;">'+data[i].bookTitle+'</td>'+
+								'	<td width="auto" style="text-align:left;">'+data[i].bookWriter+'</td>'+
+								'	<td width="7%">'+data[i].bookApp+'</td>'+
+								'	<td width="5%">'+data[i].bookAvg+'</td>'+
+								'	<td width="15%">'+data[i].frstRegDt+'</td>'+
+								'</tr>'
+						}
+						$("#dataList").append(listHtml);						
+					}else{
+						$("#dataList").append('<tr><td colspan="6">데이터가 존재하지 않습니다.</td></tr>');
+					}
+				}).catch((error) => console.log(error))
+		}
+		 
+	</script>
+	
     </head>
     <!-- END: Head -->
     <body class="py-5">
@@ -231,19 +265,9 @@
                 </div>
                 <!-- END: Top Bar -->
                 
-                <div class="grid grid-cols-12 gap-6">
-                    <div class="col-span-12 2xl:col-span-9">
-                        <div class="grid grid-cols-12 gap-6">
-							
-                        </div>
-                    </div>
-                    <div class="col-span-12 2xl:col-span-3">
-                        <div class="2xl:border-l -mb-10 pb-10">
-                            <div class="2xl:pl-6 grid grid-cols-12 gap-x-6 2xl:gap-x-0 gap-y-6">
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <!-- BEGIN: Content DATA -->
+                <div id='importHtml'></div>
+                
             </div>
             <!-- END: Content -->
         </div>
