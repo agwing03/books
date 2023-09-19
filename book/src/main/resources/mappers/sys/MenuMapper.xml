@@ -5,7 +5,8 @@
 	<!-- 메뉴 목록 -->
 	<select id="selectMenuList" parameterType="project.books.sys.api.menu.MenuVO" resultType="project.books.sys.util.CamelMap">
 		/*MenuMapper.selectMenuList*/
-		select * 
+		select m.* 
+			 , (select count(*) from menu mn where mn.menu_upper_no = m.menu_no) as sub_menu_cnt 
 		  from menu m
 		 where 1=1 
 		<if test='clubNo != null and clubNo != ""'>

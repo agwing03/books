@@ -7,6 +7,24 @@ $(document).ready(function(){
 	fetchApi('/sys/getMenuList.do', 'POST', {clubNo:'1'}, 'nav')
 })
 
+
+/**
+ * Menu 페이지 이동 
+ */
+function pageMove(subMenu, menu, menuNm, menuUpperNm){
+	//메뉴 클래스 적용
+	$('.menuUl').removeClass('side-menu__sub-open').css('display','none')
+	$('.side-menu').removeClass('side-menu--active')
+	$('#menu'+menu).addClass('side-menu--active')
+	$(subMenu).addClass('side-menu--active')
+	$('#menuUl'+menu).addClass('side-menu__sub-open').css('display','block')
+	
+	//이동경로
+	$('#breadcrumb1').text(menuUpperNm)
+	$('#breadcrumb2').text(menuNm)
+}
+
+
 /** 
  *  fetch 데이터 통신
  *  URL
@@ -38,104 +56,165 @@ async function fetchApi(url, method, body, gbn, headers = {}) {
 	}
 }
 
+
 /**
  *  사이드 메뉴 생성
  *  사이트 및 모바일 동시 생성 
  */
 function nav(data){
 	let menuUpperNo = ''
-	let navHtml = ''
+	let menuUpperNm = ''
+	
 	/* 모바일 메뉴 */
-	
-	
-	/* 사이드 메뉴 */
-	menuUpperNo = ''
-	navHtml = ''
-	navHtml = 
-		'<a href="" class="intro-x flex items-center pl-5 pt-4">'+ 
-		'	<span class="hidden xl:block text-white text-lg ml-3"> 책과 사람 사이 </span>'+ 
-        '</a>'+ 
-		'<div class="side-nav__devider my-6"></div>'+ 
-		'	<ul>'+ 
-        '		<li>'+
-        '			<a href="/main.do" class="side-menu side-menu--active">'+
-		'				<div class="side-menu__icon">'+
-		'						<i data-lucide="home"></i>'+
-		'				</div>'+
-    	'				<div class="side-menu__title">HOME'+
-		'					<div class="side-menu__sub-icon>'+
-		'						<i data-lucide="chevron-down"></i>'+ 
-		'					</div>'+
+	let html = 
+		'<div class="mobile-menu-bar">'+
+        '	<a href="/" class="flex mr-auto">'+
+		'		<img alt="Midone - HTML Admin Template" class="w-6" src="dist/images/logo.svg">'+
+		'	</a>'+
+		'	<a href="javascript:void(0);" class="mobile-menu-toggler">'+ 
+		'		<i data-lucide="bar-chart-2" class="w-8 h-8 text-white transform -rotate-90"></i>'+ 
+		' 	</a>'+
+		'</div>'+
+		'<div class="scrollable">'+
+		'	<a href="javascript:void(0);" class="mobile-menu-toggler">'+
+		'		<i data-lucide="x-circle" class="w-8 h-8 text-white transform -rotate-90"></i>'+
+		'	</a>'+
+		'	<ul class="scrollable__content py-2">'+
+		'		<li>'+
+		'			<a href="javascript:;" class="menu">'+
+		'				<div class="menu__icon"><i data-lucide="box"></i></div>'+
+		'				<div class="menu__title"> Menu'+ 
+		'					<i data-lucide="chevron-down" class="menu__sub-icon "></i>'+
 		'				</div>'+
 		'			</a>'+
-		'		</li>'
+		'	<ul class="side-menu__sub-open">'
 	for(var i = 0; i < data.length; i++){
 		//4.대메뉴 닫기
 		if(i != 0 && menuUpperNo != data[i].menuUpperNo){
-			navHtml +='</ul></li>'
+			html +='</ul></li>'
 		}
 		//1.대메뉴 > 상위메뉴번호 담기
 		if(data[i].menuLv == 1){ 
 			menuUpperNo = data[i].menuNo
-			//1.주메뉴 구분선
+			//5.주메뉴 구분선
 			if(data[i].menuLv == 1 && data[i].menuOrder == 6){
-				navHtml += '<li class="side-nav__devider my-6"></li>'
+				html += '<li class="side-nav__devider my-6"></li>'
 			}	
 		}  
-		
 		//2.대메뉴 생성
 		if(data[i].menuLv == 1){
-			navHtml += 	
+			html += 	
 				'<li>'+
-		        '	<a href="javascript:void(0);" class="side-menu">'+
-				'		<div class="side-menu__icon">'+
-				'			<i data-lucide="'+data[i].icon+'"></i>'+
-				'		</div>'+
-		    	'		<div class="side-menu__title">'+data[i].menuNm+
-				'			<div class="side-menu__sub-icon>'+ 
-				'				<i data-lucide="chevron-down"></i>'+
-				'			</div>'+
+				'	<a href="javascript:void(0);" class="menu">'+
+				'		<div class="menu__icon"><i data-lucide="'+data[i].icon+'"></i></div>'+
+				'		<div class="menu__title">'+data[i].menuNm+
+				'			<i data-lucide="chevron-down" class="menu__sub-icon "></i>'+
 				'		</div>'+
 				'	</a>'+
 				'	<ul class="">'
 		}
 		//3.상위메뉴번호 같을 경우 소메뉴 생성
 		if(data[i].menuLv == 2 && menuUpperNo == data[i].menuUpperNo){
-			navHtml +=
+			html +=
+				'<li>'+
+				'	<a href="'+data[i].menuUrl+'" class="menu">'+
+				'		<div class="menu__icon"><i data-lucide="'+data[i].icon+'"></i></div>'+
+				'		<div class="menu__title">'+data[i].menuNm+'</div>'+
+				'	</a>'+
+				'</li>'
+		}
+	}
+	html += '</ul></div>'
+	$("#mobile-menu").append(html);
+		
+	/* 사이드 메뉴 */
+	menuUpperNo = ''
+	menuUpperNm = ''
+	html = 
+		'<a href="/" class="intro-x flex items-center pl-5 pt-4">'+ 
+		'	<span class="hidden xl:block text-white text-lg ml-3"> 책과 사람 사이 </span>'+ 
+        '</a>'+ 
+		'<div class="side-nav__devider my-6"></div>'+ 
+		'	<ul>'+ 
+        '		<li>'+
+        '			<a href="#" class="side-menu side-menu--active" id="menu0" onclick="pageMove(this,0,\'HOME\',\'\');">'+
+		'				<div class="side-menu__icon"><i data-lucide="home"></i></div>'+
+    	'				<div class="side-menu__title">HOME'+
+		'					<div class="side-menu__sub-icon><i data-lucide="chevron-down"></i></div>'+
+		'				</div>'+
+		'			</a>'+
+		'		</li>'
+	for(var i = 0; i < data.length; i++){
+		//4.대메뉴 닫기
+		if(i != 0 && menuUpperNo != data[i].menuUpperNo){
+			html +='</ul></li>'
+		}
+		//1.대메뉴 > 상위메뉴번호 담기
+		if(data[i].menuLv == 1){ 
+			menuUpperNo = data[i].menuNo
+			menuUpperNm = data[i].menuNm
+			//5.주메뉴 구분선
+			if(data[i].menuLv == 1 && data[i].menuOrder == 6){
+				html += '<li class="side-nav__devider my-6"></li>'
+			}	
+		}  
+		//2.대메뉴 생성
+		if(data[i].menuLv == 1){
+			//하위 메뉴 존재여부			
+			if(data[i].subMenuCnt > 0){ 
+				html += 	
+					'<li>'+
+			        '	<a href="javascript:void(0);" class="side-menu" id="menu'+menuUpperNo+'">'+
+					'		<div class="side-menu__icon">'+
+					'			<i data-lucide="'+data[i].icon+'"></i>'+
+					'		</div>'+
+			    	'		<div class="side-menu__title">'+data[i].menuNm
+					'			<div class="side-menu__sub-icon"><i data-lucide="chevron-down"></i></div>'+
+					'		</div>'+
+					'	</a>'+
+					'	<ul id="menuUl'+menuUpperNo+'" class="menuUl">'
+			}else{
+				html += 	
+					'<li>'+
+			        '	<a href="javascript:void(0);" class="side-menu" id="menu'+menuUpperNo+'" onclick="pageMove(this,'+menuUpperNo+',\''+data[i].menuNm+'\',\'\');">'+
+					'		<div class="side-menu__icon">'+
+					'			<i data-lucide="'+data[i].icon+'"></i>'+
+					'		</div>'+
+			    	'		<div class="side-menu__title">'+data[i].menuNm
+					'			<div class="side-menu__sub-icon"><i data-lucide="chevron-down"></i></div>'+
+					'		</div>'+
+					'	</a>'+
+					'	<ul id="menuUl'+menuUpperNo+'" class="menuUl">'
+			}
+			
+		}
+		//3.상위메뉴번호 같을 경우 소메뉴 생성
+		if(data[i].menuLv == 2 && menuUpperNo == data[i].menuUpperNo){
+			html +=
 				'	<li>'+
-				'		<a href="'+data[i].menuUrl+'" class="side-menu">'+
-                '			<div class="side-menu__icon">'+
-                '				<i data-lucide="'+data[i].icon+'"></i>'+
-                '			</div>'+
+				'		<a href="javascript:void(0);" class="side-menu" onclick="pageMove(this,'+menuUpperNo+',\''+data[i].menuNm+'\',\''+menuUpperNm+'\');">'+
+                '			<div class="side-menu__icon"><i data-lucide="'+data[i].icon+'"></i></div>'+
 				'			<div class="side-menu__title">'+data[i].menuNm+'</div>'+
 				'		</a>'+
 				'	</li>' 	
 		}	
 	}	
-	navHtml += '</ul></div>'
-    $("#side-nav").append(navHtml);
+	html += '</ul></div>'
+    $("#side-nav").append(html);
+    
+    /* 이동경로 */
+    html = 
+		'<ol class="breadcrumb">'+
+		'	<li class="breadcrumb-item active" aria-current="page" id="breadcrumb1"></li>'+
+		'	<li class="breadcrumb-item" id="breadcrumb2">HOME</li>'+
+		'</ol>'
+	$('#breadcrumb').append(html)
     
     //디자인 코어 js 반영
     const script = document.createElement('script');
     script.src = 'dist/js/app.js';
     document.body.appendChild(script);
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+} 
 
 /**
  *  공통코드 조회
