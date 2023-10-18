@@ -13,6 +13,7 @@ public class CommonVO {
 	private int totCnt = 0;
 	
 	//검색 PARAM
+	private String srchCmmn; //공통 검색
 	private String srchKey;
 	private String srchGbn;
 	private String srchText;

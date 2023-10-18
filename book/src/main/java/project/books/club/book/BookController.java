@@ -33,4 +33,15 @@ public class BookController {
 		) throws Exception {
 		bookService.saveBook(vo);
 	}
+	
+	/**
+	 * 도서 목록 조회
+	 * @param clubNo
+	 */
+	@RequestMapping("/search.do")
+	public BookVO getSearch(
+			@RequestBody BookVO vo
+		) throws Exception {
+		return bookService.selectSearchData(vo);
+	}
 }

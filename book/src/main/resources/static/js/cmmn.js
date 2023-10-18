@@ -3,6 +3,7 @@
   *  1. 메뉴생성 nav
   */
 $(document).ready(function(){
+	
 	//nav
 	fetchApi('/sys/getMenuList.do', 'POST', {clubNo:'1'}, 'nav')
 })
@@ -20,7 +21,7 @@ $(document).ready(function(){
  */
 function search(){
 	let params = {clubNo:'1'}
-	
+	//화면별 목록 검색
     let srchGbn = $('#srchGbn').val()
     if(srchGbn != '' && srchGbn != undefined){
 		params.srchGbn = srchGbn 
@@ -121,7 +122,8 @@ async function fetchApi(url, method, body, gbn, headers = {}) {
 			return data.dataList;
 		} else if (gbn === 'save'){ //DB 데이터 적재
 			alert('저장 되었씁니다.')
-			search()
+		} else if (gbn === 'search'){ //공통 search 결과 조회
+			return data.dataList;
 		}
 	} else {
     	throw Error(data)
@@ -342,9 +344,34 @@ function nav(data){
 		'	<li class="breadcrumb-item" id="breadcrumb2">HOME</li>'+
 		'</ol>'
 	$('#breadcrumb').append(html)
+	
+	// Side Menu
+    $(".side-menu").on("click", function () {
+        if ($(this).parent().find("ul").length) {
+            if ($(this).parent().find("ul").first()[0].offsetParent !== null) {
+                $(this).find(".side-menu__sub-icon").removeClass("transform rotate-180");
+                $(this).removeClass("side-menu--open");
+                $(this).parent().find("ul").first().slideUp(300, function () {
+                	$(this).removeClass("side-menu__sub-open");
+                });
+            } else {
+                $(this).find(".side-menu__sub-icon").addClass("transform rotate-180");
+                $(this).addClass("side-menu--open");
+                $(this).parent().find("ul").first().slideDown(300, function () {
+                	$(this).addClass("side-menu__sub-open");
+                });
+            }
+        }
+    });
     
-    //디자인 코어 js 반영
-    const script = document.createElement('script');
-    script.src = 'dist/js/app.js';
-    document.body.appendChild(script);
+    //디자인 코어 JS 반영
+    //const script = document.createElement('script');
+    //script.src = '/dist/js/app.js';
+    //document.body.appendChild(script);
+    
+    //디자인 코어 CSS 반영
+    //const link = document.createElement('link');
+    //link.rel = 'stylesheet'
+    //link.href = '/dist/css/app.css';
+    //document.body.appendChild(link);
 }

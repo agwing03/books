@@ -29,4 +29,14 @@ public interface BookMapper {
 	void insertBook(HashMap<String, String> param);
 	void updateBook(HashMap<String, String> param);
 	void deleteBook(HashMap<String, String> param);
+	
+    /**
+	 * 도서 목록 조회
+	 * @param BookVO
+	 * @return list, integer
+	 * @throw Exception
+     */
+	int selectSearchDataCnt(BookVO vo);
+	List<CamelMap> selectSearchData(BookVO vo);
+	
 }

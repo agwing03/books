@@ -1,0 +1,116 @@
+<script>
+$(function(){
+	//공통 검색어 엔터
+	$("#srchCmmn").on("keyup",function(key){
+        if(key.keyCode==13) {
+            srchCmmn()
+        }
+    })
+	
+	//공통 검색 조회
+	function srchCmmn(){
+		let params = {}
+		//전체 공통 검색
+	    let srchCmmn = $('#srchCmmn').val()
+	    if(srchCmmn != '' && srchCmmn != undefined){
+			params.srchCmmn = srchCmmn
+			fetchApi('/search.do', 'POST', params, 'search')
+				.then((data) => {
+					console.log(data)
+					$("#srchMeetingResult, #srchUserResult, #srchBooksResult").empty()
+					if(data != null){
+						let meetingHtml = ''
+						let userHtml = ''
+						let booksHtml = ''
+						let meetingCnt = 0
+						let userCnt = 0
+						let booksCnt = 0
+						
+						for(var i = 0; i < data.length; i++){
+							//모임
+							if(data[i].gbn == 'meeting'){
+								meetingHtml+= 
+									'<a href="" class="flex items-center mt-2">'+
+                					'	<div class="w-8 h-8 image-fit">'+
+                    				'		<img alt="Midone - HTML Admin Template" class="rounded-full" src="/dist/images/profile-9.jpg">'+
+                					'	</div>'+
+                					'	<div class="ml-3 w-50 truncate text-slate-500 text-xs text-left">'+data[i].data1+'</div>'+
+                					'	<div class="ml-auto w-42 truncate text-slate-500 text-xs text-right">'+data[i].data2+'</div>'+
+            						'</a>'
+								meetingCnt++
+							//사용자 
+							}else if(data[i].gbn == 'member'){
+								userHtml+=
+									'<a href="" class="flex items-center mt-2">'+
+                					'	<div class="w-8 h-8 image-fit">'+
+                    				'		<img alt="Midone - HTML Admin Template" class="rounded-full" src="/dist/images/profile-9.jpg">'+
+                					'	</div>'+
+                					'	<div class="ml-3 w-50 truncate text-slate-500 text-xs text-left">'+data[i].data1+'</div>'+
+                					'	<div class="ml-auto w-42 truncate text-slate-500 text-xs text-right">'+data[i].data2+'</div>'+
+            						'</a>' 
+            					userCnt++
+            				//도서
+							}else if(data[i].gbn == 'books'){
+								booksHtml+=
+									'<a href="" class="flex items-center mt-2">'+
+	            					'	<div class="w-8 h-8 image-fit">'+
+	            					'   	<img alt="Midone - HTML Admin Template" class="rounded-full" src="/dist/images/preview-9.jpg">'+
+	            					'	</div>'+
+	            					'	<div class="ml-3 w-50 truncate text-slate-500 text-xs text-left">'+data[i].data1+'</div>'+
+	            					'	<div class="ml-auto w-42 truncate text-slate-500 text-xs text-right">'+data[i].data2+'</div>'+
+	        						'</a>'
+								booksCnt++
+							}
+						}
+						if(meetingCnt > 0){
+							$("#srchMeetingResult").append(meetingHtml);
+						}
+						if(userCnt > 0){
+							$("#srchUserResult").append(userHtml);
+						}
+						if(booksCnt > 0){
+							$("#srchBooksResult").append(booksHtml);
+						}
+						//검색별 카운트
+						$("#meetingCnt").text(meetingCnt);
+						$("#userCnt").text(userCnt);	
+						$("#booksCnt").text(booksCnt);	
+					}
+			}).catch((error) => console.log(error))
+		} else {
+			alert("검색어를 입력해주세요!")
+			$('#srchCmmn').focus();
+		}
+	}
+    
+    //공통 검색창 포커스 
+	$(".top-bar, .top-bar-boxed")
+		.find(".search")
+		.find("input")
+		.each(function () {
+    		$(this).on("focus", function () {
+        		$(".top-bar, .top-bar-boxed").find(".search-result").addClass("show")
+    		});
+            $(this).on("focusout", function () {
+                $(".top-bar, .top-bar-boxed").find(".search-result").removeClass("show")
+            })
+	})
+});
+</script>
+<div class="search hidden sm:block">
+    <input type="text" class="search__input form-control border-transparent" placeholder="Search..." id="srchCmmn">
+    <i data-lucide="search" class="search__icon dark:text-slate-500"></i> 
+</div>
+<a class="notification sm:hidden" href=""><i data-lucide="search" class="notification__icon dark:text-slate-500"></i></a>
+<div class="search-result">
+    <div class="search-result__content">
+        <div class="search-result__content__title">Meeting &nbsp;<i id="meetingCnt">0</i></div>
+        <div class="mb-5" id="srchMeetingResult"></div>
+        
+        <div class="search-result__content__title">Member &nbsp;<i id="userCnt">0</i></div>
+        <div class="mb-5" id="srchUserResult"></div>
+        
+        <div class="search-result__content__title">Books &nbsp;<i id="booksCnt">0</i></div>
+        <div id="srchBooksResult"></div>
+    </div>
+</div>
