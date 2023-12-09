@@ -23,4 +23,18 @@ public class MemberService {
 		}
 		return vo;
 	}
+	
+	/**
+	 * 맴버 저장
+	 * @param model
+	 * @return model
+	 * @throw Exception
+	 */
+	public void saveMember(MemberVO vo) throws Exception{
+		if("I".equals(vo.getSaveFlag())) {
+			memberMapper.insertMember(vo);
+		}else {
+			memberMapper.insertMember(vo);
+		}
+	}
 }

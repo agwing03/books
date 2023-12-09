@@ -18,4 +18,18 @@ public interface MemberMapper {
      */
 	int selectMemberListCnt(MemberVO vo);
 	List<CamelMap> selectMemberList(MemberVO vo);
+	
+    /**
+	 * 맴버 저장
+	 * @param model
+	 * @throw Exception
+     */
+	void insertMember(MemberVO vo);
+	
+	/**
+	 * 맴버 수정
+	 * @param model
+	 * @throw Exception
+     */
+	void updateMember(MemberVO vo);
 }

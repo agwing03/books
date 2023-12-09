@@ -32,10 +32,12 @@ import Litepicker from "litepicker";
         }
 
         if (!$(this).val()) {
-            let date = dayjs().format(options.format);
-            date += !options.singleMode
-                ? " - " + dayjs().add(1, "month").format(options.format)
-                : "";
+            let date1 = dayjs().add(-1, "month").format(options.format)
+            let date2 = dayjs().format(options.format);
+            let date = date2
+            if(options.singleMode){
+				date = date1+" - "+date2
+			}
             $(this).val(date);
         }
 

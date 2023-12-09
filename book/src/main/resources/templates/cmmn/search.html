@@ -1,7 +1,7 @@
 <script>
-$(function(){
+jQuery(function(){
 	//공통 검색어 엔터
-	$("#srchCmmn").on("keyup",function(key){
+	jQuery("#srchCmmn").on("keyup",function(key){
         if(key.keyCode==13) {
             srchCmmn()
         }
@@ -16,8 +16,7 @@ $(function(){
 			params.srchCmmn = srchCmmn
 			fetchApi('/search.do', 'POST', params, 'search')
 				.then((data) => {
-					console.log(data)
-					$("#srchMeetingResult, #srchUserResult, #srchBooksResult").empty()
+					jQuery("#srchMeetingResult, #srchUserResult, #srchBooksResult").empty()
 					if(data != null){
 						let meetingHtml = ''
 						let userHtml = ''
@@ -63,36 +62,36 @@ $(function(){
 							}
 						}
 						if(meetingCnt > 0){
-							$("#srchMeetingResult").append(meetingHtml);
+							jQuery("#srchMeetingResult").append(meetingHtml);
 						}
 						if(userCnt > 0){
-							$("#srchUserResult").append(userHtml);
+							jQuery("#srchUserResult").append(userHtml);
 						}
 						if(booksCnt > 0){
-							$("#srchBooksResult").append(booksHtml);
+							jQuery("#srchBooksResult").append(booksHtml);
 						}
 						//검색별 카운트
-						$("#meetingCnt").text(meetingCnt);
-						$("#userCnt").text(userCnt);	
-						$("#booksCnt").text(booksCnt);	
+						jQuery("#meetingCnt").text(meetingCnt);
+						jQuery("#userCnt").text(userCnt);	
+						jQuery("#booksCnt").text(booksCnt);	
 					}
 			}).catch((error) => console.log(error))
 		} else {
 			alert("검색어를 입력해주세요!")
-			$('#srchCmmn').focus();
+			jQuery('#srchCmmn').focus();
 		}
 	}
     
     //공통 검색창 포커스 
-	$(".top-bar, .top-bar-boxed")
+	jQuery(".top-bar, .top-bar-boxed")
 		.find(".search")
 		.find("input")
 		.each(function () {
-    		$(this).on("focus", function () {
-        		$(".top-bar, .top-bar-boxed").find(".search-result").addClass("show")
+    		jQuery(this).on("focus", function () {
+        		jQuery(".top-bar, .top-bar-boxed").find(".search-result").addClass("show")
     		});
-            $(this).on("focusout", function () {
-                $(".top-bar, .top-bar-boxed").find(".search-result").removeClass("show")
+            jQuery(this).on("focusout", function () {
+                jQuery(".top-bar, .top-bar-boxed").find(".search-result").removeClass("show")
             })
 	})
 });

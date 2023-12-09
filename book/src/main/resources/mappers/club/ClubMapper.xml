@@ -14,7 +14,7 @@
 		     , concat(substr(mt.time,1,2),':',substr(mt.time,3,4)) as time
 		     , mt.place 
 		     , concat((select count(*) from meeting_member mm where mm.meeting_no = mt.meeting_no), '/', mt.attend_cnt) as attend_cnt
-		     , date_format(mt.frst_reg_dt, '%Y-%m-%d %H:%i:%S') as frst_reg_dt
+		     , date_format(mt.frst_reg_dt, '%Y.%m.%d %H:%i:%S') as frst_reg_dt
 		  from meeting mt  
 		<include refid="meeingListWhere"></include>
 		 order by mt.dday desc, mt.time desc 
@@ -32,8 +32,12 @@
 		<if test='clubNo != null and clubNo != ""'>
 		  and mt.club_no = #{clubNo}
 		</if>
-		<!-- 텍스트 검색 -->
-		<if test='srchGbn != null and srchGbn != "" and srchText != null and srchText != ""'>
+		<!-- 모임 구분 -->
+		<if test='srchGbn != null and srchGbn != ""'>
+		  and mt.meeting_gbn = #{srchGbn}
+		</if>
+		<!-- 검색어 -->
+		<if test='srchText != null and srchText != "" and srchText != null and srchText != ""'>
 			<if test='"M".equals(srchGbn)'>
 		  and mt.title like concat('%',#{srchText},'%')
 			</if>
@@ -43,10 +47,6 @@
 			<if test='"P".equals(srchGbn)'>
 		  and mt.place like concat("%",#{srchText},'%')
 			</if>
-		</if>
-		<!-- 모임 구분 -->
-		<if test='srchParam1 != null and srchParam1 != ""'>
-		  and mt.meeting_gbn = #{srchParam1}
 		</if>
 		<!-- 검색 기간 -->
 		<if test='srchStartDt != null and srchStartDt != ""'>

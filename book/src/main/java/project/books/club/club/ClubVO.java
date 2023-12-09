@@ -18,6 +18,6 @@ public class ClubVO extends CommonVO{
     private String cost;		//모임예상비용
     private String meetingGbn;	//모임구분(A 벙개, D 지정도서, M 정기모임, S 이벤트)
     private String placeUrl;	//장소지도URL
-    private int attendCnt;		//참석자수
+    private String attendCnt;	//참석자수
     
 }

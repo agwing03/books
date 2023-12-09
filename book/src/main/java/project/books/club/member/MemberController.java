@@ -13,7 +13,7 @@ public class MemberController {
 	private final MemberService memberService;
 	 
 	/**
-	 * 모임 목록 조회
+	 * 맴버 목록 조회
 	 * @param clubNo
 	 */
 	@RequestMapping("/member/getMemberList.do")
@@ -21,6 +21,19 @@ public class MemberController {
 			@RequestBody MemberVO vo
 		) throws Exception {
 		return memberService.selectMemberList(vo);
+	}
+	
+	
+		
+	/**
+	 * 맴버 저장
+	 * @param clubNo
+	 */
+	@RequestMapping("/member/saveMember.do")
+	public void saveMember(
+			@RequestBody MemberVO vo
+		) throws Exception {
+		memberService.saveMember(vo);
 	}
 }
  

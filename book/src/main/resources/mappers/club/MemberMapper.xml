@@ -51,4 +51,35 @@
 			</if>
 		</if>
 	</sql>
+	
+	<!-- 맴버 등록 -->
+	<insert id="insertMember" parameterType="project.books.club.member.MemberVO">
+		/*MemberMapper.insertMember*/
+		insert into club_member(
+			  member_no
+			, member_pwd
+			, author_id
+			, nick_nm
+			, name
+			, sex
+			, brthday
+			, phon_no
+			, email
+			, intro
+			, account_no
+		) values (
+			  concat('test', date_format(now(), '%Y%m%d%H%i%s'))
+			, concat('test', date_format(now(), '%Y%m%d%H%i%s'))
+			, '9'
+			, #{nickNm}
+			, #{name}
+			, #{sex}
+			, #{brthday}
+			, #{phonNo}
+			, #{email}
+			, #{intro}
+			, #{accountNo}
+		)
+	</insert>
+	
 </mapper>

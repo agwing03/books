@@ -2,15 +2,20 @@
   *  layout 생성
   *  1. 메뉴생성 nav
   */
-$(document).ready(function(){
-	
+jQuery(document).ready(function(){
 	//nav
 	fetchApi('/sys/getMenuList.do', 'POST', {clubNo:'1'}, 'nav')
+	//공통검색
+	jQuery("#top-bar").load("/cmmn/topBar.html")
+	//날짜 셋팅
+	setSrchDate(-1)
+	
+	
 })
 
 
 /**
- *  SEARCH 데이터 조회
+ *  Search 데이터 조회
  *  텍스트 구분 	: srchGbn
  *  텍스트 	: srchText 
  *  기간 시작일 	: srchStartDt 
@@ -19,36 +24,61 @@ $(document).ready(function(){
  * 	기간 조건2 	: srchParam2 
  * 	기간 조건3 	: srchParam3  
  */
-function search(){
+function srchParam(){
 	let params = {clubNo:'1'}
-	//화면별 목록 검색
-    let srchGbn = $('#srchGbn').val()
+	//검색구분
+    let srchGbn = jQuery('#srchGbn').val()
     if(srchGbn != '' && srchGbn != undefined){
 		params.srchGbn = srchGbn 
 	}
-    let srchText = $('#srchText').val()
+	//검색어 
+    let srchText = jQuery('#srchText').val()
     if(srchText != '' && srchText != undefined){
 		params.srchText = srchText 
 	}
-    let srchStartDt = $('#srchStartDt').val()
+	//검색일자
+    let srchDt = jQuery('#srchDt').val().trim()
+    srchDt = srchDt.split("-") 
+    let srchStartDt = srchDt[0].replace( /./gi, '')
+    let srchEndDt = srchDt[1].replace( /./gi, '')
     if(srchStartDt != '' && srchStartDt != undefined){
 		params.srchStartDt = srchStartDt 
 	}
-    let srchEndDt = $('#srchEndDt').val()
     if(srchEndDt != '' && srchEndDt != undefined){
 		params.srchEndDt = srchEndDt
 	}
-    let srchParam1 = $('#srchParam1').val()
+	//기타1
+    let srchParam1 = jQuery('#srchParam1').val()
     if(srchParam1 != '' && srchParam1 != undefined){
 		params.srchParam1 = srchParam1
 	}
-    let srchParam2 = $('#srchParam2').val()
+	//기타2
+    let srchParam2 = jQuery('#srchParam2').val()
     if(srchParam2 != '' && srchParam2 != undefined){
 		params.srchParam2 = srchParam2
 	}
-	//화면 목록 조회
-	srchList(params)
+	return params
 }
+
+
+/**
+ *  검색 조건 리셋 
+ */
+function srchReset(){
+	jQuery('#srchText').val("")
+}
+
+
+/**
+ *  날짜 기간 _ 1개월/3개월 
+ */
+function setSrchDate(month){
+	let date1 = dayjs().add(month, "month").format('YYYY-MM-D')
+	let date2 = dayjs().format('YYYY-MM-D');
+	console.log(date1+" - " +date2)
+	jQuery('#srchDt').val(date1+" - " +date2)
+}
+
 
 /**
  *  SAVE 데이터 조회
@@ -57,7 +87,7 @@ function search(){
  */
 function save(url, gbn){
 	let params = {clubNo:'1'}//클럽번호
-	let data = $("#saveData tr") //엘리먼트
+	let data = jQuery("#saveData tr") //엘리먼트
 	let dataString = '';
 	if(data.length > 0){
 		for(var i = 0; i < data.length; i++){
@@ -81,20 +111,20 @@ function save(url, gbn){
 
 /* 레이어 팝업 */
 function layerPopup(){
-	$("#layer_shadow").show()
-	$("#layerPupup").fadeIn();
+	jQuery("#layer_shadow").show()
+	jQuery("#layerPupup").fadeIn();
  	//화면 중앙 띄우기
-	let target = $("#layerPupup");
-	var left = ( $(window).scrollLeft() + ($(window).width() - target.width()) / 2 );
-	var top = ( $(window).scrollTop() + ($(window).height() - target.height()) / 2 );
+	let target = jQuery("#layerPupup");
+	var left = ( jQuery(window).scrollLeft() + (jQuery(window).width() - target.width()) / 2 );
+	var top = ( jQuery(window).scrollTop() + (jQuery(window).height() - target.height()) / 2 );
 	//CSS
 	target.css({'left':left,'top':top, 'position':'absolute'});
-	$('body').css('position','relative').append(target);
+	jQuery('body').css('position','relative').append(target);
 }
 /* 레이어 팝업 닫기 */
 function layerClose(){
-	$("#layer_shadow").hide()
-	$('#layerPupup').hide();
+	jQuery("#layer_shadow").hide()
+	jQuery('#layerPupup').hide();
 }
 
 
@@ -138,9 +168,6 @@ async function fetchHtml(url) {
     return await (await fetch(url)).text();
 }
 
-async function importPage(target) {
-
-}
 
 /**
  *  공통코드 조회
@@ -159,11 +186,11 @@ async function cmmnCode(codeId, target, headers = {}) {
 	const data = await res.json()
 	if (res.ok) {
 		if(data.dataList.length > 0){
-			optionHtml = '<option value="">전체</option>'
+			//optionHtml = '<option value="">전체</option>'
 			for(var i = 0; i < data.dataList.length; i++){
 				optionHtml += '<option value="'+data.dataList[i].code+'">'+data.dataList[i].codeNm+'</option>'
 			}
-			$("#"+target).append(optionHtml);
+			jQuery("#"+target).append(optionHtml);
 		}
 	} else {
     	throw Error(data)
@@ -174,22 +201,26 @@ async function cmmnCode(codeId, target, headers = {}) {
 
 /**
  * 메뉴 페이지 이동 
+ * 이벤트 디자인 적용
  */
 async function pageMove(subMenu, menu, menuNm, menuUpperNm, menuUrl){
 	//Html 삽입
-	let html = await fetchHtml(menuUrl+'.html')
-	$('#importHtml').html(html)
-	
-	//메뉴 클래스 적용
-	$('.menuUl').removeClass('side-menu__sub-open').css('display','none')
-	$('.side-menu').removeClass('side-menu--active')
-	$('#menu'+menu).addClass('side-menu--active')
-	$(subMenu).addClass('side-menu--active')
-	$('#menuUl'+menu).addClass('side-menu__sub-open').css('display','block')
-	
-	//이동경로
-	$('#breadcrumb1').text(menuUpperNm)
-	$('#breadcrumb2').text(menuNm)
+	if(menuUrl != ''){
+		let html = await fetchHtml(menuUrl+'.html')
+		jQuery('#importHtml').empty()
+		jQuery('#importHtml').html(html)
+			
+		//메뉴 클래스 적용
+		//jQuery('.menuUl').removeClass('side-menu__sub-open').css('display','none')
+		//jQuery('.side-menu').removeClass('side-menu--active')
+		//jQuery('#menu'+menu).addClass('side-menu--active')
+		//jQuery(subMenu).addClass('side-menu--active')
+		//jQuery('#menuUl'+menu).addClass('side-menu__sub-open').css('display','block')
+			
+		//이동경로
+		jQuery('#breadcrumb1').text(menuUpperNm)
+		jQuery('#breadcrumb2').text(menuNm)		
+	}
 }
 
 
@@ -262,13 +293,14 @@ function nav(data){
 		}
 	}
 	html += '</ul></div>'
-	$("#mobile-menu").append(html);
+	jQuery("#mobile-menu").append(html);
 		
 	/* 사이드 메뉴 */
 	menuUpperNo = ''
 	menuUpperNm = ''
 	html = 
-		'<a href="/" class="intro-x flex items-center pl-5 pt-4">'+ 
+		'<a href="/" class="intro-x flex items-center pl-5 pt-4">'+
+		'   <img alt="책과 함께하는 우리들만의 이야기" class="w-6" src="dist/images/logo.svg">'+ 
 		'	<span class="hidden xl:block text-white text-lg ml-3"> 책과 사람 사이 </span>'+ 
         '</a>'+ 
 		'<div class="side-nav__devider my-6"></div>'+ 
@@ -301,7 +333,7 @@ function nav(data){
 			if(data[i].subMenuCnt > 0){ 
 				html += 	
 					'<li>'+
-			        '	<a href="javascript:void(0);" class="side-menu" id="menu'+menuUpperNo+'">'+
+			        '	<a href="javascript:void(0);" class="side-menu" id="menu'+menuUpperNo+'" onclick="pageMove(this,'+menuUpperNo+',\''+data[i].menuNm+'\',\'\',\''+data[i].menuUrl+'\');">'+
 					'		<div class="side-menu__icon">'+
 					'			<i data-lucide="'+data[i].icon+'"></i>'+
 					'		</div>'+
@@ -335,7 +367,7 @@ function nav(data){
 		}	
 	}	
 	html += '</ul></div>'
-    $("#side-nav").append(html);
+    jQuery("#side-nav").append(html);
     
     /* 이동경로 */
     html = 
@@ -343,31 +375,12 @@ function nav(data){
 		'	<li class="breadcrumb-item active" aria-current="page" id="breadcrumb1"></li>'+
 		'	<li class="breadcrumb-item" id="breadcrumb2">HOME</li>'+
 		'</ol>'
-	$('#breadcrumb').append(html)
-	
-	// Side Menu
-    $(".side-menu").on("click", function () {
-        if ($(this).parent().find("ul").length) {
-            if ($(this).parent().find("ul").first()[0].offsetParent !== null) {
-                $(this).find(".side-menu__sub-icon").removeClass("transform rotate-180");
-                $(this).removeClass("side-menu--open");
-                $(this).parent().find("ul").first().slideUp(300, function () {
-                	$(this).removeClass("side-menu__sub-open");
-                });
-            } else {
-                $(this).find(".side-menu__sub-icon").addClass("transform rotate-180");
-                $(this).addClass("side-menu--open");
-                $(this).parent().find("ul").first().slideDown(300, function () {
-                	$(this).addClass("side-menu__sub-open");
-                });
-            }
-        }
-    });
+	jQuery('#breadcrumb').append(html)
     
     //디자인 코어 JS 반영
-    //const script = document.createElement('script');
-    //script.src = '/dist/js/app.js';
-    //document.body.appendChild(script);
+    const script = document.createElement('script');
+    script.src = '/dist/js/app.js';
+    document.body.appendChild(script);
     
     //디자인 코어 CSS 반영
     //const link = document.createElement('link');
