@@ -1,8 +1,11 @@
 package project.books.club.member;
 
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 import project.books.sys.cmmn.CommonVO;
+import project.books.sys.util.CamelMap;
 
 @Getter
 @Setter
@@ -23,7 +26,10 @@ public class MemberVO extends CommonVO{
     private String accountNo;	//계좌번호
     private String email;		//이메일
     private String brthday;		//생년월일
-
+    
+    private String title;
+    private String meetingGbn;
+    private List<CamelMap> member;
     
     //SAVE 구분
     String getSaveFlag(){

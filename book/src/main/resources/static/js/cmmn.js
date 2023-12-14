@@ -75,7 +75,6 @@ function srchReset(){
 function setSrchDate(month){
 	let date1 = dayjs().add(month, "month").format('YYYY-MM-D')
 	let date2 = dayjs().format('YYYY-MM-D');
-	console.log(date1+" - " +date2)
 	jQuery('#srchDt').val(date1+" - " +date2)
 }
 
