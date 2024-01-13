@@ -4,7 +4,7 @@
 	
 	<!-- 모임 목록 -->
 	<select id="selectMeetingList" parameterType="project.books.club.club.ClubVO" resultType="project.books.sys.util.CamelMap">
-		/*ClubMapper.selectMeetingList*/
+		/*clubMapper.selectMeetingList*/
 		select mt.meeting_no
 		     , mt.title
 		     , mt.club_no 
@@ -19,13 +19,15 @@
 		<include refid="meeingListWhere"></include>
 		 order by mt.dday desc, mt.time desc 
 	</select>
+	
 	<!-- 모임 목록 수 -->
 	<select id="selectMeetingListCnt" parameterType="project.books.club.club.ClubVO" resultType="Integer">
-		/*ClubMapper.selectMeetingListCnt*/
+		/*clubMapper.selectMeetingListCnt*/
 		select count(*) 
 		  from meeting mt
 		<include refid="meeingListWhere"></include>
 	</select>
+	
 	<!-- 모임 목록 Where -->
 	<sql id="meeingListWhere">
 		where 1=1
@@ -53,4 +55,37 @@
 		  and mt.dday between replace(#{srchStartDt},'-','') and replace(#{srchEndDt},'-','')
 		</if>
 	</sql>
+	
+	
+	<!-- 모임 생성 -->
+	<insert id="insertMeeting" parameterType="project.books.club.club.ClubVO">
+		/*clubMapper.insertMeeting*/
+		insert into meeting(
+			  club_no
+			, host_no
+			, title
+			, dday
+			, time
+			, place
+			, cost
+			, place_url
+			, attend_cnt
+			, meeting_gbn
+			, frst_reg_no
+			, frst_reg_dt
+		)values(
+			  #{clubNo}
+			, #{host_no}
+			, #{title}
+			, #{dday}
+			, #{time}
+			, #{place}
+			, #{cost}
+			, #{place_url}
+			, #{attend_cnt}
+			, #{meeting_gbn}
+			, #{frst_reg_no}
+			, #{frst_reg_dt}
+		)
+	</insert>
 </mapper>

@@ -2,8 +2,6 @@
 <script src="/dist/js/jquery_wrapper.js"></script>  
 <script>
 	jQuery(document).ready(function(){
-
-        
         //목록 데이터 조회
         jQuery("#srchBtn").click(function () {
 			srchList(tableLayout, srchParam())
@@ -12,18 +10,37 @@
 		//초기 목록 조회
 		//srchList(tableLayout, srchParam())
 		
-		// 맴버 폼 추가
+		//L 맴버 폼 추가
 		jQuery("#addMemberBtn").click(function () {
 			addMember()
 		})
 		
-		// 맴버저장 
-		jQuery("#saveMemberBtn").click(function () {
-			saveMember()
+		//L 모임 저장 
+		jQuery("#saveMeetingBtn").click(function () {
+			saveMeeting()
 		})
 		
+		//신규 맴버 저장 
+		jQuery("#saveNewMemberBtn").click(function () {
+			saveNewMember()
+		})
+		//신규 도서 저장 
+		jQuery("#saveNewBookBtn").click(function () {
+			saveNewBook()
+		})
+		
+		
+		//시간, 분
+		for(var i = 7 ; i < 22; i++){
+			var html = "<option value="+i+">"+i+"</option>"
+			jQuery("#timeHour").append(html) 		    
+		}
+		for(var i = 1 ; i < 60; i++){
+			var html = "<option value="+i+">"+i+"</option>"
+			jQuery("#timeMinute").append(html) 		    
+		}
 	})
-
+	
 	// 목록 데이터 조회
 	function srchList(tableLayout, params){ 
 		fetchApi('/book/getBookList.do', 'POST', params, 'dataList')
@@ -36,15 +53,17 @@
 			}).catch((error) => console.log(error))
 	}
 	
+	/** 화면 동적 변경 **/
+	// 맴버 form 추가 
 	var addNum = 1
 	function addMember(){
 		addNum+= 1
 		let html = 
 			'<div class="mt-8" id="memberForm'+addNum+'">'+
 			'	<div class="flex flex-col sm:flex-row items-center mt-3">'+
-			'		<input type="text" class="form-control mr-2" placeholder="참석자" style="width: 150px;" id="name'+addNum+'">'+
+			'		<input type="text" class="form-control mr-2" placeholder="참석자" style="width: 150px;" id="memberNm'+addNum+'">'+
 			'		<input type="hidden" id="mamberNo'+addNum+'">'+
-			'		<input type="text" class="form-control" placeholder="도서명" id="book'+addNum+'">'+
+			'		<input type="text" class="form-control" placeholder="도서명" id="bookTitle'+addNum+'">'+
 			'		<input type="hidden" id="bookNo'+addNum+'">'+
 			'	</div>'+
 			'	<div class="flex flex-col sm:flex-row items-center mt-3">'+
@@ -56,34 +75,113 @@
 		jQuery("#memberForm").append(html);
 	}
 	
-	// 맴버 삭제 
+	// 맴버 form 삭제 
 	function delMember(target){ 
 		jQuery('#'+target).remove();
 	}
 	
+	
+	/** 서버 등록 **/
 	// 맴버 등록 
-	function saveMember(){ 
-		var memberList = []
+	function saveMeeting(){ 
+		var review = []
 		var saveData = {
 			'title':jQuery('#title').val(),
 			'meetingGbn':jQuery('#meetingGbn').val()
 		}
 		var member 
 		for(var i = 1; i <= addNum; i++){
-			memberList.push({
-				'name': jQuery('#name'+i).val(),
+			review.push({
 				'mamberNo': jQuery('#mamberNo'+i).val(),
-				'book': jQuery('#book'+i).val(),
 				'bookNo': jQuery('#bookNo'+i).val(),
-				'eval': jQuery('#eval'+i).val(),
-				'score': jQuery('#score'+i).val()
+				'bookEval': jQuery('#eval'+i).val(),
+				'bookScore': jQuery('#score'+i).val()
 			})
 		}
-		saveData.member = memberList
-		
+		saveData.reviewList = review
 		if(saveData){
-			fetchApi('/member/saveMember.do', 'POST', saveData, 'save')
+			fetchApi('/club/saveMeetingReview.do', 'POST', saveData, 'save')
 		}
+	}
+	
+	// 신규 맴버 등록
+	function saveNewMember(){ 
+		var saveData = {
+			'saveFlag':'I',
+			'name':jQuery('#memberNm').val(),
+			'nickNm':jQuery('#nickNm').val(),
+			'brthday':jQuery('#brthday').val(),
+			'joinDt':jQuery('#joinDt').val(),
+			'sex':jQuery('input[name=sex]').val(),
+			'actionAreaLv1':jQuery('#actionAreaLv1').val(),
+			'actionAreaLv2':jQuery('#actionAreaLv2').val(),
+			'email':jQuery('#email1').val()+'@'+jQuery('#email2').val(),
+			'phonNo':jQuery('#phonNo1').val()+'-'+jQuery('#phonNo2').val()+'-'+jQuery('#phonNo3').val()
+		}
+		if(saveData){
+			fetchApi('/club/saveMember.do', 'POST', saveData, 'save')
+		}
+	}
+	
+	// 신규 도서 등록
+	function saveNewBook(){ 
+		var saveData = {
+			'bookNo':jQuery('#bookNoL1').val(),
+			'bookTitle':jQuery('#bookTitleL1').val(),
+			'bookWriter':jQuery('#bookWriterL1').val()
+		}
+		if(saveData){
+			fetchApi('/book/saveBook.do', 'POST', saveData, 'save')
+		}
+	}
+	
+	
+	/** 실시간 검색 기능 **/
+	// 도서 실시간 검색
+	function getSrchBook(text, num){
+		if(text.length > 1){
+			var params = {"srchText":text}
+			fetchApi('/book/selectBookSrch.do', 'POST', params, 'dataList')
+			.then((data) => {
+				if(data != null){
+					jQuery('#bookSrchBox'+num).empty()
+					for(var i = 0; i < data.length; i++){
+						let html = '<li><a href="#" onclick="setSrchBookData(\''+num+'\',\''+data[i].bookNo+'\',\''+data[i].bookTitle+'\',\''+data[i].bookWriter+'\')">'+data[i].bookInfo+'</a></li>'
+						jQuery('#bookSrchBox'+num).append(html)
+					}
+				}
+			}).catch((error) => console.log(error))
+		}
+	}
+	
+	// 맴버 실시간 검색
+	function getSrchMember(text, num){
+		if(text.length > 1){
+			var params = {"srchText":text}
+			fetchApi('/member/selectMemberSrch.do', 'POST', params, 'dataList')
+			.then((data) => {
+				if(data != null){
+					jQuery('#memberSrchBox'+num).empty()
+					for(var i = 0; i < data.length; i++){
+						let html = '<li><a href="#" onclick="setSrchMemberData(\''+num+'\',\''+data[i].memberNo+'\',\''+data[i].name+'\')">'+data[i].name+'</a></li>'
+						jQuery('#memberSrchBox'+num).append(html)
+					}
+				}
+			}).catch((error) => console.log(error))
+		}
+	}
+	
+	// 실시간 리턴 데이터셋 
+	function setSrchBookData(num, bookNo, bookTitle, bookWriter){
+		jQuery('#bookNo'+num).val(bookNo)
+		jQuery('#bookTitle'+num).val(bookTitle)
+		jQuery('#bookWriter'+num).val(bookWriter)
+		jQuery('#bookSrchBox'+num).empty()
+	}
+	function setSrchMemberData(num, memberNo, memberNm){
+		jQuery('#memberNo'+num).val(memberNo)
+		jQuery('#memberNm'+num).val(memberNm)
+		jQuery('#memberSrchBox'+num).empty()
 	}
 </script> 
 
@@ -98,7 +196,7 @@
         <div class="intro-y box">
             <div class="flex flex-col sm:flex-row items-center p-5 border-b border-slate-200/60 dark:border-darkmode-400">
                 <h2 class="font-medium text-base mr-auto">Meeting Info</h2>
-                <button class="btn btn-primary w-35" id="saveMemberBtn"><i data-lucide="plus" class="w-5 h-5"></i>저장</button>
+                <button class="btn btn-primary w-35" id="saveMeetingBtn"><i data-lucide="plus" class="w-5 h-5"></i>저장</button>
             </div>
             <div id="input" class="p-5">
                 <div class="preview">
@@ -106,14 +204,37 @@
                     <div class="flex flex-col sm:flex-row items-center">
                     	<input type="text" class="form-control mr-2" placeholder="제목" id="title">
 						<select class="form-select" aria-label="Default select example" style="width: 150px;" id="meetingGbn">
-                            <option>정기모임</option>
-                            <option>이벤트</option>
-                            <option>벙개</option>
-                            <option>지정도서</option>
+                            <option value="MEETING">정기모임</option>
+                            <option value="SPECIAL">이벤트</option>
+                            <option value="SUDDENLY">벙개</option value="">
+                            <option value="APPOINTED">지정도서</option value="">
                         </select>
                     </div>
+                    <div class="flex flex-col sm:flex-row items-center mt-2">
+                    	<input type="text" class="form-control" placeholder="주체자" style="width: 150px;" id="hostNm" value="박지열">
+                    	<input type="hidden" id="hostNo" value="1">
+                    </div>
+                    <div class="flex flex-col sm:flex-row items-center mt-2">
+                    	<input type="text" class="datepicker form-control w-56 block mr-2" data-single-mode="true" style="width: 150px;" id="dday" value="20231217"> 
+                        <select class="form-select mr-2" aria-label="Default select example" style="width: 80px;" id="timeHour">
+                            <option value="17">17</option>
+                        </select>
+                        <select class="form-select" aria-label="Default select example" style="width: 80px;" id="timeMinute">
+                            <option value="00">00</option>
+                        </select>
+                    </div>
+                    <div class="flex flex-col sm:flex-row items-center mt-2">
+                    	<input type="text" class="form-control mr-2" placeholder="장소" id="place" value="책과 삶" style="width: 150px;">
+                    </div>
+                    <div class="flex flex-col sm:flex-row items-center mt-2">
+                        <input type="text" class="form-control mr-2" placeholder="참가비" id="cost" value="개인음료+@" style="width: 150px;">
+                    </div>
+                    <div class="flex flex-col sm:flex-row items-center mt-2">
+                        <input type="text" class="form-control mr-2" placeholder="인원" id="attendCnt" value="8" style="width: 80px;">명
+                    </div>
                     
-        			<!-- 참석자 -->            
+                    
+        			<!-- 참석자 추가 영역-->        
                     <div class="flex flex-col sm:flex-row items-center mt-8">
                     	<h2 class="font-medium text-base mr-auto ">Member</h2>
                     	<button class="btn btn-primary w-35" id="addMemberBtn"><i data-lucide="plus" class="w-5 h-5"></i>Add</button>
@@ -121,11 +242,27 @@
                     <div id="memberForm">
 						<div class="mt-3" id="memberForm1">
 		                    <div class="flex flex-col sm:flex-row items-center mt-3">
-		                        <input type="text" class="form-control mr-2" placeholder="참석자" style="width: 150px;" id="name1">
-		                        <input type="text" class="form-control" placeholder="도서명" id="book1">
+		                    	<!-- 참석자 -->
+		                        <div class="dropdown mr-2" style="width: 150px;">
+		                      		<input type="text" class="form-control dropdown-toggle" aria-expanded="false" data-tw-toggle="dropdown" placeholder="참석자" id="memberNm1" onkeyup="getSrchMember(this.value, '1');">
+								    <div class="dropdown-menu w-40">
+								        <ul class="dropdown-content overflow-y-auto h-32" id="memberSrchBox1"></ul>
+								    </div>
+								</div>
+		                        <!-- 도서명 -->
+		                      	<div class="dropdown" style="width: 100%;">
+		                      		<input type="text" class="form-control dropdown-toggle" aria-expanded="false" data-tw-toggle="dropdown" placeholder="도서명" id="bookTitle1" onkeyup="getSrchBook(this.value, '1');">
+								    <div class="dropdown-menu w-full">
+								        <ul class="dropdown-content overflow-y-auto h-32" id="bookSrchBox1"></ul>
+								    </div>
+								</div>
+								<input type="hidden" id="memberNo1">
+								<input type="hidden" id="bookNo1">
 		                    </div>
 		                    <div class="flex flex-col sm:flex-row items-center mt-3">
+		                    	<!-- 한줄평 -->
 		                        <input type="text" class="form-control mr-2" placeholder="한줄평" id="eval1">
+		                        <!-- 평점 -->
 		                        <input type="text" class="form-control" placeholder="평점 10.0" style="width: 150px;" id="score1">
 		                    </div>
 	                    </div>
@@ -135,7 +272,10 @@
 					<div class="flex flex-col sm:flex-row items-center mt-8">
                     	<h2 class="font-medium text-base mr-auto ">Comment</h2>
                     </div>
-					<div>
+					<div class="mt-3">
+						<div class="flex flex-col sm:flex-row items-center mt-3">
+	                        <input type="text" class="form-control mr-2" id="comment">
+	                    </div>
 					</div>
                 </div>
             </div>
@@ -147,226 +287,81 @@
     
     <!-- 우측 폼 -->
     <div class="intro-y col-span-12 lg:col-span-6">
-        <!-- BEGIN: Vertical Form -->
+        <!-- 도서 -->
         <div class="intro-y box">
             <div class="flex flex-col sm:flex-row items-center p-5 border-b border-slate-200/60 dark:border-darkmode-400">
-                <h2 class="font-medium text-base mr-auto">
-                    Vertical Form
-                </h2>
-                <div class="form-check form-switch w-full sm:w-auto sm:ml-auto mt-3 sm:mt-0">
-                    <label class="form-check-label ml-0" for="show-example-6">Show example code</label>
-                    <input id="show-example-6" data-target="#vertical-form" class="show-code form-check-input mr-0 ml-3" type="checkbox">
-                </div>
+                <h2 class="font-medium text-base mr-auto">New Books</h2>
+                <button class="btn btn-primary w-35" id="saveNewBookBtn"><i data-lucide="plus" class="w-5 h-5"></i>저장</button>
             </div>
-            <div id="vertical-form" class="p-5">
-                <div class="preview">
-                    <div>
-                        <label for="vertical-form-1" class="form-label">Email</label>
-                        <input id="vertical-form-1" type="text" class="form-control" placeholder="example@gmail.com">
-                    </div>
-                    <div class="mt-3">
-                        <label for="vertical-form-2" class="form-label">Password</label>
-                        <input id="vertical-form-2" type="text" class="form-control" placeholder="secret">
-                    </div>
-                    <div class="form-check mt-5">
-                        <input id="vertical-form-3" class="form-check-input" type="checkbox" value="">
-                        <label class="form-check-label" for="vertical-form-3">Remember me</label>
-                    </div>
-                    <button class="btn btn-primary mt-5">Login</button>
-                </div>
-                <div class="source-code hidden">
-                    <button data-target="#copy-vertical-form" class="copy-code btn py-1 px-2 btn-outline-secondary"> <i data-lucide="file" class="w-4 h-4 mr-2"></i> Copy example code </button>
-                    <div class="overflow-y-auto mt-3 rounded-md">
-                        <pre id="copy-vertical-form" class="source-preview"> <code class="html"> HTMLOpenTagdivHTMLCloseTag HTMLOpenTaglabel for=&quot;vertical-form-1&quot; class=&quot;form-label&quot;HTMLCloseTagEmailHTMLOpenTag/labelHTMLCloseTag HTMLOpenTaginput id=&quot;vertical-form-1&quot; type=&quot;text&quot; class=&quot;form-control&quot; placeholder=&quot;example@gmail.com&quot;HTMLCloseTag HTMLOpenTag/divHTMLCloseTag HTMLOpenTagdiv class=&quot;mt-3&quot;HTMLCloseTag HTMLOpenTaglabel for=&quot;vertical-form-2&quot; class=&quot;form-label&quot;HTMLCloseTagPasswordHTMLOpenTag/labelHTMLCloseTag HTMLOpenTaginput id=&quot;vertical-form-2&quot; type=&quot;text&quot; class=&quot;form-control&quot; placeholder=&quot;secret&quot;HTMLCloseTag HTMLOpenTag/divHTMLCloseTag HTMLOpenTagdiv class=&quot;form-check mt-5&quot;HTMLCloseTag HTMLOpenTaginput id=&quot;vertical-form-3&quot; class=&quot;form-check-input&quot; type=&quot;checkbox&quot; value=&quot;&quot;HTMLCloseTag HTMLOpenTaglabel class=&quot;form-check-label&quot; for=&quot;vertical-form-3&quot;HTMLCloseTagRemember meHTMLOpenTag/labelHTMLCloseTag HTMLOpenTag/divHTMLCloseTag HTMLOpenTagbutton class=&quot;btn btn-primary mt-5&quot;HTMLCloseTagLoginHTMLOpenTag/buttonHTMLCloseTag </code> </pre>
-                    </div>
-                </div>
-            </div>
+            <div class="p-5">
+	            <div class="preview">
+	                <div class="flex flex-col sm:flex-row items-center mt-3">
+	                	<!-- 신규 도서 -->
+	                    <div class="dropdown mr-2" style="width: 100%;">
+	                  		<input type="text" class="form-control dropdown-toggle" aria-expanded="false" data-tw-toggle="dropdown" placeholder="신규 도서" id="bookTitleL1" onkeyup="getSrchBook(this.value, 'L1');">
+						    <div class="dropdown-menu w-full">
+						        <ul class="dropdown-content overflow-y-auto h-32" id="bookSrchBoxL1"></ul>
+						    </div>
+						</div>
+						<input type="hidden" id="bookNoL1">
+	                    <!-- 저자 -->
+	                    <input type="text" class="form-control" placeholder="저자" style="width: 300px;" id="bookWriterL1">
+	                </div>
+	            </div>
+	        </div>
         </div>
-        <!-- END: Vertical Form -->
-        <!-- BEGIN: Horizontal Form -->
-        <div class="intro-y box mt-5">
+        
+        <!-- 맴버 -->
+        <div class="intro-y box">
             <div class="flex flex-col sm:flex-row items-center p-5 border-b border-slate-200/60 dark:border-darkmode-400">
-                <h2 class="font-medium text-base mr-auto">
-                    Horizontal Form
-                </h2>
-                <div class="form-check form-switch w-full sm:w-auto sm:ml-auto mt-3 sm:mt-0">
-                    <label class="form-check-label ml-0" for="show-example-7">Show example code</label>
-                    <input id="show-example-7" data-target="#horizontal-form" class="show-code form-check-input mr-0 ml-3" type="checkbox">
-                </div>
+                <h2 class="font-medium text-base mr-auto">New Member</h2>
+                <button class="btn btn-primary w-35" id="saveNewMemberBtn"><i data-lucide="plus" class="w-5 h-5"></i>저장</button>
             </div>
-            <div id="horizontal-form" class="p-5">
-                <div class="preview">
-                    <div class="form-inline">
-                        <label for="horizontal-form-1" class="form-label sm:w-20">Email</label>
-                        <input id="horizontal-form-1" type="text" class="form-control" placeholder="example@gmail.com">
+            <div class="p-5">
+	            <div class="preview">
+	            	<div class="flex flex-col sm:flex-row items-center mt-2">
+                    	<input type="text" class="form-control mr-2" placeholder="이름" id="name">
+                    	<input type="text" class="form-control" placeholder="닉네임" id="nickNm">
                     </div>
-                    <div class="form-inline mt-5">
-                        <label for="horizontal-form-2" class="form-label sm:w-20">Password</label>
-                        <input id="horizontal-form-2" type="password" class="form-control" placeholder="secret">
+                    <div class="flex flex-col sm:flex-row items-center mt-2">
+                    	<input type="text" class="form-control mr-2" maxlength="8" placeholder="생년월일" id="brthday">
+                    	<input type="text" class="form-control" maxlength="8" placeholder="가입일" id="joinDt">
                     </div>
-                    <div class="form-check sm:ml-20 sm:pl-5 mt-5">
-                        <input id="horizontal-form-3" class="form-check-input" type="checkbox" value="">
-                        <label class="form-check-label" for="horizontal-form-3">Remember me</label>
+	                <div class="flex flex-col sm:flex-row items-center mt-2">
+						<select class="form-select mr-2" aria-label="Default select example" style="width: 150px;" id="actionAreaLv1">
+                            <option value="seoul">서울</option>
+                            <option value="Incheon">인천</option>
+                            <option value="gyeonggi-do">경기</option>
+                        </select>
+                        <select class="form-select" aria-label="Default select example" style="width: 150px;" id="actionAreaLv2">
+                            <option value="MEETING">강서구</option>
+                            <option value="SPECIAL">양천구</option>
+                            <option value="SUDDENLY">영등포구</option>
+                            <option value="APPOINTED">마포구</option>
+                        </select>
+                        <div class="flex flex-col sm:flex-row ml-8 mt-2">
+					        <div class="form-check mr-2 mt-2 sm:mt-0"> 
+					       		<input class="form-check-input" type="radio" name="sex" value="MALE" id="sexMale" > 
+					        	<label class="form-check-label" for="sexMale">남성</label> 
+					        </div>
+					        <div class="form-check mr-2 mt-2 sm:mt-0"> 
+					        	<input class="form-check-input" type="radio" name="sex" value="FEMALE" id="sexFemale"> 
+					        	<label class="form-check-label" for="sexFemale">여성</label> 
+					        </div>
+					    </div>
                     </div>
-                    <div class="sm:ml-20 sm:pl-5 mt-5">
-                        <button class="btn btn-primary">Login</button>
+                    <div class="flex flex-col sm:flex-row items-center mt-2">
+                    	<input type="text" class="form-control mr-2" placeholder="example"  style="width: 200px;" id="email1">@
+                    	<input type="text" class="form-control ml-2" placeholder="naver.com"  style="width: 200px;" id="email2"> 
                     </div>
-                </div>
-                <div class="source-code hidden">
-                    <button data-target="#copy-horizontal-form" class="copy-code btn py-1 px-2 btn-outline-secondary"> <i data-lucide="file" class="w-4 h-4 mr-2"></i> Copy example code </button>
-                    <div class="overflow-y-auto mt-3 rounded-md">
-                        <pre id="copy-horizontal-form" class="source-preview"> <code class="html"> HTMLOpenTagdiv class=&quot;form-inline&quot;HTMLCloseTag HTMLOpenTaglabel for=&quot;horizontal-form-1&quot; class=&quot;form-label sm:w-20&quot;HTMLCloseTagEmailHTMLOpenTag/labelHTMLCloseTag HTMLOpenTaginput id=&quot;horizontal-form-1&quot; type=&quot;text&quot; class=&quot;form-control&quot; placeholder=&quot;example@gmail.com&quot;HTMLCloseTag HTMLOpenTag/divHTMLCloseTag HTMLOpenTagdiv class=&quot;form-inline mt-5&quot;HTMLCloseTag HTMLOpenTaglabel for=&quot;horizontal-form-2&quot; class=&quot;form-label sm:w-20&quot;HTMLCloseTagPasswordHTMLOpenTag/labelHTMLCloseTag HTMLOpenTaginput id=&quot;horizontal-form-2&quot; type=&quot;password&quot; class=&quot;form-control&quot; placeholder=&quot;secret&quot;HTMLCloseTag HTMLOpenTag/divHTMLCloseTag HTMLOpenTagdiv class=&quot;form-check sm:ml-20 sm:pl-5 mt-5&quot;HTMLCloseTag HTMLOpenTaginput id=&quot;horizontal-form-3&quot; class=&quot;form-check-input&quot; type=&quot;checkbox&quot; value=&quot;&quot;HTMLCloseTag HTMLOpenTaglabel class=&quot;form-check-label&quot; for=&quot;horizontal-form-3&quot;HTMLCloseTagRemember meHTMLOpenTag/labelHTMLCloseTag HTMLOpenTag/divHTMLCloseTag HTMLOpenTagdiv class=&quot;sm:ml-20 sm:pl-5 mt-5&quot;HTMLCloseTag HTMLOpenTagbutton class=&quot;btn btn-primary&quot;HTMLCloseTagLoginHTMLOpenTag/buttonHTMLCloseTag HTMLOpenTag/divHTMLCloseTag </code> </pre>
+                    <div class="flex flex-col sm:flex-row items-center mt-2">
+                    	<input type="text" class="form-control mr-2" placeholder="010" value="010" style="width: 100px;" id="phonNo1">
+                    	<input type="text" class="form-control mr-2" placeholder="0000" style="width: 100px;" id="phonNo2">
+                    	<input type="text" class="form-control mr-12" placeholder="0000" style="width: 100px;" id="phonNo3">
                     </div>
-                </div>
-            </div>
+	            </div>
+	        </div>
         </div>
         <!-- END: Horizontal Form -->
-        <!-- BEGIN: Inline Form -->
-        <div class="intro-y box mt-5">
-            <div class="flex flex-col sm:flex-row items-center p-5 border-b border-slate-200/60 dark:border-darkmode-400">
-                <h2 class="font-medium text-base mr-auto">
-                    Inline Form
-                </h2>
-                <div class="form-check form-switch w-full sm:w-auto sm:ml-auto mt-3 sm:mt-0">
-                    <label class="form-check-label ml-0" for="show-example-8">Show example code</label>
-                    <input id="show-example-8" data-target="#inline-form" class="show-code form-check-input mr-0 ml-3" type="checkbox">
-                </div>
-            </div>
-            <div id="inline-form" class="p-5">
-                <div class="preview">
-                    <div class="grid grid-cols-12 gap-2">
-                        <input type="text" class="form-control col-span-4" placeholder="Input inline 1" aria-label="default input inline 1">
-                        <input type="text" class="form-control col-span-4" placeholder="Input inline 2" aria-label="default input inline 2">
-                        <input type="text" class="form-control col-span-4" placeholder="Input inline 3" aria-label="default input inline 3">
-                    </div>
-                </div>
-                <div class="source-code hidden">
-                    <button data-target="#copy-inline-form" class="copy-code btn py-1 px-2 btn-outline-secondary"> <i data-lucide="file" class="w-4 h-4 mr-2"></i> Copy example code </button>
-                    <div class="overflow-y-auto mt-3 rounded-md">
-                        <pre id="copy-inline-form" class="source-preview"> <code class="html"> HTMLOpenTagdiv class=&quot;grid grid-cols-12 gap-2&quot;HTMLCloseTag HTMLOpenTaginput type=&quot;text&quot; class=&quot;form-control col-span-4&quot; placeholder=&quot;Input inline 1&quot; aria-label=&quot;default input inline 1&quot;HTMLCloseTag HTMLOpenTaginput type=&quot;text&quot; class=&quot;form-control col-span-4&quot; placeholder=&quot;Input inline 2&quot; aria-label=&quot;default input inline 2&quot;HTMLCloseTag HTMLOpenTaginput type=&quot;text&quot; class=&quot;form-control col-span-4&quot; placeholder=&quot;Input inline 3&quot; aria-label=&quot;default input inline 3&quot;HTMLCloseTag HTMLOpenTag/divHTMLCloseTag </code> </pre>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- END: Inline Form -->
-        <!-- BEGIN: Checkbox & Switch -->
-        <div class="intro-y box mt-5">
-            <div class="flex flex-col sm:flex-row items-center p-5 border-b border-slate-200/60 dark:border-darkmode-400">
-                <h2 class="font-medium text-base mr-auto">
-                    Checkbox & Switch
-                </h2>
-                <div class="form-check form-switch w-full sm:w-auto sm:ml-auto mt-3 sm:mt-0">
-                    <label class="form-check-label ml-0" for="show-example-9">Show example code</label>
-                    <input id="show-example-9" data-target="#checkbox-switch" class="show-code form-check-input mr-0 ml-3" type="checkbox">
-                </div>
-            </div>
-            <div id="checkbox-switch" class="p-5">
-                <div class="preview">
-                    <div>
-                        <label>Vertical Checkbox</label>
-                        <div class="form-check mt-2">
-                            <input id="checkbox-switch-1" class="form-check-input" type="checkbox" value="">
-                            <label class="form-check-label" for="checkbox-switch-1">Chris Evans</label>
-                        </div>
-                        <div class="form-check mt-2">
-                            <input id="checkbox-switch-2" class="form-check-input" type="checkbox" value="">
-                            <label class="form-check-label" for="checkbox-switch-2">Liam Neeson</label>
-                        </div>
-                        <div class="form-check mt-2">
-                            <input id="checkbox-switch-3" class="form-check-input" type="checkbox" value="">
-                            <label class="form-check-label" for="checkbox-switch-3">Daniel Craig</label>
-                        </div>
-                    </div>
-                    <div class="mt-3">
-                        <label>Horizontal Checkbox</label>
-                        <div class="flex flex-col sm:flex-row mt-2">
-                            <div class="form-check mr-2">
-                                <input id="checkbox-switch-4" class="form-check-input" type="checkbox" value="">
-                                <label class="form-check-label" for="checkbox-switch-4">Chris Evans</label>
-                            </div>
-                            <div class="form-check mr-2 mt-2 sm:mt-0">
-                                <input id="checkbox-switch-5" class="form-check-input" type="checkbox" value="">
-                                <label class="form-check-label" for="checkbox-switch-5">Liam Neeson</label>
-                            </div>
-                            <div class="form-check mr-2 mt-2 sm:mt-0">
-                                <input id="checkbox-switch-6" class="form-check-input" type="checkbox" value="">
-                                <label class="form-check-label" for="checkbox-switch-6">Daniel Craig</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mt-3">
-                        <label>Switch</label>
-                        <div class="mt-2">
-                            <div class="form-check form-switch">
-                                <input id="checkbox-switch-7" class="form-check-input" type="checkbox">
-                                <label class="form-check-label" for="checkbox-switch-7">Default switch checkbox input</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="source-code hidden">
-                    <button data-target="#copy-checkbox-switch" class="copy-code btn py-1 px-2 btn-outline-secondary"> <i data-lucide="file" class="w-4 h-4 mr-2"></i> Copy example code </button>
-                    <div class="overflow-y-auto mt-3 rounded-md">
-                        <pre id="copy-checkbox-switch" class="source-preview"> <code class="html"> HTMLOpenTagdivHTMLCloseTag HTMLOpenTaglabelHTMLCloseTagVertical CheckboxHTMLOpenTag/labelHTMLCloseTag HTMLOpenTagdiv class=&quot;form-check mt-2&quot;HTMLCloseTag HTMLOpenTaginput id=&quot;checkbox-switch-1&quot; class=&quot;form-check-input&quot; type=&quot;checkbox&quot; value=&quot;&quot;HTMLCloseTag HTMLOpenTaglabel class=&quot;form-check-label&quot; for=&quot;checkbox-switch-1&quot;HTMLCloseTagChris EvansHTMLOpenTag/labelHTMLCloseTag HTMLOpenTag/divHTMLCloseTag HTMLOpenTagdiv class=&quot;form-check mt-2&quot;HTMLCloseTag HTMLOpenTaginput id=&quot;checkbox-switch-2&quot; class=&quot;form-check-input&quot; type=&quot;checkbox&quot; value=&quot;&quot;HTMLCloseTag HTMLOpenTaglabel class=&quot;form-check-label&quot; for=&quot;checkbox-switch-2&quot;HTMLCloseTagLiam NeesonHTMLOpenTag/labelHTMLCloseTag HTMLOpenTag/divHTMLCloseTag HTMLOpenTagdiv class=&quot;form-check mt-2&quot;HTMLCloseTag HTMLOpenTaginput id=&quot;checkbox-switch-3&quot; class=&quot;form-check-input&quot; type=&quot;checkbox&quot; value=&quot;&quot;HTMLCloseTag HTMLOpenTaglabel class=&quot;form-check-label&quot; for=&quot;checkbox-switch-3&quot;HTMLCloseTagDaniel CraigHTMLOpenTag/labelHTMLCloseTag HTMLOpenTag/divHTMLCloseTag HTMLOpenTag/divHTMLCloseTag HTMLOpenTagdiv class=&quot;mt-3&quot;HTMLCloseTag HTMLOpenTaglabelHTMLCloseTagHorizontal CheckboxHTMLOpenTag/labelHTMLCloseTag HTMLOpenTagdiv class=&quot;flex flex-col sm:flex-row mt-2&quot;HTMLCloseTag HTMLOpenTagdiv class=&quot;form-check mr-2&quot;HTMLCloseTag HTMLOpenTaginput id=&quot;checkbox-switch-4&quot; class=&quot;form-check-input&quot; type=&quot;checkbox&quot; value=&quot;&quot;HTMLCloseTag HTMLOpenTaglabel class=&quot;form-check-label&quot; for=&quot;checkbox-switch-4&quot;HTMLCloseTagChris EvansHTMLOpenTag/labelHTMLCloseTag HTMLOpenTag/divHTMLCloseTag HTMLOpenTagdiv class=&quot;form-check mr-2 mt-2 sm:mt-0&quot;HTMLCloseTag HTMLOpenTaginput id=&quot;checkbox-switch-5&quot; class=&quot;form-check-input&quot; type=&quot;checkbox&quot; value=&quot;&quot;HTMLCloseTag HTMLOpenTaglabel class=&quot;form-check-label&quot; for=&quot;checkbox-switch-5&quot;HTMLCloseTagLiam NeesonHTMLOpenTag/labelHTMLCloseTag HTMLOpenTag/divHTMLCloseTag HTMLOpenTagdiv class=&quot;form-check mr-2 mt-2 sm:mt-0&quot;HTMLCloseTag HTMLOpenTaginput id=&quot;checkbox-switch-6&quot; class=&quot;form-check-input&quot; type=&quot;checkbox&quot; value=&quot;&quot;HTMLCloseTag HTMLOpenTaglabel class=&quot;form-check-label&quot; for=&quot;checkbox-switch-6&quot;HTMLCloseTagDaniel CraigHTMLOpenTag/labelHTMLCloseTag HTMLOpenTag/divHTMLCloseTag HTMLOpenTag/divHTMLCloseTag HTMLOpenTag/divHTMLCloseTag HTMLOpenTagdiv class=&quot;mt-3&quot;HTMLCloseTag HTMLOpenTaglabelHTMLCloseTagSwitchHTMLOpenTag/labelHTMLCloseTag HTMLOpenTagdiv class=&quot;mt-2&quot;HTMLCloseTag HTMLOpenTagdiv class=&quot;form-check form-switch&quot;HTMLCloseTag HTMLOpenTaginput id=&quot;checkbox-switch-7&quot; class=&quot;form-check-input&quot; type=&quot;checkbox&quot;HTMLCloseTag HTMLOpenTaglabel class=&quot;form-check-label&quot; for=&quot;checkbox-switch-7&quot;HTMLCloseTagDefault switch checkbox inputHTMLOpenTag/labelHTMLCloseTag HTMLOpenTag/divHTMLCloseTag HTMLOpenTag/divHTMLCloseTag HTMLOpenTag/divHTMLCloseTag </code> </pre>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- END: Checkbox & Switch -->
-        <!-- BEGIN: Radio Button -->
-        <div class="intro-y box mt-5">
-            <div class="flex flex-col sm:flex-row items-center p-5 border-b border-slate-200/60 dark:border-darkmode-400">
-                <h2 class="font-medium text-base mr-auto">
-                    Radio
-                </h2>
-                <div class="form-check form-switch w-full sm:w-auto sm:ml-auto mt-3 sm:mt-0">
-                    <label class="form-check-label ml-0" for="show-example-10">Show example code</label>
-                    <input id="show-example-10" data-target="#radio" class="show-code form-check-input mr-0 ml-3" type="checkbox">
-                </div>
-            </div>
-            <div id="radio" class="p-5">
-                <div class="preview">
-                    <div>
-                        <label>Vertical Radio Button</label>
-                        <div class="form-check mt-2">
-                            <input id="radio-switch-1" class="form-check-input" type="radio" name="vertical_radio_button" value="vertical-radio-chris-evans">
-                            <label class="form-check-label" for="radio-switch-1">Chris Evans</label>
-                        </div>
-                        <div class="form-check mt-2">
-                            <input id="radio-switch-2" class="form-check-input" type="radio" name="vertical_radio_button" value="vertical-radio-liam-neeson">
-                            <label class="form-check-label" for="radio-switch-2">Liam Neeson</label>
-                        </div>
-                        <div class="form-check mt-2">
-                            <input id="radio-switch-3" class="form-check-input" type="radio" name="vertical_radio_button" value="vertical-radio-daniel-craig">
-                            <label class="form-check-label" for="radio-switch-3">Daniel Craig</label>
-                        </div>
-                    </div>
-                    <div class="mt-3">
-                        <label>Horizontal Radio Button</label>
-                        <div class="flex flex-col sm:flex-row mt-2">
-                            <div class="form-check mr-2">
-                                <input id="radio-switch-4" class="form-check-input" type="radio" name="horizontal_radio_button" value="horizontal-radio-chris-evans">
-                                <label class="form-check-label" for="radio-switch-4">Chris Evans</label>
-                            </div>
-                            <div class="form-check mr-2 mt-2 sm:mt-0">
-                                <input id="radio-switch-5" class="form-check-input" type="radio" name="horizontal_radio_button" value="horizontal-radio-liam-neeson">
-                                <label class="form-check-label" for="radio-switch-5">Liam Neeson</label>
-                            </div>
-                            <div class="form-check mr-2 mt-2 sm:mt-0">
-                                <input id="radio-switch-6" class="form-check-input" type="radio" name="horizontal_radio_button" value="horizontal-radio-daniel-craig">
-                                <label class="form-check-label" for="radio-switch-6">Daniel Craig</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="source-code hidden">
-                    <button data-target="#copy-radio" class="copy-code btn py-1 px-2 btn-outline-secondary"> <i data-lucide="file" class="w-4 h-4 mr-2"></i> Copy example code </button>
-                    <div class="overflow-y-auto mt-3 rounded-md">
-                        <pre id="copy-radio" class="source-preview"> <code class="html"> HTMLOpenTagdivHTMLCloseTag HTMLOpenTaglabelHTMLCloseTagVertical Radio ButtonHTMLOpenTag/labelHTMLCloseTag HTMLOpenTagdiv class=&quot;form-check mt-2&quot;HTMLCloseTag HTMLOpenTaginput id=&quot;radio-switch-1&quot; class=&quot;form-check-input&quot; type=&quot;radio&quot; name=&quot;vertical_radio_button&quot; value=&quot;vertical-radio-chris-evans&quot;HTMLCloseTag HTMLOpenTaglabel class=&quot;form-check-label&quot; for=&quot;radio-switch-1&quot;HTMLCloseTagChris EvansHTMLOpenTag/labelHTMLCloseTag HTMLOpenTag/divHTMLCloseTag HTMLOpenTagdiv class=&quot;form-check mt-2&quot;HTMLCloseTag HTMLOpenTaginput id=&quot;radio-switch-2&quot; class=&quot;form-check-input&quot; type=&quot;radio&quot; name=&quot;vertical_radio_button&quot; value=&quot;vertical-radio-liam-neeson&quot;HTMLCloseTag HTMLOpenTaglabel class=&quot;form-check-label&quot; for=&quot;radio-switch-2&quot;HTMLCloseTagLiam NeesonHTMLOpenTag/labelHTMLCloseTag HTMLOpenTag/divHTMLCloseTag HTMLOpenTagdiv class=&quot;form-check mt-2&quot;HTMLCloseTag HTMLOpenTaginput id=&quot;radio-switch-3&quot; class=&quot;form-check-input&quot; type=&quot;radio&quot; name=&quot;vertical_radio_button&quot; value=&quot;vertical-radio-daniel-craig&quot;HTMLCloseTag HTMLOpenTaglabel class=&quot;form-check-label&quot; for=&quot;radio-switch-3&quot;HTMLCloseTagDaniel CraigHTMLOpenTag/labelHTMLCloseTag HTMLOpenTag/divHTMLCloseTag HTMLOpenTag/divHTMLCloseTag HTMLOpenTagdiv class=&quot;mt-3&quot;HTMLCloseTag HTMLOpenTaglabelHTMLCloseTagHorizontal Radio ButtonHTMLOpenTag/labelHTMLCloseTag HTMLOpenTagdiv class=&quot;flex flex-col sm:flex-row mt-2&quot;HTMLCloseTag HTMLOpenTagdiv class=&quot;form-check mr-2&quot;HTMLCloseTag HTMLOpenTaginput id=&quot;radio-switch-4&quot; class=&quot;form-check-input&quot; type=&quot;radio&quot; name=&quot;horizontal_radio_button&quot; value=&quot;horizontal-radio-chris-evans&quot;HTMLCloseTag HTMLOpenTaglabel class=&quot;form-check-label&quot; for=&quot;radio-switch-4&quot;HTMLCloseTagChris EvansHTMLOpenTag/labelHTMLCloseTag HTMLOpenTag/divHTMLCloseTag HTMLOpenTagdiv class=&quot;form-check mr-2 mt-2 sm:mt-0&quot;HTMLCloseTag HTMLOpenTaginput id=&quot;radio-switch-5&quot; class=&quot;form-check-input&quot; type=&quot;radio&quot; name=&quot;horizontal_radio_button&quot; value=&quot;horizontal-radio-liam-neeson&quot;HTMLCloseTag HTMLOpenTaglabel class=&quot;form-check-label&quot; for=&quot;radio-switch-5&quot;HTMLCloseTagLiam NeesonHTMLOpenTag/labelHTMLCloseTag HTMLOpenTag/divHTMLCloseTag HTMLOpenTagdiv class=&quot;form-check mr-2 mt-2 sm:mt-0&quot;HTMLCloseTag HTMLOpenTaginput id=&quot;radio-switch-6&quot; class=&quot;form-check-input&quot; type=&quot;radio&quot; name=&quot;horizontal_radio_button&quot; value=&quot;horizontal-radio-daniel-craig&quot;HTMLCloseTag HTMLOpenTaglabel class=&quot;form-check-label&quot; for=&quot;radio-switch-6&quot;HTMLCloseTagDaniel CraigHTMLOpenTag/labelHTMLCloseTag HTMLOpenTag/divHTMLCloseTag HTMLOpenTag/divHTMLCloseTag HTMLOpenTag/divHTMLCloseTag </code> </pre>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- END: Radio Button -->
     </div>
 </div>

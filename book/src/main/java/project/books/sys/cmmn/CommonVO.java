@@ -25,7 +25,7 @@ public class CommonVO {
 	
 	//저장 PARAM
 	private String dataString;
-	private String saveGbn;
+	private String saveFlag;
 	
 	
 	//목록 및 정보 RETURN

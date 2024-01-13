@@ -56,30 +56,38 @@
 	<insert id="insertMember" parameterType="project.books.club.member.MemberVO">
 		/*MemberMapper.insertMember*/
 		insert into club_member(
-			  member_no
-			, member_pwd
-			, author_id
+			  club_no
+			, member_no
 			, nick_nm
-			, name
-			, sex
-			, brthday
-			, phon_no
-			, email
-			, intro
-			, account_no
-		) values (
-			  concat('test', date_format(now(), '%Y%m%d%H%i%s'))
-			, concat('test', date_format(now(), '%Y%m%d%H%i%s'))
-			, '9'
-			, #{nickNm}
-			, #{name}
-			, #{sex}
-			, #{brthday}
-			, #{phonNo}
-			, #{email}
-			, #{intro}
-			, #{accountNo}
+			, join_dt
+			, memo
+			, club_author_no
+			, frst_reg_no
+			, frst_reg_dt
 		)
+		select #{clubNo}
+		     , m.member_no 
+		     , m.nick_nm 
+		     , #{joinDt}
+		     , #{memo}
+		     , '9'
+		     , #{userNo}
+		     , now()
+		  from member m 
+		 where member_no = #{memberNo}
 	</insert>
 	
+	<!-- 모임 실시간 검색 -->
+	<select id="selectMemberSrch" parameterType="project.books.sys.cmmn.DataVO" resultType="project.books.sys.util.CamelMap">
+		/*MemberMapper.selectMemberSrch*/
+		select m.member_no 
+		     , m.name
+		  from member m 
+		       left join club_member cm 
+		         on m.member_no = cm.member_no 
+		 where 1=1 
+		   and m.nick_nm like concat('%',#{srchText},'%')
+		    or m.name like concat('%',#{srchText},'%')
+		 order by m.name asc 
+	</select>
 </mapper>

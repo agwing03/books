@@ -9,8 +9,6 @@ jQuery(document).ready(function(){
 	jQuery("#top-bar").load("/cmmn/topBar.html")
 	//날짜 셋팅
 	setSrchDate(-1)
-	
-	
 })
 
 

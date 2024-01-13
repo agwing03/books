@@ -5,6 +5,8 @@ import java.util.HashMap;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
+import project.books.sys.cmmn.DataVO;
+import project.books.sys.util.CamelMap;
 
 @Service
 @RequiredArgsConstructor
@@ -31,32 +33,11 @@ public class BookService {
 	 * @param BookVO
 	 * @throw Exception
 	 */
-	public void saveBook(BookVO vo) throws Exception{
-		HashMap<String, String> param = new HashMap<>();
+	public void saveBook(CamelMap param) throws Exception{
 		//작성자
-		String userNo = "2"; //차후 수정
-		param.put("userNo", userNo);
-		//view 데이터 셋
-		String saveGbn = vo.getSaveGbn();
-		String data = vo.getDataString();
-		//TR 스플릿 '/'
-		String[] dataArr = data.split("/");
-		String[] subDataArr = null;
-		for (int i = 0; i < dataArr.length; i++) {
-			data = dataArr[i];
-			//TD 스플릿 '/'
-			subDataArr = data.split(",");
-			for (int j = 0; j < subDataArr.length; j++) {
-				param.put("data"+j, subDataArr[j]);	
-			}
-			if(saveGbn.equals("I")) {
-				bookMapper.insertBook(param);
-			}else if(saveGbn.equals("U")) {
-				bookMapper.updateBook(param);
-			}else if(saveGbn.equals("D")) {
-				bookMapper.deleteBook(param);
-			}
-		}
+		param.put("regNo", "2"); //차후 수정
+		bookMapper.insertBook(param);
+		System.out.println(param);
 	}
 	
 	/**
@@ -68,6 +49,17 @@ public class BookService {
 	public BookVO selectSearchData(BookVO vo) throws Exception{
 		vo.setDataList(bookMapper.selectSearchData(vo));
 		vo.setTotCnt(vo.getDataList().size());
+		return vo;
+	}
+	
+	/**
+	 * 도서 실시간 검색
+	 * @param DataVO
+	 * @return SrchVO
+	 * @throw Exception
+	 */
+	public DataVO selectBookSrch(DataVO vo) throws Exception{
+		vo.setDataList(bookMapper.selectBookSrch(vo));
 		return vo;
 	}
 }

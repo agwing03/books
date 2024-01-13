@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import project.books.sys.cmmn.DataVO;
 import project.books.sys.util.CamelMap;
 
 
@@ -26,8 +27,8 @@ public interface BookMapper {
 	 * @param HashMap<>
 	 * @throw Exception
      */
-	void insertBook(HashMap<String, String> param);
-	void updateBook(HashMap<String, String> param);
+	int insertBook(CamelMap param);
+	int updateBook(CamelMap param);
 	void deleteBook(HashMap<String, String> param);
 	
     /**
@@ -38,5 +39,21 @@ public interface BookMapper {
      */
 	int selectSearchDataCnt(BookVO vo);
 	List<CamelMap> selectSearchData(BookVO vo);
+	
+	
+	/**
+	 * 서평 생성
+	 * @param CamelMap
+	 * @throw Exception
+     */
+	void insertBookEval(CamelMap data);
+	
+	/**
+	 * 도서 실시간 검색
+	 * @param DataVO
+	 * @return List<CamelMap>
+	 * @throw Exception
+     */
+	List<CamelMap> selectBookSrch(DataVO vo);
 	
 }

@@ -41,7 +41,7 @@
 	</sql>
 	
 	<!-- 도서 등록 -->
-	<insert id="insertBook" parameterType="java.util.HashMap">
+	<insert id="insertBook" useGeneratedKeys="true" keyProperty="book_no"  parameterType="project.books.sys.util.CamelMap">
 		/*BookMapper.insertBook*/
 		insert into books (
 			  book_title
@@ -52,12 +52,12 @@
 			, last_upd_no
 			, last_upd_dt
 		) values (
-			  #{data1}
-			, #{data2}
-			, #{data3}
-			, #{userNo}
+			  #{bookTitle}
+			, #{bookWriter}
+			, #{publicDt}
+			, #{regNo}
 			, now()
-			, #{userNo}
+			, #{regNo}
 			, now()
 		)
 	</insert>
@@ -111,5 +111,19 @@
 				) tb 
 		  where 1=1 
 		  order by gbn desc, data1 asc
+	</select>
+	
+	<!-- 도서 실시간 검색 -->
+	<select id="selectBookSrch" parameterType="project.books.sys.cmmn.DataVO" resultType="project.books.sys.util.CamelMap">
+		/*MemberMapper.selectBookSrch*/
+		select b.book_no
+			 , b.book_title
+		     , b.book_writer 
+		     , concat(b.book_title, '(',b.book_writer ,')') as book_info
+		  from books b 
+		 where 1=1 
+		   and b.book_title like concat('%',#{srchText},'%')
+		    or b.book_writer like concat('%',#{srchText},'%')
+		 order by b.book_title asc 
 	</select>
 </mapper>

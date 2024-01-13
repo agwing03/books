@@ -1,10 +1,14 @@
 package project.books.club.book;
 
+import java.util.HashMap;
+
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import project.books.sys.cmmn.DataVO;
+import project.books.sys.util.CamelMap;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,13 +29,13 @@ public class BookController {
 	
 	/**
 	 * 도서 등록
-	 * @param bookNo
+	 * @param BookVO
 	 */
-	@RequestMapping("/book/setBook.do")
-	public void setBook(
-			@RequestBody BookVO vo
+	@RequestMapping("/book/saveBook.do")
+	public void saveBook(
+			@RequestBody CamelMap param
 		) throws Exception {
-		bookService.saveBook(vo);
+		bookService.saveBook(param);
 	}
 	
 	/**
@@ -43,5 +47,16 @@ public class BookController {
 			@RequestBody BookVO vo
 		) throws Exception {
 		return bookService.selectSearchData(vo);
+	}
+	
+	/**
+	 * 도서 실시간 검색
+	 * @param srchText
+	 */
+	@RequestMapping("/book/selectBookSrch.do")
+	public DataVO selectBookSrch(
+			@RequestBody DataVO vo
+		) throws Exception {
+		return bookService.selectBookSrch(vo);
 	}
 }

@@ -22,5 +22,16 @@ public class ClubController {
 		) throws Exception {
 		return clubService.selectMeetingList(vo);
 	}
+	
+	/**
+	 * 모임 후기 등록
+	 * @param ClubVO
+	 */
+	@RequestMapping("/club/saveMeetingReview.do")
+	public void saveMeetingReview(
+			@RequestBody ClubVO vo
+		) throws Exception {
+		clubService.saveMeetingReview(vo);
+	}
 }
  

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="project.books.club.user.UserMapper">
+	
+	<!-- 시스템 사용자 목록 -->
+	<select id="selectUserList" parameterType="project.books.sys.cmmn.DataVO" resultType="project.books.sys.util.CamelMap">
+		/*UserMapper.selectUserList*/
+	</select>
+	<!-- 시스템 사용자 목록 수 -->
+	<select id="selectUserListCnt" parameterType="project.books.sys.cmmn.DataVO" resultType="Integer">
+		/*UserMapper.selectUserListCnt*/
+	</select>
+	<!-- 시스템 사용자 목록 Where -->
+	<sql id="memberListWhere">
+		where 1=1
+		<!-- 클럽번호 -->
+		<if test='clubNo != null and clubNo != ""'>
+		  and cm.club_no = #{clubNo}
+		</if>
+		<!-- 텍스트 검색 -->
+		<if test='srchGbn != null and srchGbn != "" and srchText != null and srchText != ""'>
+			<if test='"NIC".equals(srchGbn)'>
+		  and m.nick_nm like concat('%',#{srchText},'%')
+			</if>
+			<if test='"NAME".equals(srchGbn)'>
+		  and m.name like concat('%',#{srchText},'%')
+			</if>
+			<if test='"BRTH".equals(srchGbn)'>
+		  and m.brthday like concat('%',#{srchText},'%')
+			</if>
+			<if test='"PHON".equals(srchGbn)'>
+		  and m.phon_no like concat('%',#{srchText},'%')
+			</if>
+		</if>
+	</sql>
+	<!-- 시스템 사용자 등록 -->
+	<insert id="insertUser" parameterType="project.books.club.member.MemberVO" useGeneratedKeys="true" keyColumn="memberNo" keyProperty="memberNo">
+		/*UserMapper.insertUser*/
+		insert into club_User(
+			  member_id
+			, member_pwd
+			, author_id
+			, nick_nm
+			, name
+			, sex
+			, brthday
+			, phon_no
+			, email
+			, addr
+			, addr_dtl
+			, intro
+			, account_no
+			, frst_reg_no
+			, frst_reg_dt
+		) values (
+			  concat('test', date_format(now(), '%Y%m%d%H%i%s'))
+			, 'test123'
+			, 'MEMBER'
+			, #{nickNm}
+			, #{name}
+			, #{sex}
+			, #{brthday}
+			, #{phonNo}
+			, #{email}
+			, #{addr}
+			, #{addrDtl}
+			, #{intro}
+			, #{accountNo}
+			, #{intro}
+			, #{accountNo}
+			, #{userNo}
+			, now()
+		)
+	</insert>
+</mapper>

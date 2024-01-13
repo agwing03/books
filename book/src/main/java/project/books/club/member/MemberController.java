@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import project.books.sys.cmmn.DataVO;
+import project.books.sys.util.CamelMap;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,8 +25,6 @@ public class MemberController {
 		return memberService.selectMemberList(vo);
 	}
 	
-	
-		
 	/**
 	 * 맴버 저장
 	 * @param clubNo
@@ -34,6 +34,17 @@ public class MemberController {
 			@RequestBody MemberVO vo
 		) throws Exception {
 		memberService.saveMember(vo);
+	}
+	
+	/**
+	 * 맴버 실시간 검색
+	 * @param srchText
+	 */
+	@RequestMapping("/member/selectMemberSrch.do")
+	public DataVO selectMemberSrch(
+			@RequestBody DataVO vo
+		) throws Exception {
+		return memberService.selectMemberSrch(vo);
 	}
 }
  
