@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import project.books.sys.cmmn.DataVO;
+import project.books.sys.cmmn.SrchVO;
 import project.books.sys.util.CamelMap;
 
 
@@ -17,8 +17,8 @@ public interface MemberMapper {
 	 * @return list, integer
 	 * @throw Exception
      */
-	int selectMemberListCnt(MemberVO vo);
-	List<CamelMap> selectMemberList(MemberVO vo);
+	int selectMemberListCnt(SrchVO vo);
+	List<CamelMap> selectMemberList(SrchVO vo);
 	
     /**
 	 * 맴버 저장
@@ -36,9 +36,9 @@ public interface MemberMapper {
 	
 	/**
 	 * 맴버 목록 조회
-	 * @param DataVO
+	 * @param SrchVO
 	 * @return List<CamelMap>
 	 * @throw Exception
      */
-	List<CamelMap> selectMemberSrch(DataVO vo);
+	List<CamelMap> selectMemberSrch(SrchVO vo);
 }

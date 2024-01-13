@@ -139,16 +139,19 @@ async function fetchApi(url, method, body, gbn, headers = {}) {
     	body: JSON.stringify(body)
     }
 	const res = await fetch(url, options)
+	console.log(res.ok)
 	const data = await res.json()
+	console.log(data)
 	if (res.ok) {
 		if (gbn === 'nav'){ //side-nav html 생성
-			nav(data.dataList);
+			nav(data.menuList);
 		} else if (gbn === 'aside'){ //side html 생성
 			aside(data.dataList);
 		} else if (gbn === 'dataList'){ //list 데이터 리턴
 			return data.dataList;
 		} else if (gbn === 'save'){ //DB 데이터 적재
-			alert('저장 되었씁니다.')
+			alert('저장 되었습니다.')
+			return true;
 		} else if (gbn === 'search'){ //공통 search 결과 조회
 			return data.dataList;
 		}

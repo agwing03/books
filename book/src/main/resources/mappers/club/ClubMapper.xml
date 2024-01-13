@@ -3,7 +3,7 @@
 <mapper namespace="project.books.club.club.ClubMapper">
 	
 	<!-- 모임 목록 -->
-	<select id="selectMeetingList" parameterType="project.books.club.club.ClubVO" resultType="project.books.sys.util.CamelMap">
+	<select id="selectMeetingList" parameterType="project.books.sys.cmmn.SrchVO" resultType="project.books.sys.util.CamelMap">
 		/*clubMapper.selectMeetingList*/
 		select mt.meeting_no
 		     , mt.title
@@ -21,7 +21,7 @@
 	</select>
 	
 	<!-- 모임 목록 수 -->
-	<select id="selectMeetingListCnt" parameterType="project.books.club.club.ClubVO" resultType="Integer">
+	<select id="selectMeetingListCnt" parameterType="project.books.sys.cmmn.SrchVO" resultType="Integer">
 		/*clubMapper.selectMeetingListCnt*/
 		select count(*) 
 		  from meeting mt

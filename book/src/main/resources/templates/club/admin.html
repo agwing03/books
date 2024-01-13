@@ -131,7 +131,10 @@
 			'bookWriter':jQuery('#bookWriterL1').val()
 		}
 		if(saveData){
-			fetchApi('/book/saveBook.do', 'POST', saveData, 'save')
+			if(fetchApi('/book/saveBook.do', 'POST', saveData, 'save')){
+				jQuery('#bookTitleL1').val('')
+				jQuery('#bookWriterL1').val('')
+			}
 		}
 	}
 	

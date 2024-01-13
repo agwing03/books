@@ -3,11 +3,11 @@
 <mapper namespace="project.books.club.user.UserMapper">
 	
 	<!-- 시스템 사용자 목록 -->
-	<select id="selectUserList" parameterType="project.books.sys.cmmn.DataVO" resultType="project.books.sys.util.CamelMap">
+	<select id="selectUserList" parameterType="project.books.sys.cmmn.SrchVO" resultType="project.books.sys.util.CamelMap">
 		/*UserMapper.selectUserList*/
 	</select>
 	<!-- 시스템 사용자 목록 수 -->
-	<select id="selectUserListCnt" parameterType="project.books.sys.cmmn.DataVO" resultType="Integer">
+	<select id="selectUserListCnt" parameterType="project.books.sys.cmmn.SrchVO" resultType="Integer">
 		/*UserMapper.selectUserListCnt*/
 	</select>
 	<!-- 시스템 사용자 목록 Where -->

@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import project.books.sys.cmmn.DataVO;
+import project.books.sys.cmmn.SrchVO;
 import project.books.sys.util.CamelMap;
 
 @RestController
@@ -19,8 +19,8 @@ public class MemberController {
 	 * @param clubNo
 	 */
 	@RequestMapping("/member/getMemberList.do")
-	public MemberVO getMemberList(
-			@RequestBody MemberVO vo
+	public SrchVO getMemberList(
+			@RequestBody SrchVO vo
 		) throws Exception {
 		return memberService.selectMemberList(vo);
 	}
@@ -41,8 +41,8 @@ public class MemberController {
 	 * @param srchText
 	 */
 	@RequestMapping("/member/selectMemberSrch.do")
-	public DataVO selectMemberSrch(
-			@RequestBody DataVO vo
+	public SrchVO selectMemberSrch(
+			@RequestBody SrchVO vo
 		) throws Exception {
 		return memberService.selectMemberSrch(vo);
 	}

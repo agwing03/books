@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import project.books.club.member.MemberService;
 import project.books.club.member.MemberVO;
-import project.books.sys.cmmn.DataVO;
+import project.books.sys.cmmn.SrchVO;
 
 @RestController
 @RequiredArgsConstructor

@@ -3,7 +3,7 @@ package project.books.club.member;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import project.books.sys.cmmn.DataVO;
+import project.books.sys.cmmn.SrchVO;
 
 @Service
 @RequiredArgsConstructor
@@ -17,7 +17,7 @@ public class MemberService {
 	 * @return list
 	 * @throw Exception
 	 */
-	public MemberVO selectMemberList(MemberVO vo) throws Exception{
+	public SrchVO selectMemberList(SrchVO vo) throws Exception{
 		int cnt = memberMapper.selectMemberListCnt(vo);
 		if(cnt > 0) {
 			vo.setDataList(memberMapper.selectMemberList(vo));
@@ -38,11 +38,11 @@ public class MemberService {
 	
 	/**
 	 * 맴버 목록 조회
-	 * @param DataVO
+	 * @param SrchVO
 	 * @return SrchVO
 	 * @throw Exception
 	 */
-	public DataVO selectMemberSrch(DataVO vo) throws Exception{
+	public SrchVO selectMemberSrch(SrchVO vo) throws Exception{
 		vo.setDataList(memberMapper.selectMemberSrch(vo));
 		return vo;
 	}

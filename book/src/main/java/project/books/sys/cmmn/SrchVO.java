@@ -8,7 +8,7 @@ import project.books.sys.util.CamelMap;
 
 @Getter
 @Setter
-public class DataVO {
+public class SrchVO {
 	//페이징 공통
 	private int totCnt = 0;
 	

@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import project.books.club.member.MemberVO;
+import project.books.sys.cmmn.SrchVO;
 import project.books.sys.util.CamelMap;
 
 
@@ -17,8 +17,8 @@ public interface ClubMapper {
 	 * @return list, integer
 	 * @throw Exception
      */
-	int selectMeetingListCnt(ClubVO vo);
-	List<CamelMap> selectMeetingList(ClubVO vo);
+	int selectMeetingListCnt(SrchVO vo);
+	List<CamelMap> selectMeetingList(SrchVO vo);
 	
 	
 	
