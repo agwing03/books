@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import project.books.club.book.BookMapper;
+import project.books.sys.cmmn.SrchVO;
 import project.books.sys.util.CamelMap;
 
 @Service
@@ -21,7 +22,7 @@ public class ClubService {
 	 * @return list
 	 * @throw Exception
 	 */
-	public ClubVO selectMeetingList(ClubVO vo) throws Exception{
+	public SrchVO selectMeetingList(SrchVO vo) throws Exception{
 		int cnt = clubMapper.selectMeetingListCnt(vo);
 		if(cnt > 0) {
 			vo.setDataList(clubMapper.selectMeetingList(vo));

@@ -16,7 +16,7 @@ public class MenuService {
 	 * @throw Exception
 	 */
 	public MenuVO selectMenuList(MenuVO vo) throws Exception{
-		vo.setDataList(menuMapper.selectMenuList(vo));
+		vo.setMenuList(menuMapper.selectMenuList(vo));
 		return vo; 
 	}
 }

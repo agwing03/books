@@ -3,7 +3,7 @@
 <mapper namespace="project.books.club.member.MemberMapper">
 	
 	<!-- 모임 목록 -->
-	<select id="selectMemberList" parameterType="project.books.club.member.MemberVO" resultType="project.books.sys.util.CamelMap">
+	<select id="selectMemberList" parameterType="project.books.sys.cmmn.SrchVO" resultType="project.books.sys.util.CamelMap">
 		/*MemberMapper.selectMemberList*/
 		select cm.member_no 
 		     , m.name as member_nm
@@ -21,7 +21,7 @@
 		 order by cm.club_author_no, cm.join_dt desc 
 	</select>
 	<!-- 모임 목록 수 -->
-	<select id="selectMemberListCnt" parameterType="project.books.club.member.MemberVO" resultType="Integer">
+	<select id="selectMemberListCnt" parameterType="project.books.sys.cmmn.SrchVO" resultType="Integer">
 		/*MemberMapper.selectMemberListCnt*/
 		select count(*) 
 		  from club_member cm
@@ -116,7 +116,7 @@
 	</insert>
 	
 	<!-- 모임 실시간 검색 -->
-	<select id="selectMemberSrch" parameterType="project.books.sys.cmmn.DataVO" resultType="project.books.sys.util.CamelMap">
+	<select id="selectMemberSrch" parameterType="project.books.sys.cmmn.SrchVO" resultType="project.books.sys.util.CamelMap">
 		/*MemberMapper.selectMemberSrch*/
 		select m.member_no 
 		     , m.name

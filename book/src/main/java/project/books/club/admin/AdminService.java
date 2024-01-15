@@ -17,7 +17,7 @@ public class AdminService {
 	
 	/**
 	 * 관리자 맴버 저장
-	 * @param DataVO
+	 * @param SrchVO
 	 * @throw Exception
 	 */
 	public void saveAdminMember(MemberVO vo) throws Exception{

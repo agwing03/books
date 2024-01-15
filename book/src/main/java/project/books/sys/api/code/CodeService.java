@@ -17,7 +17,7 @@ public class CodeService {
 	 * @throw Exception
 	 */
 	public CodeVO selectCmmnCodeDtlList(CodeVO vo) throws Exception{
-		vo.setDataList(codeMapper.selectCmmnCodeDtlList(vo));
+		vo.setCodeList(codeMapper.selectCmmnCodeDtlList(vo));
 		return vo;
 	}
 	

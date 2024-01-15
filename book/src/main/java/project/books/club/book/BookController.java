@@ -1,14 +1,11 @@
 package project.books.club.book;
 
-import java.util.HashMap;
-
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import project.books.sys.cmmn.DataVO;
-import project.books.sys.util.CamelMap;
+import project.books.sys.cmmn.SrchVO;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,8 +18,8 @@ public class BookController {
 	 * @param clubNo
 	 */
 	@RequestMapping("/book/getBookList.do")
-	public BookVO getBookList(
-			@RequestBody BookVO vo
+	public SrchVO getBookList(
+			@RequestBody SrchVO vo
 		) throws Exception {
 		return bookService.selectBookList(vo);
 	}
@@ -32,10 +29,11 @@ public class BookController {
 	 * @param BookVO
 	 */
 	@RequestMapping("/book/saveBook.do")
-	public void saveBook(
-			@RequestBody CamelMap param
+	public int saveBook(
+			@RequestBody BookVO vo
 		) throws Exception {
-		bookService.saveBook(param);
+		int cnt = bookService.saveBook(vo);
+		return cnt;
 	}
 	
 	/**
@@ -43,8 +41,8 @@ public class BookController {
 	 * @param clubNo
 	 */
 	@RequestMapping("/search.do")
-	public BookVO getSearch(
-			@RequestBody BookVO vo
+	public SrchVO getSearch(
+			@RequestBody SrchVO vo
 		) throws Exception {
 		return bookService.selectSearchData(vo);
 	}
@@ -54,8 +52,8 @@ public class BookController {
 	 * @param srchText
 	 */
 	@RequestMapping("/book/selectBookSrch.do")
-	public DataVO selectBookSrch(
-			@RequestBody DataVO vo
+	public SrchVO selectBookSrch(
+			@RequestBody SrchVO vo
 		) throws Exception {
 		return bookService.selectBookSrch(vo);
 	}

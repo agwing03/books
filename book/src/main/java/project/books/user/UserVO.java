@@ -31,4 +31,7 @@ public class UserVO extends CommonVO{
     private String meetingGbn;
     private List<CamelMap> member;
     
+	//목록 및 정보 RETURN
+	private List<CamelMap> dataList;
+    
 }

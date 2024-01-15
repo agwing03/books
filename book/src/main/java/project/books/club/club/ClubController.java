@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import project.books.sys.cmmn.SrchVO;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,8 +18,8 @@ public class ClubController {
 	 * @param clubNo
 	 */
 	@RequestMapping("/club/getMeetingList.do")
-	public ClubVO getMeetingList(
-			@RequestBody ClubVO vo
+	public SrchVO getMeetingList(
+			@RequestBody SrchVO vo
 		) throws Exception {
 		return clubService.selectMeetingList(vo);
 	}

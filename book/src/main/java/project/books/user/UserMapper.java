@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import project.books.club.member.MemberVO;
-import project.books.sys.cmmn.DataVO;
+import project.books.sys.cmmn.SrchVO;
 import project.books.sys.util.CamelMap;
 
 

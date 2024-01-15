@@ -1,8 +1,11 @@
 package project.books.sys.api.menu;
 
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 import project.books.sys.cmmn.CommonVO;
+import project.books.sys.util.CamelMap;
 
 @Getter
 @Setter
@@ -14,4 +17,7 @@ public class MenuVO extends CommonVO{
     private int menuUpperNo;	//상위메뉴번호
     private String menuUrl;		//메뉴URL
     private String menuDc;		//메뉴설명
+    
+  //목록 및 정보 RETURN
+  	private List<CamelMap> menuList;
 }
