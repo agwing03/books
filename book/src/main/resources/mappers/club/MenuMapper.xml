@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="project.books.sys.api.menu.MenuMapper">
+<mapper namespace="project.books.club.cmmn.menu.MenuMapper">
 	
 	<!-- 메뉴 목록 -->
-	<select id="selectMenuList" parameterType="project.books.sys.api.menu.MenuVO" resultType="project.books.sys.util.CamelMap">
+	<select id="selectMenuList" parameterType="project.books.club.cmmn.menu.MenuVO" resultType="project.books.sys.util.CamelMap">
 		/*MenuMapper.selectMenuList*/
 		select m.* 
 			 , (select count(*) from menu mn where mn.menu_upper_no = m.menu_no) as sub_menu_cnt 

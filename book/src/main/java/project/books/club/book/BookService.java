@@ -3,7 +3,7 @@ package project.books.club.book;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import project.books.sys.cmmn.SrchVO;
+import project.books.club.cmmn.SrchVO;
 
 @Service
 @RequiredArgsConstructor

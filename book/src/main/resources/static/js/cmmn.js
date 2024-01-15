@@ -4,7 +4,7 @@
   */
 jQuery(document).ready(function(){
 	//nav
-	fetchApi('/sys/getMenuList.do', 'POST', {clubNo:'1'}, 'nav')
+	fetchApi('/menu/getMenuList.do', 'POST', {clubNo:'1'}, 'nav')
 	//공통검색
 	jQuery("#top-bar").load("/cmmn/topBar.html")
 	//날짜 셋팅
@@ -138,22 +138,37 @@ async function fetchApi(url, method, body, gbn, headers = {}) {
 		headers: {"Content-Type": "application/json", ...headers},
     	body: JSON.stringify(body)
     }
+    console.log(url)
 	const res = await fetch(url, options)
-	console.log(res.ok)
 	const data = await res.json()
-	console.log(data)
+	console.log("::::fetchApi:::::")
+	console.log(res)
 	if (res.ok) {
-		if (gbn === 'nav'){ //side-nav html 생성
+		//side-nav html 생성
+		if (gbn === 'nav'){
 			nav(data.menuList);
-		} else if (gbn === 'aside'){ //side html 생성
+			
+		//side html 생성
+		} else if (gbn === 'aside'){ 
 			aside(data.dataList);
-		} else if (gbn === 'dataList'){ //list 데이터 리턴
+			
+		//list 데이터 리턴
+		} else if (gbn === 'dataList'){ 
 			return data.dataList;
-		} else if (gbn === 'save'){ //DB 데이터 적재
+			
+		//save DB 데이터 적재
+		} else if (gbn === 'save'){ 
 			alert('저장 되었습니다.')
 			return true;
-		} else if (gbn === 'search'){ //공통 search 결과 조회
+			
+		//공통 search 결과 조회
+		} else if (gbn === 'search'){ 
 			return data.dataList;
+		
+		//공통 search 결과 조회
+		} else if (gbn === 'codeArea'){ 
+			console.log('::::::::::srchCodeAreaList1111')
+			return data.codeList;
 		}
 	} else {
     	throw Error(data)
@@ -185,10 +200,11 @@ async function cmmnCode(codeId, target, headers = {}) {
 	const res = await fetch('/code/getCmmnCodeDtlList.do', options)
 	const data = await res.json()
 	if (res.ok) {
-		if(data.dataList.length > 0){
+		if(data.codeList.length > 0){
+			jQuery("#"+target).empty()
 			//optionHtml = '<option value="">전체</option>'
-			for(var i = 0; i < data.dataList.length; i++){
-				optionHtml += '<option value="'+data.dataList[i].code+'">'+data.dataList[i].codeNm+'</option>'
+			for(var i = 0; i < data.codeList.length; i++){
+				optionHtml += '<option value="'+data.codeList[i].code+'">'+data.codeList[i].codeNm+'</option>'
 			}
 			jQuery("#"+target).append(optionHtml);
 		}

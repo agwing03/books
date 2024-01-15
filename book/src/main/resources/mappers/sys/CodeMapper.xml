@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="project.books.sys.api.code.CodeMapper">
+<mapper namespace="project.books.sys.cmmn.code.CodeMapper">
 	
 	<!-- 공통 코드 목록(상세) -->
-	<select id="selectCmmnCodeDtlList" parameterType="project.books.sys.api.code.CodeVO" resultType="project.books.sys.util.CamelMap">
+	<select id="selectCmmnCodeDtlList" parameterType="project.books.sys.cmmn.code.CodeVO" resultType="project.books.sys.util.CamelMap">
 		/*CodeMapper.selectCmmnCodeDtlList*/
 		select code_dtl_id as code  
 		     , code_dtl_nm as code_nm
@@ -16,7 +16,7 @@
 	</select>
 		
 	<!-- 활동 지역 목록 -->
-	<select id="selectCodeAreaList" parameterType="project.books.sys.api.code.CodeVO" resultType="project.books.sys.util.CamelMap">
+	<select id="selectCodeAreaList" resultType="project.books.sys.util.CamelMap">
 		/*CodeMapper.selectCodeAreaList*/
 		select code_id 
 		     , code_nm 

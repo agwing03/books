@@ -1,4 +1,4 @@
-package project.books.sys.api.menu;
+package project.books.club.cmmn.menu;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,7 +15,7 @@ public class MenuController {
 	 * 매뉴 목록 조회
 	 * @param clubNo
 	 */
-	@RequestMapping("/sys/getMenuList.do")
+	@RequestMapping("/menu/getMenuList.do")
 	public MenuVO getMenuList(
 			MenuVO vo
 		) throws Exception {

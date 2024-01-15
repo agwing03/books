@@ -1,4 +1,4 @@
-package project.books.sys.api.code;
+package project.books.sys.cmmn.code;
 
 import org.springframework.stereotype.Service;
 
@@ -28,7 +28,7 @@ public class CodeService {
 	 * @throw Exception
 	 */
 	public CodeVO selectCodeAreaList(CodeVO vo) throws Exception{
-		vo.setDataList(codeMapper.selectCodeAreaList(vo));
+		vo.setCodeList(codeMapper.selectCodeAreaList());
 		return vo;
 	} 
 }

@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import project.books.sys.cmmn.SrchVO;
+import project.books.club.cmmn.SrchVO;
 import project.books.sys.util.CamelMap;
 
 

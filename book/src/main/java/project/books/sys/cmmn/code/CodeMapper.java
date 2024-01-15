@@ -1,4 +1,4 @@
-package project.books.sys.api.code;
+package project.books.sys.cmmn.code;
 
 import java.util.List;
 
@@ -24,5 +24,5 @@ public interface CodeMapper {
 	 * @return list
 	 * @throw Exception
      */
-	List<CamelMap> selectCodeAreaList(CodeVO vo);
+	List<CamelMap> selectCodeAreaList();
 }

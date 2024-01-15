@@ -4,7 +4,7 @@ import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
-import project.books.sys.cmmn.CommonVO;
+import project.books.club.cmmn.CommonVO;
 import project.books.sys.util.CamelMap;
 
 @Getter

@@ -1,10 +1,10 @@
-package project.books.sys.api.code;
+package project.books.sys.cmmn.code;
 
 import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
-import project.books.sys.cmmn.CommonVO;
+import project.books.club.cmmn.CommonVO;
 import project.books.sys.util.CamelMap;
 
 @Getter

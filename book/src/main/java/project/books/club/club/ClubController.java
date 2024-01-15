@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import project.books.sys.cmmn.SrchVO;
+import project.books.club.cmmn.SrchVO;
 
 @RestController
 @RequiredArgsConstructor

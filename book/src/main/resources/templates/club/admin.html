@@ -40,22 +40,33 @@
 			jQuery("#timeMinute").append(html) 		    
 		}
 		
-		//활동지역 시도 
+		//활동지역1 시도 
+		srchCodeAreaList()
 		
+		// 활동지역2 시구군
+		srchCodeArea2List('SEOUL')//초기 조회
+		jQuery("#actionAreaLv1").on("change", function() {		
+			srchCodeArea2List($(this).val())
+		})
 	})
 	
-	// 활동지역 시도(공통코드)
-	function srchCodeAreaList(tableLayout, params){ 
-		fetchApi('/code/getCodeAreaList.do', 'POST', params, 'dataList')
+	// 활동지역1 시도(공통코드)
+	function srchCodeAreaList(){ 
+		fetchApi('/code/getCodeAreaList.do', 'POST', {}, 'codeArea')
 			.then((data) => {
 				if(data != null){
-					for (const area in data.dataList){
-						let html = '<option value="'+area.codeId+'">'+area.codeNm+'</option>'
+					for (const idx in data){
+						let html = '<option value="'+data[idx].codeId+'">'+data[idx].codeNm+'</option>'
 						jQuery("#actionAreaLv1").append(html);
 					}
 				}
 			}).catch((error) => console.log(error))
 	}
+	// 활동지역2 시구군(공통코드)
+	function srchCodeArea2List(areaCd){ 
+		cmmnCode(areaCd, 'actionAreaLv2')
+	}
+	
 	
 	/** 화면 동적 변경 **/
 	// 맴버 form 추가 
@@ -335,14 +346,8 @@
                     	<input type="text" class="form-control" maxlength="8" placeholder="가입일" id="joinDt">
                     </div>
 	                <div class="flex flex-col sm:flex-row items-center mt-2">
-						<select class="form-select mr-2" aria-label="Default select example" style="width: 150px;" id="actionAreaLv1">
-                        </select>
-                        <select class="form-select" aria-label="Default select example" style="width: 150px;" id="actionAreaLv2">
-                            <option value="MEETING">강서구</option>
-                            <option value="SPECIAL">양천구</option>
-                            <option value="SUDDENLY">영등포구</option>
-                            <option value="APPOINTED">마포구</option>
-                        </select>
+						<select class="form-select mr-2" aria-label="Default select example" style="width: 150px;" id="actionAreaLv1"></select>
+                        <select class="form-select" aria-label="Default select example" style="width: 150px;" id="actionAreaLv2"></select>
                         <div class="flex flex-col sm:flex-row ml-8 mt-2">
 					        <div class="form-check mr-2 mt-2 sm:mt-0"> 
 					       		<input class="form-check-input" type="radio" name="sex" value="MALE" id="sexMale" > 

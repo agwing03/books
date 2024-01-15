@@ -2,11 +2,12 @@ package project.books.club.member;
 
 import lombok.Getter;
 import lombok.Setter;
-import project.books.sys.cmmn.CommonVO;
+import project.books.club.cmmn.CommonVO;
 
 @Getter
 @Setter
 public class MemberVO extends CommonVO{
+	private String saveFlag;	//I,U
 	//member 
     private int memberNo = 0;	//사용자번호
     private String memberId;	//사용자ID
@@ -40,5 +41,15 @@ public class MemberVO extends CommonVO{
     private String memo;		//메모
     private String rejoinYn;	//재가입여부
     private String blackYn;		//블랙리스트여부
+    
+    //SAVE 구분
+    String getSaveFlag(){
+    	if(this.memberNo > 0) {
+        	this.saveFlag = "U";
+        }else {
+        	this.saveFlag = "I";
+        }
+    	return this.saveFlag;
+    }
 }
 

@@ -2,7 +2,7 @@ package project.books.club.main;
 
 import lombok.Getter;
 import lombok.Setter;
-import project.books.sys.cmmn.CommonVO;
+import project.books.club.cmmn.CommonVO;
 
 @Getter
 @Setter

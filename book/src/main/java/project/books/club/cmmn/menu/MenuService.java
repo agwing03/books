@@ -1,4 +1,4 @@
-package project.books.sys.api.menu;
+package project.books.club.cmmn.menu;
 
 import org.springframework.stereotype.Service;
 

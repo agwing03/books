@@ -1,4 +1,4 @@
-package project.books.sys.api.code;
+package project.books.sys.cmmn.code;
 
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +17,7 @@ public class CodeController {
 	 * @param clubNo
 	 */
 	@RequestMapping("/code/getCmmnCodeDtlList.do")
-	public CodeVO getCodeDtlList(
+	public CodeVO getCmmnCodeDtlList(
 			@RequestBody CodeVO vo
 		) throws Exception {
 		return codeService.selectCmmnCodeDtlList(vo);
