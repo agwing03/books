@@ -22,5 +22,16 @@ public class CodeController {
 		) throws Exception {
 		return codeService.selectCmmnCodeDtlList(vo);
 	}
+	
+	/**
+	 * 활동 지역 목록 조회
+	 * @param clubNo
+	 */
+	@RequestMapping("/code/getCodeAreaList.do")
+	public CodeVO getCodeAreaList(
+			@RequestBody CodeVO vo
+		) throws Exception {
+		return codeService.selectCodeAreaList(vo);
+	}
 }
  

@@ -55,6 +55,44 @@
 	<!-- 맴버 등록 -->
 	<insert id="insertMember" parameterType="project.books.club.member.MemberVO">
 		/*MemberMapper.insertMember*/
+		insert into member (
+			  member_id
+			, member_pwd
+			, author_id
+			, nick_nm
+			, name
+			, sex
+			, brthday
+			, phon_no
+			, email
+			, intro
+			, account_no
+			, action_area_lv1
+			, action_area_lv2
+			, frst_reg_no
+			, frst_reg_dt
+		) values (
+			  concat('M', date_format(now(), '%Y%m%d%H%i%S'))
+			, 'test123'
+			, '9'
+			, #{nickNm}
+			, #{name}
+			, #{sex}
+			, #{brthday}
+			, #{phonNo}
+			, #{email}
+			, #{intro}
+			, #{accountNo}
+			, #{actionAreaLv1}
+			, #{actionAreaLv2}
+			, #{regNo}
+			, now()
+		)
+	</insert>
+	
+	<!-- 맴버 등록 -->
+	<insert id="insertClubMember" parameterType="project.books.club.member.MemberVO">
+		/*MemberMapper.insertClubMember*/
 		insert into club_member(
 			  club_no
 			, member_no

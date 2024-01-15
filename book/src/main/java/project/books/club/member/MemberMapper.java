@@ -25,7 +25,7 @@ public interface MemberMapper {
 	 * @param model
 	 * @throw Exception
      */
-	void insertMember(MemberVO vo);
+	int insertMember(MemberVO vo);
 	
 	/**
 	 * 맴버 수정
@@ -41,4 +41,11 @@ public interface MemberMapper {
 	 * @throw Exception
      */
 	List<CamelMap> selectMemberSrch(DataVO vo);
+	
+    /**
+	 * 모임 맴버 저장
+	 * @param model
+	 * @throw Exception
+     */
+	int insertClubMember(MemberVO vo);
 }

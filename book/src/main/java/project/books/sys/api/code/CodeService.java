@@ -20,4 +20,15 @@ public class CodeService {
 		vo.setDataList(codeMapper.selectCmmnCodeDtlList(vo));
 		return vo;
 	}
+	
+	/**
+	 * 활동 지역 목록 조회
+	 * @param codeId
+	 * @return list
+	 * @throw Exception
+	 */
+	public CodeVO selectCodeAreaList(CodeVO vo) throws Exception{
+		vo.setDataList(codeMapper.selectCodeAreaList(vo));
+		return vo;
+	} 
 }

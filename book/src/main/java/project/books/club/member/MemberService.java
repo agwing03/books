@@ -32,7 +32,16 @@ public class MemberService {
 	 * @throw Exception
 	 */
 	public void saveMember(MemberVO vo) throws Exception{
-		memberMapper.insertMember(vo);
+		if(vo.getSaveFlag().equals("I")) {
+			//member 등록
+			memberMapper.insertMember(vo);
+			
+			//club_member 등록
+			memberMapper.insertClubMember(vo);
+		}else {
+			memberMapper.updateMember(vo);
+		}
+		
 	}
 	
 	

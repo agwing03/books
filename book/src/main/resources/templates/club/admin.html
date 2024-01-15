@@ -39,16 +39,20 @@
 			var html = "<option value="+i+">"+i+"</option>"
 			jQuery("#timeMinute").append(html) 		    
 		}
+		
+		//활동지역 시도 
+		
 	})
 	
-	// 목록 데이터 조회
-	function srchList(tableLayout, params){ 
-		fetchApi('/book/getBookList.do', 'POST', params, 'dataList')
+	// 활동지역 시도(공통코드)
+	function srchCodeAreaList(tableLayout, params){ 
+		fetchApi('/code/getCodeAreaList.do', 'POST', params, 'dataList')
 			.then((data) => {
 				if(data != null){
-					tableLayout.setData(data)
-				}else{
-					alert("데이터 없음")
+					for (const area in data.dataList){
+						let html = '<option value="'+area.codeId+'">'+area.codeNm+'</option>'
+						jQuery("#actionAreaLv1").append(html);
+					}
 				}
 			}).catch((error) => console.log(error))
 	}
@@ -329,9 +333,6 @@
                     </div>
 	                <div class="flex flex-col sm:flex-row items-center mt-2">
 						<select class="form-select mr-2" aria-label="Default select example" style="width: 150px;" id="actionAreaLv1">
-                            <option value="seoul">서울</option>
-                            <option value="Incheon">인천</option>
-                            <option value="gyeonggi-do">경기</option>
                         </select>
                         <select class="form-select" aria-label="Default select example" style="width: 150px;" id="actionAreaLv2">
                             <option value="MEETING">강서구</option>

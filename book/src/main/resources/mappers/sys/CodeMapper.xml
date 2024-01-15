@@ -14,4 +14,15 @@
 		</if>
 		   order by ccd.code_dtl_order asc 
 	</select>
+		
+	<!-- 활동 지역 목록 -->
+	<select id="selectCodeAreaList" parameterType="project.books.sys.api.code.CodeVO" resultType="project.books.sys.util.CamelMap">
+		/*CodeMapper.selectCodeAreaList*/
+		select code_id 
+		     , code_nm 
+		  from cmmn_code
+		 where 1=1 
+		   and code_id in ('GYEONGGI-DO','INCHEON','SEOUL')
+		 order by code_id desc 
+	</select>
 </mapper>
