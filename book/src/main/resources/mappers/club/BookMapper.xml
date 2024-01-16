@@ -41,7 +41,7 @@
 	</sql>
 	
 	<!-- 도서 등록 -->
-	<insert id="insertBook" useGeneratedKeys="true" keyProperty="bookNo"  parameterType="project.books.club.book.BookVO">
+	<insert id="insertBook" useGeneratedKeys="true" keyProperty="bookNo" parameterType="project.books.club.book.BookVO">
 		/*BookMapper.insertBook*/
 		insert into books (
 			  book_title

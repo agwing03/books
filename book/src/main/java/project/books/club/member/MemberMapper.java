@@ -32,7 +32,7 @@ public interface MemberMapper {
 	 * @param model
 	 * @throw Exception
      */
-	void updateMember(MemberVO vo);
+	int updateMember(MemberVO vo);
 	
 	/**
 	 * 맴버 목록 조회

@@ -43,11 +43,17 @@
 		//활동지역1 시도 
 		srchCodeAreaList()
 		
-		// 활동지역2 시구군
+		//활동지역2 시구군
 		srchCodeArea2List('SEOUL')//초기 조회
 		jQuery("#actionAreaLv1").on("change", function() {		
 			srchCodeArea2List($(this).val())
 		})
+		
+		//적합성 체크
+		jQuery("input:text[numberOnly]").on("keyup", function() {
+      		$(this).val($(this).val().replace(/[^0-9]/g,""))
+      	})
+   
 	})
 	
 	// 활동지역1 시도(공통코드)
@@ -120,21 +126,59 @@
 	}
 	
 	// 신규 맴버 등록
-	function saveNewMember(){ 
+	function saveNewMember(){
+		//validation 
+		var memberNm = jQuery('#memberNm').val()
+		if(!memberNm){
+			alert('이름은 필수 입력 값입니다.')
+			return false
+		}
+		var nickNm = jQuery('#nickNm').val()
+		if(!nickNm){
+			alert('닉네임은 필수 입력 값입니다.')
+			return false
+		}
+		var brthday = jQuery('#brthday').val()
+		if(!brthday){
+			alert('생년월일은 필수 입력 값입니다.')
+			return false
+		}
+		var joinDt = jQuery('#joinDt').val()
+		if(!joinDt){
+			alert('가입일은 필수 입력 값입니다.')
+			return false
+		}
+		if(jQuery("input[name=sex]:radio:checked").length == 0){
+			alert('성별을 필수 입력 값입니다.')
+			return false
+		}
+		var actionAreaLv1 = jQuery('#actionAreaLv1').val()
+		var actionAreaLv2 = jQuery('#actionAreaLv2').val()
+		var email = ''
+		if(jQuery('#email1').val() && jQuery('#email2').val()){
+			email = jQuery('#email1').val()+jQuery('#email2').val()
+		}
+		var phonNo = ''
+		if(jQuery('#phonNo2').val() && jQuery('#phonNo3').val()){
+			phonNo = jQuery('#phonNo1').val()+'-'+jQuery('#phonNo2').val()+'-'+jQuery('#phonNo3').val()
+		}
+		
+		//data set
 		var saveData = {
-			'saveFlag':'I',
-			'name':jQuery('#memberNm').val(),
+			'name': memberNm,
 			'nickNm':jQuery('#nickNm').val(),
 			'brthday':jQuery('#brthday').val(),
 			'joinDt':jQuery('#joinDt').val(),
-			'sex':jQuery('input[name=sex]').val(),
-			'actionAreaLv1':jQuery('#actionAreaLv1').val(),
+			'sex':jQuery('input[name=sex]:checked').val(),
+			'actionAreaLv1': jQuery('#actionAreaLv1').val(),
 			'actionAreaLv2':jQuery('#actionAreaLv2').val(),
-			'email':jQuery('#email1').val()+'@'+jQuery('#email2').val(),
-			'phonNo':jQuery('#phonNo1').val()+'-'+jQuery('#phonNo2').val()+'-'+jQuery('#phonNo3').val()
+			'email': email,
+			'phonNo': phonNo
 		}
+		console.log(saveData)
 		if(saveData){
-			fetchApi('/club/saveMember.do', 'POST', saveData, 'save')
+			fetchApi('/member/saveMember.do', 'POST', saveData, 'save')
+			jQuery('.newMember').val('')
 		}
 	}
 	
@@ -224,8 +268,8 @@
 						<select class="form-select" aria-label="Default select example" style="width: 150px;" id="meetingGbn">
                             <option value="MEETING">정기모임</option>
                             <option value="SPECIAL">이벤트</option>
-                            <option value="SUDDENLY">벙개</option value="">
-                            <option value="APPOINTED">지정도서</option value="">
+                            <option value="SUDDENLY">벙개</option>
+                            <option value="APPOINTED">지정도서</option>
                         </select>
                     </div>
                     <div class="flex flex-col sm:flex-row items-center mt-2">
@@ -313,7 +357,7 @@
             </div>
             <div class="p-5">
 	            <div class="preview">
-	                <div class="flex flex-col sm:flex-row items-center mt-3">
+	                <div class="flex flex-col sm:flex-row items-center">
 	                	<!-- 신규 도서 -->
 	                    <div class="dropdown mr-2" style="width: 100%;">
 	                  		<input type="text" class="form-control dropdown-toggle" aria-expanded="false" data-tw-toggle="dropdown" placeholder="신규 도서" id="bookTitleL1" onkeyup="getSrchBook(this.value, 'L1');">
@@ -338,35 +382,50 @@
             <div class="p-5">
 	            <div class="preview">
 	            	<div class="flex flex-col sm:flex-row items-center mt-2">
-                    	<input type="text" class="form-control mr-2" placeholder="이름" id="name">
-                    	<input type="text" class="form-control" placeholder="닉네임" id="nickNm">
+	            		<!-- 닉네임 -->
+                    	<input type="text" class="form-control mr-2 newMember" placeholder="닉네임" id="nickNm">
+                    	<!-- 이름 -->
+                    	<input type="text" class="form-control newMember" placeholder="이름" id="memberNm">
                     </div>
+                    
                     <div class="flex flex-col sm:flex-row items-center mt-2">
-                    	<input type="text" class="form-control mr-2" maxlength="8" placeholder="생년월일" id="brthday">
-                    	<input type="text" class="form-control" maxlength="8" placeholder="가입일" id="joinDt">
+                    	<!-- 생년월일 -->
+                    	<input type="text" class="form-control mr-2 newMember" maxlength="8" placeholder="생년월일" id="brthday" maxlength="8" numberOnly>
+                    	<!-- 가입일 -->
+                    	<input type="text" class="form-control newMember" maxlength="8" placeholder="가입일" id="joinDt" maxlength="8" numberOnly>
                     </div>
+                    
 	                <div class="flex flex-col sm:flex-row items-center mt-2">
+	                	<!-- 활동지역 -->
 						<select class="form-select mr-2" aria-label="Default select example" style="width: 150px;" id="actionAreaLv1"></select>
                         <select class="form-select" aria-label="Default select example" style="width: 150px;" id="actionAreaLv2"></select>
+                        <!-- 성별 -->
                         <div class="flex flex-col sm:flex-row ml-8 mt-2">
-					        <div class="form-check mr-2 mt-2 sm:mt-0"> 
-					       		<input class="form-check-input" type="radio" name="sex" value="MALE" id="sexMale" > 
+					        <div class="form-check mr-5 mt-2 sm:mt-0"> 
+					       		<input class="form-check-input" type="radio" name="sex" value="MALE" id="sexMale"> 
 					        	<label class="form-check-label" for="sexMale">남성</label> 
 					        </div>
 					        <div class="form-check mr-2 mt-2 sm:mt-0"> 
-					        	<input class="form-check-input" type="radio" name="sex" value="FEMALE" id="sexFemale"> 
+					        	<input class="form-check-input" type="radio" name="sex" value="FEMALE" id="sexFemale" checked="checked"> 
 					        	<label class="form-check-label" for="sexFemale">여성</label> 
 					        </div>
 					    </div>
                     </div>
+                    <!-- Email -->
                     <div class="flex flex-col sm:flex-row items-center mt-2">
-                    	<input type="text" class="form-control mr-2" placeholder="example"  style="width: 200px;" id="email1">@
-                    	<input type="text" class="form-control ml-2" placeholder="naver.com"  style="width: 200px;" id="email2"> 
+                    	<input type="text" class="form-control mr-2 newMember" placeholder="example"  style="width: 200px;" id="email1">@ 
+                    	<select class="form-select newMember" aria-label="Default select example" style="width: 250px;" id="email2">
+                            <option value="@naver.com">naver.com</option>
+                            <option value="@kakao.com">kakao.com</option>
+                            <option value="@gmail.com">gmail.com</option>
+                            <option value="@hanmail.net">hanmail.net</option>
+                        </select>
                     </div>
+                    <!-- 휴대폰번호 -->
                     <div class="flex flex-col sm:flex-row items-center mt-2">
-                    	<input type="text" class="form-control mr-2" placeholder="010" value="010" style="width: 100px;" id="phonNo1">
-                    	<input type="text" class="form-control mr-2" placeholder="0000" style="width: 100px;" id="phonNo2">
-                    	<input type="text" class="form-control mr-12" placeholder="0000" style="width: 100px;" id="phonNo3">
+                    	<input type="text" class="form-control mr-2 newMember" placeholder="010" value="010" style="width: 100px;" id="phonNo1" maxlength="3" readonly>
+                    	<input type="text" class="form-control mr-2 newMember" placeholder="0000" style="width: 100px;" id="phonNo2" maxlength="4" numberOnly>
+                    	<input type="text" class="form-control mr-12 newMember" placeholder="0000" style="width: 100px;" id="phonNo3" maxlength="4" numberOnly>
                     </div>
 	            </div>
 	        </div>

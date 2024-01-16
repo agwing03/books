@@ -53,7 +53,7 @@
 	</sql>
 	
 	<!-- 맴버 등록 -->
-	<insert id="insertMember" parameterType="project.books.club.member.MemberVO">
+	<insert id="insertMember" useGeneratedKeys="true" keyProperty="memberNo" parameterType="project.books.club.member.MemberVO">
 		/*MemberMapper.insertMember*/
 		insert into member (
 			  member_id
@@ -74,7 +74,7 @@
 		) values (
 			  concat('M', date_format(now(), '%Y%m%d%H%i%S'))
 			, 'test123'
-			, '9'
+			, 'MEMBER'
 			, #{nickNm}
 			, #{name}
 			, #{sex}
@@ -85,7 +85,7 @@
 			, #{accountNo}
 			, #{actionAreaLv1}
 			, #{actionAreaLv2}
-			, #{regNo}
+			, #{userNo}
 			, now()
 		)
 	</insert>

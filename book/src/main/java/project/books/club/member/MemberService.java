@@ -1,9 +1,12 @@
 package project.books.club.member;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import project.books.club.cmmn.SrchVO;
+import project.books.sys.util.CamelMap;
 
 @Service
 @RequiredArgsConstructor
@@ -13,8 +16,8 @@ public class MemberService {
 	
 	/**
 	 * 맴버 목록 조회
-	 * @param clubNo
-	 * @return list
+	 * @param SrchVO
+	 * @return List<CamelMap>
 	 * @throw Exception
 	 */
 	public SrchVO selectMemberList(SrchVO vo) throws Exception{
@@ -27,28 +30,28 @@ public class MemberService {
 	
 	/**
 	 * 맴버 저장
-	 * @param model
-	 * @return model
+	 * @param MemberVO
 	 * @throw Exception
 	 */
-	public void saveMember(MemberVO vo) throws Exception{
+	public MemberVO saveMember(MemberVO vo) throws Exception{
+		int setCnt = 0;
 		if(vo.getSaveFlag().equals("I")) {
 			//member 등록
-			memberMapper.insertMember(vo);
+			setCnt += memberMapper.insertMember(vo);
 			
 			//club_member 등록
-			memberMapper.insertClubMember(vo);
+			setCnt += memberMapper.insertClubMember(vo);
 		}else {
-			memberMapper.updateMember(vo);
+			setCnt += memberMapper.updateMember(vo);
 		}
-		
+		vo.setSaveCnt(setCnt);
+		return vo;
 	}
 	
 	
 	/**
-	 * 맴버 목록 조회
-	 * @param SrchVO
-	 * @return SrchVO
+	 * 맴버 실시간 검색
+	 * @param String
 	 * @throw Exception
 	 */
 	public SrchVO selectMemberSrch(SrchVO vo) throws Exception{

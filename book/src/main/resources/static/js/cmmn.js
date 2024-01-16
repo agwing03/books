@@ -138,11 +138,8 @@ async function fetchApi(url, method, body, gbn, headers = {}) {
 		headers: {"Content-Type": "application/json", ...headers},
     	body: JSON.stringify(body)
     }
-    console.log(url)
 	const res = await fetch(url, options)
 	const data = await res.json()
-	console.log("::::fetchApi:::::")
-	console.log(res)
 	if (res.ok) {
 		//side-nav html 생성
 		if (gbn === 'nav'){
@@ -157,17 +154,15 @@ async function fetchApi(url, method, body, gbn, headers = {}) {
 			return data.dataList;
 			
 		//save DB 데이터 적재
-		} else if (gbn === 'save'){ 
-			alert('저장 되었습니다.')
-			return true;
+		} else if (gbn === 'save'){
+			alert(data.msg)
 			
 		//공통 search 결과 조회
 		} else if (gbn === 'search'){ 
 			return data.dataList;
 		
-		//공통 search 결과 조회
+		//공통 활동지역 결과 조회
 		} else if (gbn === 'codeArea'){ 
-			console.log('::::::::::srchCodeAreaList1111')
 			return data.codeList;
 		}
 	} else {

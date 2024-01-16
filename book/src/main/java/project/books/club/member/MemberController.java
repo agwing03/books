@@ -15,7 +15,8 @@ public class MemberController {
 	 
 	/**
 	 * 맴버 목록 조회
-	 * @param clubNo
+	 * @param SrchVO
+	 * @throw Exception
 	 */
 	@RequestMapping("/member/getMemberList.do")
 	public SrchVO getMemberList(
@@ -26,18 +27,21 @@ public class MemberController {
 	
 	/**
 	 * 맴버 저장
-	 * @param clubNo
+	 * @param MemberVO
+	 * @throw Exception
 	 */
 	@RequestMapping("/member/saveMember.do")
-	public void saveMember(
+	public MemberVO saveMember(
 			@RequestBody MemberVO vo
 		) throws Exception {
-		memberService.saveMember(vo);
+		vo = memberService.saveMember(vo);
+		return vo;
 	}
 	
 	/**
 	 * 맴버 실시간 검색
-	 * @param srchText
+	 * @param String
+	 * @throw Exception
 	 */
 	@RequestMapping("/member/selectMemberSrch.do")
 	public SrchVO selectMemberSrch(
