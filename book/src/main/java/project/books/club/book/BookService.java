@@ -32,7 +32,6 @@ public class BookService {
 	 */
 	public int saveBook(BookVO vo) throws Exception{
 		//작성자
-		vo.setRegNo(2); //차후 수정
 		int cnt = bookMapper.insertBook(vo);
 		System.out.println(vo.getBookNo());
 		System.out.println(cnt);
