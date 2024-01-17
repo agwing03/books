@@ -42,11 +42,12 @@ public interface BookMapper {
 	
 	
 	/**
-	 * 서평 생성
+	 * 서평 등록
 	 * @param CamelMap
+	 * @return integer
 	 * @throw Exception
      */
-	void insertBookEval(CamelMap data);
+	int insertBookEval(BookVO vo);
 	
 	/**
 	 * 도서 실시간 검색

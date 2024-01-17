@@ -126,4 +126,28 @@
 		    or b.book_writer like concat('%',#{srchText},'%')
 		 order by b.book_title asc 
 	</select>
+	
+	<!-- 도서 등록 -->
+	<insert id="insertBookEval" useGeneratedKeys="true" keyProperty="bookNo" parameterType="project.books.club.book.BookVO">
+		/*bookMapper.insertBookEval*/
+		insert into books_eval (
+			  book_no
+			, club_no
+			, member_no
+			, meeting_no
+			, book_score
+			, book_eval
+			, frst_reg_no
+			, frst_reg_dt
+		) values (
+			  #{bookNo}
+			, #{clubNo}
+			, #{memberNo}
+			, #{meetingNo}
+			, #{bookScore}
+			, #{bookEval}
+			, #{userNo}
+			, now()
+		)
+	</insert>
 </mapper>

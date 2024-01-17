@@ -87,15 +87,25 @@
 		let html = 
 			'<div class="mt-8" id="memberForm'+addNum+'">'+
 			'	<div class="flex flex-col sm:flex-row items-center mt-3">'+
-			'		<input type="text" class="form-control mr-2" placeholder="참석자" style="width: 150px;" id="memberNm'+addNum+'">'+
-			'		<input type="hidden" id="mamberNo'+addNum+'">'+
-			'		<input type="text" class="form-control" placeholder="도서명" id="bookTitle'+addNum+'">'+
+			'		<div class="dropdown mr-2" style="width: 150px;">'+
+			'			<input type="text" class="form-control dropdown-toggle" aria-expanded="false" data-tw-toggle="dropdown" placeholder="참석자" id="memberNm'+addNum+'" onkeyup="getSrchMember(this.value, \''+addNum+'\');">'+
+			'			<div class="dropdown-menu w-40">'+
+			'				<ul class="dropdown-content overflow-y-auto h-32" id="memberSrchBox'+addNum+'"></ul>'+
+			'			</div>'+
+			'		</div>'+
+			'		<div class="dropdown mr-2" style="width: 100%;">'+
+			'			<input type="text" class="form-control dropdown-toggle" aria-expanded="false" data-tw-toggle="dropdown" placeholder="도서명" id="bookTitle'+addNum+'" onkeyup="getSrchBook(this.value, \''+addNum+'\');">'+
+			'			<div class="dropdown-menu w-full">'+
+			'				<ul class="dropdown-content overflow-y-auto h-32" id="bookSrchBox'+addNum+'"></ul>'+
+			'			</div>'+
+			'		</div>'+
+			'		<button class="btn btn-danger ml-auto" onclick="delMember(\'memberForm'+addNum+'\')"><i data-lucide="minus" class="w-5 h-5"></i></button>'+
+			'		<input type="hidden" id="memberNo'+addNum+'">'+
 			'		<input type="hidden" id="bookNo'+addNum+'">'+
 			'	</div>'+
 			'	<div class="flex flex-col sm:flex-row items-center mt-3">'+
 			'		<input type="text" class="form-control mr-2" placeholder="한줄평" id="eval'+addNum+'">'+
-			'		<input type="text" class="form-control mr-2" placeholder="평점 10.0" style="width: 150px;" id="score'+addNum+'">'+
-			'		<button class="btn btn-danger ml-auto" onclick="delMember(\'memberForm'+addNum+'\')"><i data-lucide="minus" class="w-5 h-5"></i></button>'+
+			'		<input type="text" class="form-control" placeholder="평점 10.0" style="width: 150px;" id="score'+addNum+'">'+
 			'	</div>'+
 			'</div>'
 		jQuery("#memberForm").append(html);
@@ -104,6 +114,7 @@
 	// 모임 후기 _ 맴버 폼 삭제 
 	function delMember(target){ 
 		jQuery('#'+target).remove();
+		addNum = addNum-1
 	}
 	
 	
@@ -121,54 +132,70 @@
 			jQuery('#hostNm').focus()
 			return false
 		}
-		if(!jQuery('#hostNo').val()){
-			alert('모임 일자를 입력해주세요.')
-			jQuery('#memberNm').focus()
-			return false
-		}
 		if(!jQuery('#dday').val()){
 			alert('모임 일자를 입력해주세요.')
 			jQuery('#dday').focus()
 			return false
 		}
 		if(!jQuery('#place').val()){
-			alert('모임 일자를 입력해주세요.')
+			alert('모임 장소를 입력해주세요.')
 			jQuery('#place').focus()
 			return false
 		}
 		if(!jQuery('#cost').val()){
-			alert('모임 일자를 입력해주세요.')
+			alert('참석 비용을 입력해주세요.')
 			jQuery('#cost').focus()
 			return false
 		}
 		
 		//data set
-		var review = []
 		var saveData = {
 			// 모임 생성
 			'title':jQuery('#title').val(),
 			'meetingGbn':jQuery('#meetingGbn').val(),
 			'hostNo':jQuery('#hostNo').val(),
 			'dday':jQuery('#dday').val(),
-			'timeHour':jQuery('#timeHour').val(),
-			'timeMinute':jQuery('#timeMinute').val(),
+			'hour':jQuery('#timeHour').val(),
+			'minute':jQuery('#timeMinute').val(),
 			'place':jQuery('#place').val(),	
 			'cost':jQuery('#cost').val(),
 			'attendCnt':jQuery('#attendCnt').val(),
 			'comment':jQuery('#comment').val()
 		}
-		var member 
+		var review = []
 		for(var i = 1; i <= addNum; i++){
+			console.log(i)
+			if(!jQuery('#memberNo'+i).val()){
+				alert('참석자를 선택해주세요.')
+				jQuery('#memberNo'+i).focus()
+				return false
+			}
+			if(!jQuery('#bookNo'+i).val()){
+				alert('도서를 선택해주세요.')
+				jQuery('#bookNo'+i).focus()
+				return false
+			}
+			if(!jQuery('#eval'+i).val()){
+				alert('한줄평을 입력해주세요.')
+				jQuery('#eval'+i).focus()
+				return false
+			}
+			if(!jQuery('#score'+i).val()){
+				alert('평점을 입력해주세요.')
+				jQuery('#score'+i).focus()
+				return false
+			}
 			review.push({
-				'mamberNo': jQuery('#mamberNo'+i).val(),
+				'memberNo': jQuery('#memberNo'+i).val(),
 				'bookNo': jQuery('#bookNo'+i).val(),
 				'bookEval': jQuery('#eval'+i).val(),
 				'bookScore': jQuery('#score'+i).val()
 			})
 		}
 		saveData.reviewList = review
+		console.log(saveData);
 		if(saveData){
-			fetchApi('/club/saveMeetingReview.do', 'POST', saveData, 'save')
+			fetchApi('/meeting/saveMeetingReview.do', 'POST', saveData, 'save')
 		}
 	}
 	
@@ -262,7 +289,7 @@
 	/** 실시간 검색 기능 **/
 	// 도서 실시간 검색
 	function getSrchBook(text, num){
-		if(text.length > 1){
+		if(text.length > 0){
 			var params = {"srchText":text}
 			fetchApi('/book/selectBookSrch.do', 'POST', params, 'dataList')
 			.then((data) => {
@@ -279,7 +306,7 @@
 	
 	// 맴버 실시간 검색
 	function getSrchMember(text, num){
-		if(text.length > 1){
+		if(text.length > 0){
 			var params = {"srchText":text}
 			fetchApi('/member/selectMemberSrch.do', 'POST', params, 'dataList')
 			.then((data) => {

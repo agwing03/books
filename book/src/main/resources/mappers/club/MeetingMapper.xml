@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="project.books.club.club.ClubMapper">
+<mapper namespace="project.books.club.meeting.MeetingMapper">
 	
 	<!-- 모임 목록 -->
 	<select id="selectMeetingList" parameterType="project.books.club.cmmn.SrchVO" resultType="project.books.sys.util.CamelMap">
@@ -58,14 +58,15 @@
 	
 	
 	<!-- 모임 생성 -->
-	<insert id="insertMeeting" parameterType="project.books.club.club.ClubVO">
+	<insert id="insertMeeting" useGeneratedKeys="true" keyProperty="meetingNo" parameterType="project.books.club.meeting.MeetingVO">
 		/*clubMapper.insertMeeting*/
 		insert into meeting(
 			  club_no
 			, host_no
 			, title
 			, dday
-			, time
+			, hour
+			, minute
 			, place
 			, cost
 			, place_url
@@ -75,17 +76,42 @@
 			, frst_reg_dt
 		)values(
 			  #{clubNo}
-			, #{host_no}
+			, #{hostNo}
 			, #{title}
 			, #{dday}
-			, #{time}
+			, #{hour}
+			, #{minute}
 			, #{place}
 			, #{cost}
-			, #{place_url}
-			, #{attend_cnt}
-			, #{meeting_gbn}
-			, #{frst_reg_no}
-			, #{frst_reg_dt}
+			, #{placeUrl}
+			, #{attendCnt}
+			, #{meetingGbn}
+			, #{userNo}
+			, now()
+		)
+	</insert>
+	
+	<!-- 모임 참석자 -->
+	<insert id="insertMeetingMember" parameterType="project.books.club.meeting.MeetingVO">
+		/*meetingMapper.insertMeetingMember*/
+		insert into meeting_member(
+			  meeting_no
+			, member_no
+			, attend_yn
+			, after_party_yn
+			, div_amount
+			, calcul_yn
+			, reg_no
+			, reg_dt
+		)values(
+			  #{meetingNo}
+			, #{memberNo}
+			, #{attendYn}
+			, #{afterPartyYn}
+			, #{divAmount}
+			, #{calculYn}
+			, #{userNo}
+			, now()
 		)
 	</insert>
 </mapper>

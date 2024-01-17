@@ -12,7 +12,6 @@ public class CommonVO {
 	//공통 필드
 	private int clubNo = 1; 	// 클럽 NO
 	private int userNo = 2;		// 생성자 NO
-    private String regDt;		// 생성일자
     private int saveCnt = 0;	// 저장 건수
     
     //반환 메세지 

@@ -1,4 +1,4 @@
-package project.books.club.club;
+package project.books.club.meeting;
 
 import java.util.List;
 
@@ -9,7 +9,10 @@ import project.books.sys.util.CamelMap;
 
 @Getter
 @Setter
-public class ClubVO extends CommonVO{
+public class MeetingVO extends CommonVO{
+	private String saveFlag;	//I,U
+	
+	//meeting
     private int meetingNo = 0;	//모임번호
     private int hostNo = 0;		//맴버번호(club_member)
     private String title;		//모임명
@@ -23,6 +26,24 @@ public class ClubVO extends CommonVO{
     private String attendCnt;	//참석자수
     private String comment; 	//작성자 코멘트
     
+    //meeting_member
+    private int attend_no;		//모임 참석 번호
+    private int memberNo;		//참석자 번호
+    private String attendYn;	//참석여부
+    private String afterPartyYn;//뒤풀이참석여부
+    private String divAmount;	//분할금액
+    private String calculYn;	//정산(결재) 여부
+    
     // 모임 후기 
 	private List<CamelMap> reviewList;
+	
+    //SAVE 구분
+    String getSaveFlag(){
+    	if(this.meetingNo > 0) {
+        	this.saveFlag = "U";
+        }else {
+        	this.saveFlag = "I";
+        }
+    	return this.saveFlag;
+    }
 }
