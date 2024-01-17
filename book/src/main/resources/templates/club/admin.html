@@ -10,14 +10,14 @@
 		//초기 목록 조회
 		//srchList(tableLayout, srchParam())
 		
-		//L 맴버 폼 추가
+		//모임 후기 _ 맴버 폼 추가
 		jQuery("#addMemberBtn").click(function () {
 			addMember()
 		})
 		
-		//L 모임 저장 
+		//모임 후기 _ 저장 
 		jQuery("#saveMeetingBtn").click(function () {
-			saveMeeting()
+			saveMeetingReview()
 		})
 		
 		//신규 맴버 저장 
@@ -29,7 +29,6 @@
 			saveNewBook()
 		})
 		
-		
 		//시간, 분
 		for(var i = 7 ; i < 22; i++){
 			var html = "<option value="+i+">"+i+"</option>"
@@ -38,6 +37,13 @@
 		for(var i = 1 ; i < 60; i++){
 			var html = "<option value="+i+">"+i+"</option>"
 			jQuery("#timeMinute").append(html) 		    
+		}
+		//참석인원
+		for(var i = 4 ; i < 31; i++){
+			var selected = (i===8)?'selected':''
+			
+			var html = '<option value="'+i+'" '+selected+'>'+i+' 명</option>'
+			jQuery("#attendCnt").append(html) 		    
 		}
 		
 		//활동지역1 시도 
@@ -73,9 +79,8 @@
 		cmmnCode(areaCd, 'actionAreaLv2')
 	}
 	
-	
 	/** 화면 동적 변경 **/
-	// 맴버 form 추가 
+	// 모임 후기 _ 맴버 폼 추가 
 	var addNum = 1
 	function addMember(){
 		addNum+= 1
@@ -96,19 +101,61 @@
 		jQuery("#memberForm").append(html);
 	}
 	
-	// 맴버 form 삭제 
+	// 모임 후기 _ 맴버 폼 삭제 
 	function delMember(target){ 
 		jQuery('#'+target).remove();
 	}
 	
 	
 	/** 서버 등록 **/
-	// 맴버 등록 
-	function saveMeeting(){ 
+	// 모임 후기 생성
+	function saveMeetingReview(){ 
+		//validation
+		if(!jQuery('#title').val()){
+			alert('모임 제목을 입력해주세요.')
+			jQuery('#title').focus()
+			return false
+		}
+		if(!jQuery('#hostNo').val()){
+			alert('주최자를 검색하여 선택해주세요.')
+			jQuery('#hostNm').focus()
+			return false
+		}
+		if(!jQuery('#hostNo').val()){
+			alert('모임 일자를 입력해주세요.')
+			jQuery('#memberNm').focus()
+			return false
+		}
+		if(!jQuery('#dday').val()){
+			alert('모임 일자를 입력해주세요.')
+			jQuery('#dday').focus()
+			return false
+		}
+		if(!jQuery('#place').val()){
+			alert('모임 일자를 입력해주세요.')
+			jQuery('#place').focus()
+			return false
+		}
+		if(!jQuery('#cost').val()){
+			alert('모임 일자를 입력해주세요.')
+			jQuery('#cost').focus()
+			return false
+		}
+		
+		//data set
 		var review = []
 		var saveData = {
+			// 모임 생성
 			'title':jQuery('#title').val(),
-			'meetingGbn':jQuery('#meetingGbn').val()
+			'meetingGbn':jQuery('#meetingGbn').val(),
+			'hostNo':jQuery('#hostNo').val(),
+			'dday':jQuery('#dday').val(),
+			'timeHour':jQuery('#timeHour').val(),
+			'timeMinute':jQuery('#timeMinute').val(),
+			'place':jQuery('#place').val(),	
+			'cost':jQuery('#cost').val(),
+			'attendCnt':jQuery('#attendCnt').val(),
+			'comment':jQuery('#comment').val()
 		}
 		var member 
 		for(var i = 1; i <= addNum; i++){
@@ -128,32 +175,31 @@
 	// 신규 맴버 등록
 	function saveNewMember(){
 		//validation 
-		var memberNm = jQuery('#memberNm').val()
-		if(!memberNm){
-			alert('이름은 필수 입력 값입니다.')
+		if(!jQuery('#memberNm').val()){
+			alert('이름을 입력해주세요.')
+			jQuery('#memberNm').focus()
 			return false
 		}
-		var nickNm = jQuery('#nickNm').val()
-		if(!nickNm){
-			alert('닉네임은 필수 입력 값입니다.')
+		if(!jQuery('#nickNm').val()){
+			alert('닉네임을 입력해주세요.')
+			jQuery('#nickNm').focus()
 			return false
 		}
-		var brthday = jQuery('#brthday').val()
-		if(!brthday){
-			alert('생년월일은 필수 입력 값입니다.')
+		if(!jQuery('#brthday').val()){
+			alert('생년월일을 입력해주세요.')
+			jQuery('#brthday').focus()
 			return false
 		}
-		var joinDt = jQuery('#joinDt').val()
-		if(!joinDt){
-			alert('가입일은 필수 입력 값입니다.')
+		if(!jQuery('#joinDt').val()){
+			alert('가입일을 입력해주세요.')
+			jQuery('#joinDt').focus()
 			return false
 		}
 		if(jQuery("input[name=sex]:radio:checked").length == 0){
-			alert('성별을 필수 입력 값입니다.')
+			alert('성별을 선택해주세요.')
+			jQuery('#joinDt').focus()
 			return false
 		}
-		var actionAreaLv1 = jQuery('#actionAreaLv1').val()
-		var actionAreaLv2 = jQuery('#actionAreaLv2').val()
 		var email = ''
 		if(jQuery('#email1').val() && jQuery('#email2').val()){
 			email = jQuery('#email1').val()+jQuery('#email2').val()
@@ -165,7 +211,7 @@
 		
 		//data set
 		var saveData = {
-			'name': memberNm,
+			'name': jQuery('#memberNm').val(),
 			'nickNm':jQuery('#nickNm').val(),
 			'brthday':jQuery('#brthday').val(),
 			'joinDt':jQuery('#joinDt').val(),
@@ -184,8 +230,24 @@
 	
 	// 신규 도서 등록
 	function saveNewBook(){ 
+		if(!jQuery('#bookTitleL1').val()){
+			alert('도서명을 입력해주세요.')
+			jQuery('#bookTitleL1').focus()
+			return false
+		}
+		if(!jQuery('#bookWriterL1').val()){
+			alert('작가를 입력해주세요.')
+			jQuery('#bookWriterL1').focus()
+			return false
+		}
+		if(jQuery('#bookNoL1').val()){
+			alert('등록된 도서입니다.')
+			jQuery('#bookTitleL1').val('')
+			jQuery('#bookWriterL1').val('')
+			jQuery('#bookTitleL1').focus()
+			return false
+		}
 		var saveData = {
-			'bookNo':jQuery('#bookNoL1').val(),
 			'bookTitle':jQuery('#bookTitleL1').val(),
 			'bookWriter':jQuery('#bookWriterL1').val()
 		}
@@ -196,7 +258,6 @@
 			}
 		}
 	}
-	
 	
 	/** 실시간 검색 기능 **/
 	// 도서 실시간 검색
@@ -272,6 +333,7 @@
                             <option value="APPOINTED">지정도서</option>
                         </select>
                     </div>
+                    <!-- 주최자 -->
                     <div class="flex flex-col sm:flex-row items-center mt-2">
                     	<input type="text" class="form-control" placeholder="주체자" style="width: 150px;" id="hostNm" value="박지열">
                     	<input type="hidden" id="hostNo" value="1">
@@ -292,7 +354,7 @@
                         <input type="text" class="form-control mr-2" placeholder="참가비" id="cost" value="개인음료+@" style="width: 150px;">
                     </div>
                     <div class="flex flex-col sm:flex-row items-center mt-2">
-                        <input type="text" class="form-control mr-2" placeholder="인원" id="attendCnt" value="8" style="width: 80px;">명
+                        <select class="form-select" aria-label="Default select example" style="width: 80px;" id="attendCnt"></select>
                     </div>
                     
                     
@@ -414,7 +476,7 @@
                     <!-- Email -->
                     <div class="flex flex-col sm:flex-row items-center mt-2">
                     	<input type="text" class="form-control mr-2 newMember" placeholder="example"  style="width: 200px;" id="email1">@ 
-                    	<select class="form-select newMember" aria-label="Default select example" style="width: 250px;" id="email2">
+                    	<select class="form-select newMember ml-2" aria-label="Default select example" style="width: 250px;" id="email2">
                             <option value="@naver.com">naver.com</option>
                             <option value="@kakao.com">kakao.com</option>
                             <option value="@gmail.com">gmail.com</option>
@@ -423,9 +485,9 @@
                     </div>
                     <!-- 휴대폰번호 -->
                     <div class="flex flex-col sm:flex-row items-center mt-2">
-                    	<input type="text" class="form-control mr-2 newMember" placeholder="010" value="010" style="width: 100px;" id="phonNo1" maxlength="3" readonly>
-                    	<input type="text" class="form-control mr-2 newMember" placeholder="0000" style="width: 100px;" id="phonNo2" maxlength="4" numberOnly>
-                    	<input type="text" class="form-control mr-12 newMember" placeholder="0000" style="width: 100px;" id="phonNo3" maxlength="4" numberOnly>
+                    	<input type="text" class="form-control mr-2 newMember" placeholder="010" value="010" style="width: 60px;" id="phonNo1" maxlength="3" readonly>-
+                    	<input type="text" class="form-control mr-2 ml-2 newMember" placeholder="0000" style="width: 90px;" id="phonNo2" maxlength="4" numberOnly>-
+                    	<input type="text" class="form-control ml-2 newMember" placeholder="0000" style="width: 90px;" id="phonNo3" maxlength="4" numberOnly>
                     </div>
 	            </div>
 	        </div>

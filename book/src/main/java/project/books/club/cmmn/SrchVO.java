@@ -9,6 +9,10 @@ import project.books.sys.util.CamelMap;
 @Getter
 @Setter
 public class SrchVO {
+	//검색 필드
+	private String srchText;	//검색어
+	private String srchGbn;		//검색구분
+	
 	//페이징 공통
 	private int totCnt = 0;
 	

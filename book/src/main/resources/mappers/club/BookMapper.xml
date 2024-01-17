@@ -55,9 +55,9 @@
 			  #{bookTitle}
 			, #{bookWriter}
 			, #{publicDt}
-			, #{regNo}
+			, #{userNo}
 			, now()
-			, #{regNo}
+			, #{userNo}
 			, now()
 		)
 	</insert>
