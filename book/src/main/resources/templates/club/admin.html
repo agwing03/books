@@ -59,8 +59,34 @@
 		jQuery("input:text[numberOnly]").on("keyup", function() {
       		$(this).val($(this).val().replace(/[^0-9]/g,""))
       	})
+      	
+      	//날짜 셋팅
+      	setDate('20240125')
    
 	})
+	
+	// 날짜 셋팅
+	function setDate(gbn){
+		var today, year, month, date, day
+		const week = ['일', '월', '화', '수', '목', '금', '토'];
+		if(gbn === 'toDay'){
+			today = new Date();   
+			year = today.getFullYear();//년도
+			month = today.getMonth() + 1;//월
+			date = today.getDate();//날짜
+			day = today.getDay();//요일 0~6(일~토)
+			day = week[new Date(day).getDay()];
+			// 모임 일자
+			jQuery("#dday").val(year+(("00"+month.toString()).slice(-2))+(("00"+date.toString()).slice(-2))) 
+			// 모임 제목 만들기
+			year = year.toString().substr(2,4)//끝2자
+			jQuery("#title").val(year+'.'+(("00"+month.toString()).slice(-2))+'.'+(("00"+date.toString()).slice(-2))+'('+day+') 독서모임')
+		}else{
+			day = week[new Date(gbn).getDay()];
+			// 모임 제목 만들기
+			jQuery("#title").val(year+'.'+day+'.'+day+'('+day+') 독서모임')
+		}
+	} 
 	
 	// 활동지역1 시도(공통코드)
 	function srchCodeAreaList(){ 
@@ -99,7 +125,8 @@
 			'				<ul class="dropdown-content overflow-y-auto h-32" id="bookSrchBox'+addNum+'"></ul>'+
 			'			</div>'+
 			'		</div>'+
-			'		<button class="btn btn-danger ml-auto" onclick="delMember(\'memberForm'+addNum+'\')"><i data-lucide="minus" class="w-5 h-5"></i></button>'+
+			'		<input type="text" class="form-control mr-2" placeholder="저자" style="width: 97px;" id="bookWriter'+addNum+'">'+
+			'		<button class="btn btn-danger ml-auto" onclick="delMember(\'memberForm'+addNum+'\')"><i data-lucide="minus" class="w-5 h-5"></i></button>'+		
 			'		<input type="hidden" id="memberNo'+addNum+'">'+
 			'		<input type="hidden" id="bookNo'+addNum+'">'+
 			'	</div>'+
@@ -172,6 +199,11 @@
 			}
 			if(!jQuery('#bookNo'+i).val()){
 				alert('도서를 선택해주세요.')
+				jQuery('#bookNo'+i).focus()
+				return false
+			}
+			if(!jQuery('#bookWriter'+i).val()){
+				alert('저자를 선택해주세요.')
 				jQuery('#bookNo'+i).focus()
 				return false
 			}
@@ -366,9 +398,14 @@
                     	<input type="hidden" id="hostNo" value="1">
                     </div>
                     <div class="flex flex-col sm:flex-row items-center mt-2">
-                    	<input type="text" class="datepicker form-control w-56 block mr-2" data-single-mode="true" style="width: 150px;" id="dday" value="20231217"> 
-                        <select class="form-select mr-2" aria-label="Default select example" style="width: 80px;" id="timeHour">
-                            <option value="17">17</option>
+						<div class="relative w-40 mr-2">
+						    <div class="absolute rounded-l w-10 h-full flex items-center justify-center bg-slate-100 border text-slate-500 dark:bg-darkmode-700 dark:border-darkmode-800 dark:text-slate-400"> 
+						    	<i data-lucide="calendar" class="w-4 h-4"></i> 
+						    </div> 
+						    <input type="text" class="datepicker form-control pl-12" data-single-mode="true" id="dday">
+						</div>
+                    	<select class="form-select mr-2" aria-label="Default select example" style="width: 80px;" id="timeHour">
+                            <option value="19">19</option>
                         </select>
                         <select class="form-select" aria-label="Default select example" style="width: 80px;" id="timeMinute">
                             <option value="00">00</option>
@@ -401,12 +438,14 @@
 								    </div>
 								</div>
 		                        <!-- 도서명 -->
-		                      	<div class="dropdown" style="width: 100%;">
+		                      	<div class="dropdown mr-2" style="width: 100%;">
 		                      		<input type="text" class="form-control dropdown-toggle" aria-expanded="false" data-tw-toggle="dropdown" placeholder="도서명" id="bookTitle1" onkeyup="getSrchBook(this.value, '1');">
 								    <div class="dropdown-menu w-full">
 								        <ul class="dropdown-content overflow-y-auto h-32" id="bookSrchBox1"></ul>
 								    </div>
 								</div>
+								<!-- 저자 -->
+	                    		<input type="text" class="form-control" placeholder="저자" style="width: 150px;" id="bookWriter1">
 								<input type="hidden" id="memberNo1">
 								<input type="hidden" id="bookNo1">
 		                    </div>
@@ -463,7 +502,7 @@
         </div>
         
         <!-- 맴버 -->
-        <div class="intro-y box">
+        <div class="intro-y box mt-3">
             <div class="flex flex-col sm:flex-row items-center p-5 border-b border-slate-200/60 dark:border-darkmode-400">
                 <h2 class="font-medium text-base mr-auto">New Member</h2>
                 <button class="btn btn-primary w-35" id="saveNewMemberBtn"><i data-lucide="plus" class="w-5 h-5"></i>저장</button>
@@ -522,3 +561,6 @@
         <!-- END: Horizontal Form -->
     </div>
 </div>
+
+<script src="dist/js/app.js"></script>
+<link rel="stylesheet" href="dist/css/app.css" />

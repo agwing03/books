@@ -389,9 +389,9 @@ function nav(data){
 	jQuery('#breadcrumb').append(html)
     
     //디자인 코어 JS 반영
-    const script = document.createElement('script');
-    script.src = '/dist/js/app.js';
-    document.body.appendChild(script);
+    //const script = document.createElement('script');
+    //script.src = '/dist/js/app.js';
+    //document.body.appendChild(script);
     
     //디자인 코어 CSS 반영
     //const link = document.createElement('link');
