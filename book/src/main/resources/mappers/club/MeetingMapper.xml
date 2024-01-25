@@ -11,13 +11,13 @@
 		     , (select nick_nm from member m where m.member_no = mt.host_no) as host_nm
 		     , (select ccd.code_dtl_nm from cmmn_code_dtl ccd where ccd.code_dtl_id = mt.meeting_gbn) as meeting_gbn
 		     , date_format(mt.dday, '%Y-%m-%d') as dday
-		     , concat(substr(mt.time,1,2),':',substr(mt.time,3,4)) as time
+		     , concat(mt.hour, ':', mt.minute) as time
 		     , mt.place 
-		     , concat((select count(*) from meeting_member mm where mm.meeting_no = mt.meeting_no), '/', mt.attend_cnt) as attend_cnt
+		     , concat(cast((select count(*) from meeting_member mm where mm.meeting_no = mt.meeting_no) AS CHAR(2)),'/', mt.attend_cnt) as attend_cnt
 		     , date_format(mt.frst_reg_dt, '%Y.%m.%d %H:%i:%S') as frst_reg_dt
 		  from meeting mt  
 		<include refid="meeingListWhere"></include>
-		 order by mt.dday desc, mt.time desc 
+		 order by mt.dday desc, mt.hour desc, mt.minute desc 
 	</select>
 	
 	<!-- 모임 목록 수 -->
@@ -52,7 +52,7 @@
 		</if>
 		<!-- 검색 기간 -->
 		<if test='srchStartDt != null and srchStartDt != ""'>
-		  and mt.dday between replace(#{srchStartDt},'-','') and replace(#{srchEndDt},'-','')
+		  and mt.dday between #{srchStartDt} and #{srchEndDt}
 		</if>
 	</sql>
 	
@@ -106,10 +106,10 @@
 		)values(
 			  #{meetingNo}
 			, #{memberNo}
-			, #{attendYn}
-			, #{afterPartyYn}
+			, ifnull(#{attendYn}, 'Y')
+			, ifnull(#{afterPartyYn}, 'N')
 			, #{divAmount}
-			, #{calculYn}
+			, ifnull(#{calculYn}, 'N')
 			, #{userNo}
 			, now()
 		)

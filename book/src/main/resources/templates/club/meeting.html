@@ -1,7 +1,11 @@
+<script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="/dist/js/tabulator.js"></script> 
 <script src="/dist/js/jquery_wrapper.js"></script>  
 <script>
 	jQuery(document).ready(function(){
+		//날짜 셋팅
+		setSrchDate('-3')
+		
 		//테이블 그리드 생성
 		const tableLayout = new Tabulator("#dataList", {
 			layout:"fitColumns",
@@ -13,27 +17,27 @@
 			    {title:"No", field:"meetingNo", hozAlign:"left", width: 80},
 			    {title:"구분", field:"meetingGbn", hozAlign:"center", width: 100}, 
 			    {title:"모임명", field:"title", hozAlign:"left"},
-			    {title:"모임일", field:"dday", hozAlign:"left", width: 120}, 
-			    {title:"모임시간", field:"time", hozAlign:"left", width: 120},
+			    {title:"모임일", field:"dday", hozAlign:"center", width: 120}, 
+			    {title:"모임시간", field:"time", hozAlign:"center", width: 120},
 			    {title:"모임장소", field:"place", hozAlign:"left", width: 170},
-			    {title:"주최자", field:"hostNm", hozAlign:"left", width: 120},
-			    {title:"참석자수", field:"attendCnt", hozAlign:"left", width: 120},
-			    {title:"생성일", field:"frstRegDt", hozAlign:"left", width: 170}
+			    {title:"주최자", field:"hostNm", hozAlign:"left", width: 140},
+			    {title:"참석자수", field:"attendCnt", hozAlign:"center", width: 130},
+			    {title:"생성일", field:"frstRegDt", hozAlign:"center", width: 180}
 			]
         })
         
         //목록 데이터 조회
         jQuery("#srchBtn").click(function () {
-			srchList(tableLayout, srchParam())
+			srchList(tableLayout)
 		})
 		
 		//초기 목록 조회
-		srchList(tableLayout, srchParam())
+		srchList(tableLayout)
 	})
 
 	// 목록 데이터 조회
-	function srchList(tableLayout, params){
-		fetchApi('/club/getMeetingList.do', 'POST', params, 'dataList')
+	function srchList(tableLayout){
+		fetchApi('/meeting/getMeetingList.do', 'POST', srchParam(), 'dataList')
 			.then((data) => {
 				if(data != null){
 					tableLayout.setData(data)
@@ -41,6 +45,20 @@
 					alert("데이터 없음")
 				}
 			}).catch((error) => console.log(error))
+	}
+	
+	//파라미터 셋팅
+	function srchParam(){
+		var srchDt = jQuery("#srchDt").val().split("-")
+		var srchStartDt = srchDt[0].replaceAll('.','').trim()
+		var srchEndDt = srchDt[1].replaceAll('.','').trim()
+		let param = {
+			'srchGbn': jQuery("#srchGbn").val(),
+			'srchText': jQuery("#srchGbn").val(),
+			'srchStartDt': srchStartDt,
+			'srchEndDt': srchEndDt
+		}
+		return param				
 	}
 </script> 
 	

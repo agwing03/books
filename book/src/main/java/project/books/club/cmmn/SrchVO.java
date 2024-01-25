@@ -12,6 +12,8 @@ public class SrchVO {
 	//검색 필드
 	private String srchText;	//검색어
 	private String srchGbn;		//검색구분
+	private String srchStartDt; //검색시작일
+	private String srchEndDt; 	//검색종료일
 	
 	//페이징 공통
 	private int totCnt = 0;

@@ -2,15 +2,15 @@
   *  layout 생성
   *  1. 메뉴생성 nav
   */
+//화면 선 로드
 jQuery(document).ready(function(){
 	//nav
 	fetchApi('/menu/getMenuList.do', 'POST', {clubNo:'1'}, 'nav')
 	//공통검색
 	jQuery("#top-bar").load("/cmmn/topBar.html")
-	//날짜 셋팅
-	setSrchDate(-1)
+	
+	pageMove('', '', '운영관리', '운영관리', '/club/admin')
 })
-
 
 /**
  *  Search 데이터 조회
@@ -23,7 +23,8 @@ jQuery(document).ready(function(){
  * 	기간 조건3 	: srchParam3  
  */
 function srchParam(){
-	let params = {clubNo:'1'}
+	let params = {}
+	console.log(jQuery('#srchGbn').val())
 	//검색구분
     let srchGbn = jQuery('#srchGbn').val()
     if(srchGbn != '' && srchGbn != undefined){
@@ -55,6 +56,8 @@ function srchParam(){
     if(srchParam2 != '' && srchParam2 != undefined){
 		params.srchParam2 = srchParam2
 	}
+	
+	console.log(params)
 	return params
 }
 
@@ -71,8 +74,9 @@ function srchReset(){
  *  날짜 기간 _ 1개월/3개월 
  */
 function setSrchDate(month){
-	let date1 = dayjs().add(month, "month").format('YYYY-MM-D')
-	let date2 = dayjs().format('YYYY-MM-D');
+	let date1 = dayjs().add(month, "month").format('YYYY.MM.D')
+	let date2 = dayjs().format('YYYY.MM.D');
+	console.log(date1+" - " +date2)
 	jQuery('#srchDt').val(date1+" - " +date2)
 }
 
@@ -156,6 +160,7 @@ async function fetchApi(url, method, body, gbn, headers = {}) {
 		//save DB 데이터 적재
 		} else if (gbn === 'save'){
 			alert(data.msg)
+			location.reload()
 			
 		//공통 search 결과 조회
 		} else if (gbn === 'search'){ 
@@ -387,15 +392,4 @@ function nav(data){
 		'	<li class="breadcrumb-item" id="breadcrumb2">HOME</li>'+
 		'</ol>'
 	jQuery('#breadcrumb').append(html)
-    
-    //디자인 코어 JS 반영
-    //const script = document.createElement('script');
-    //script.src = '/dist/js/app.js';
-    //document.body.appendChild(script);
-    
-    //디자인 코어 CSS 반영
-    //const link = document.createElement('link');
-    //link.rel = 'stylesheet'
-    //link.href = '/dist/css/app.css';
-    //document.body.appendChild(link);
 }

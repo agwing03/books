@@ -55,14 +55,18 @@
 			srchCodeArea2List($(this).val())
 		})
 		
+		//모임구분
+		srchCodeList("MEETING_GBN")
+		
 		//적합성 체크
 		jQuery("input:text[numberOnly]").on("keyup", function() {
       		$(this).val($(this).val().replace(/[^0-9]/g,""))
       	})
       	
       	//날짜 셋팅
-      	setDate('20240125')
-   
+      	setDate('toDay')
+      	
+      	document.addEventListener("DOMContentLoaded", ready);
 	})
 	
 	// 날짜 셋팅
@@ -103,6 +107,11 @@
 	// 활동지역2 시구군(공통코드)
 	function srchCodeArea2List(areaCd){ 
 		cmmnCode(areaCd, 'actionAreaLv2')
+	}
+	
+	// 모임구분
+	function srchCodeList(grpCd){ 
+		cmmnCode(grpCd, 'meetingGbn')
 	}
 	
 	/** 화면 동적 변경 **/
@@ -181,7 +190,7 @@
 			'title':jQuery('#title').val(),
 			'meetingGbn':jQuery('#meetingGbn').val(),
 			'hostNo':jQuery('#hostNo').val(),
-			'dday':jQuery('#dday').val(),
+			'dday':jQuery('#dday').val().replaceAll('.',''),
 			'hour':jQuery('#timeHour').val(),
 			'minute':jQuery('#timeMinute').val(),
 			'place':jQuery('#place').val(),	
@@ -385,12 +394,7 @@
                 	<!-- 모임타이틀 / 구분 -->
                     <div class="flex flex-col sm:flex-row items-center">
                     	<input type="text" class="form-control mr-2" placeholder="제목" id="title">
-						<select class="form-select" aria-label="Default select example" style="width: 150px;" id="meetingGbn">
-                            <option value="MEETING">정기모임</option>
-                            <option value="SPECIAL">이벤트</option>
-                            <option value="SUDDENLY">벙개</option>
-                            <option value="APPOINTED">지정도서</option>
-                        </select>
+						<select class="form-select" aria-label="Default select example" style="width: 150px;" id="meetingGbn"></select>
                     </div>
                     <!-- 주최자 -->
                     <div class="flex flex-col sm:flex-row items-center mt-2">
@@ -398,6 +402,7 @@
                     	<input type="hidden" id="hostNo" value="1">
                     </div>
                     <div class="flex flex-col sm:flex-row items-center mt-2">
+                    	<!-- 모임일 -->
 						<div class="relative w-40 mr-2">
 						    <div class="absolute rounded-l w-10 h-full flex items-center justify-center bg-slate-100 border text-slate-500 dark:bg-darkmode-700 dark:border-darkmode-800 dark:text-slate-400"> 
 						    	<i data-lucide="calendar" class="w-4 h-4"></i> 
@@ -411,12 +416,15 @@
                             <option value="00">00</option>
                         </select>
                     </div>
+                    <!-- 장소 -->
                     <div class="flex flex-col sm:flex-row items-center mt-2">
                     	<input type="text" class="form-control mr-2" placeholder="장소" id="place" value="책과 삶" style="width: 150px;">
                     </div>
+                    <!-- 비용 -->
                     <div class="flex flex-col sm:flex-row items-center mt-2">
                         <input type="text" class="form-control mr-2" placeholder="참가비" id="cost" value="개인음료+@" style="width: 150px;">
                     </div>
+                    <!-- 참석인원 -->
                     <div class="flex flex-col sm:flex-row items-center mt-2">
                         <select class="form-select" aria-label="Default select example" style="width: 80px;" id="attendCnt"></select>
                     </div>
@@ -562,5 +570,3 @@
     </div>
 </div>
 
-<script src="dist/js/app.js"></script>
-<link rel="stylesheet" href="dist/css/app.css" />

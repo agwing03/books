@@ -11,7 +11,7 @@ import project.books.club.cmmn.SrchVO;
 @RequiredArgsConstructor
 public class MeetingController {
 	
-	private final MeetingService clubService;
+	private final MeetingService meetingService;
 	 
 	/**
 	 * 모임 목록 조회
@@ -21,7 +21,8 @@ public class MeetingController {
 	public SrchVO getMeetingList(
 			@RequestBody SrchVO vo
 		) throws Exception {
-		return clubService.selectMeetingList(vo);
+		vo = meetingService.selectMeetingList(vo);
+		return vo;
 	}
 	
 	/**
@@ -32,7 +33,7 @@ public class MeetingController {
 	public void saveMeetingReview(
 			@RequestBody MeetingVO vo
 		) throws Exception {
-		clubService.saveMeetingReview(vo);
+		meetingService.saveMeetingReview(vo);
 	}
 }
  
