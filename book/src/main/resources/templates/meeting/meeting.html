@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ko" class="light">
+    <!-- BEGIN: Head -->
+    <head>
+        <meta charset="utf-8">
+        <link href="../../dist/images/logo.svg" rel="shortcut icon">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Midone admin is super flexible, powerful, clean & modern responsive tailwind admin template with unlimited possibilities.">
+        <meta name="keywords" content="admin template, Midone Admin Template, dashboard template, flat admin template, responsive admin template, web app">
+        <meta name="author" content="LEFT4CODE">
+        <!-- 공통 모듈 -->
+        <script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="/dist/js/jquery-ui.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/litepicker/dist/litepicker.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.10/dayjs.min.js"></script>
+        <script src="/js/layout.js"></script>
+        <title>책과 사람 사이</title>
+        
+        <!-- 화면별 모듈 -->
+        <script src="/dist/js/tabulator.js"></script> 
+		<script src="/dist/js/jquery_wrapper.js"></script>  
+		<script src="/js/cmmn.js"></script>
+        
+        <script>
+			jQuery(document).ready(function(){
+				//메뉴선택
+				menuMove('5', '7', '모임', '모임후기', '')
+				
+				//검색조건 초기화
+				srchReset()
+				
+				//모임구분
+				cmmnCode('MEETING_GBN', 'srchGbn', 'ALL')
+				
+				//테이블 그리드 생성
+				let tableLayout = new Tabulator("#dataList", {
+					layout:"fitColumns",
+		            pagination : "local",
+		    		paginationSize : 20,
+		    		paginationSizeSelector : [10, 20, 50, 100],
+		            placeholder : "No Data Set",
+					columns : [
+					    {title:"No", field:"meetingNo", hozAlign:"left", width: 80},
+					    {title:"구분", field:"meetingGbn", hozAlign:"center", width: 100}, 
+					    {title:"모임명", field:"title", hozAlign:"left"},
+					    {title:"모임일", field:"dday", hozAlign:"center", width: 120}, 
+					    {title:"모임시간", field:"time", hozAlign:"center", width: 120},
+					    {title:"모임장소", field:"place", hozAlign:"left", width: 170},
+					    {title:"주최자", field:"hostNm", hozAlign:"left", width: 140},
+					    {title:"참석자수", field:"attendCnt", hozAlign:"center", width: 130},
+					    {title:"생성일", field:"frstRegDt", hozAlign:"center", width: 180}
+					]
+		        })
+		        
+		        //목록 데이터 조회
+		        jQuery("#srchBtn").click(function () {
+					srchList(tableLayout)
+				})
+				
+				//초기 목록 조회
+				srchList(tableLayout)
+				
+				//초기 목록 조회
+				tableLayout.on("rowDblClick", function(e, row){
+					location.href='/meeting/meetingReview.html?meetingNo='+row.getData().meetingNo
+				})
+	  		})
+	  		
+	  		// 목록 데이터 조회
+			function srchList(tableLayout){
+				fetchApi('/meeting/getMeetingList.do', 'POST', srchParam(), 'dataList')
+					.then((data) => {
+						if(data != null){
+							tableLayout.setData(data)
+						}
+					}).catch((error) => console.log(error))
+			}
+			
+			jQuery(window).on('load', function () {
+				menuMove('5', '7', '모임', '모임후기', '')
+			})
+		</script>
+    </head>
+    <!-- END: Head -->
+    <body class="py-5">
+        <!-- BEGIN: Mobile Menu -->
+        <div class="mobile-menu md:hidden" id="mobile-menu"></div>
+        
+        <div class="flex mt-[4.7rem] md:mt-0">
+            <!-- BEGIN: Side Menu -->
+            <nav class="side-nav" id="side-nav"></nav>
+            
+            <!-- BEGIN: Content -->
+            <div class="content">
+				
+                <!-- BEGIN: Top Bar -->
+                <div class="top-bar" id="top-bar"></div>
+                
+                <!-- BEGIN: Content DATA -->
+                <div class="intro-y flex flex-col sm:flex-row items-center mt-8">
+				    <i data-lucide="book-open" class="w-7 h-7 mr-2"></i><h4 class="text-xl font-medium leading-none mr-auto">독서모임</h4>
+				    <div class="w-full sm:w-auto flex mt-4 sm:mt-0">
+				        <button class="btn btn-primary shadow-md mr-2" onclick="movePageView('/meetingReview.do')">Add New Books</button>
+				        <div class="dropdown ml-auto sm:ml-0">
+				            <button class="dropdown-toggle btn px-2 box" aria-expanded="false" data-tw-toggle="dropdown">
+				                <span class="w-5 h-5 flex items-center justify-center"> <i class="w-4 h-4" data-lucide="plus"></i> </span>
+				            </button>
+				            <div class="dropdown-menu w-40">
+				                <ul class="dropdown-content">
+				                    <li>
+				                        <a href="" class="dropdown-item"><i data-lucide="file-plus" class="w-4 h-4 mr-2"></i> New Category</a>
+				                    </li>
+				                    <li>
+				                        <a href="" class="dropdown-item"><i data-lucide="users" class="w-4 h-4 mr-2"></i> New Group</a>
+				                    </li>
+				                </ul>
+				            </div>
+				        </div>
+					</div>
+				</div>	
+				<!-- BEGIN: HTML Table Data -->
+				<div class="intro-y box p-5 mt-5">
+				    <div class="flex flex-col sm:flex-row sm:items-end xl:items-start">
+				        <form id="tabulator-html-filter-form" class="xl:flex sm:mr-auto" >
+				        	<!-- 검색 구분 -->
+				            <div class="sm:flex items-center sm:mr-4">
+				                <select class="form-select w-full sm:w-32 2xl:w-full mt-2 sm:mt-0 sm:w-auto" id="srchGbn">
+				                	<option value="">전체</option>
+				                </select>
+				            </div>
+				            <!-- 검색어 -->
+				            <div class="sm:flex items-center sm:mr-4 mt-2 xl:mt-0">
+				                <input type="text" class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0" placeholder="Search..." id="srchText">
+				            </div>
+				            <!-- 검색 시작일 -->
+				        	<div class="relative w-40 mx-auto mr-2 ">
+							    <div class="absolute rounded-l w-10 h-full flex items-center justify-center bg-slate-100 border text-slate-500 dark:bg-darkmode-700 dark:border-darkmode-800 dark:text-slate-400"> 
+							    	<i data-lucide="calendar" class="w-4 h-4"></i> 
+							    </div> 
+							    <input type="text" class="datepicker form-control pl-12" data-single-mode="true" id="srchStartDt">
+							</div>
+				        	<!-- 검색 종료일 -->
+				        	<div class="relative w-40 mx-auto">
+							    <div class="absolute rounded-l w-10 h-full flex items-center justify-center bg-slate-100 border text-slate-500 dark:bg-darkmode-700 dark:border-darkmode-800 dark:text-slate-400"> 
+							    	<i data-lucide="calendar" class="w-4 h-4"></i> 
+							    </div> 
+							    <input type="text" class="datepicker form-control pl-12" data-single-mode="true" id="srchEndDt">
+							</div>
+							<!-- 버튼 -->
+				            <div class="ml-2 mt-2 xl:mt-0">
+				                <button type="button" class="btn btn-secondary w-full sm:w-16 mt-2 sm:mt-0 sm:ml-1" onclick="setSrchDate('-6')">6월</button>
+				                <button type="button" class="btn btn-secondary w-full sm:w-16 mt-2 sm:mt-0 sm:ml-1" onclick="setSrchDate('-12')">12월</button>
+				            </div>  
+				            <div class="ml-5 mt-2 xl:mt-0">
+				                <button type="button" class="btn btn-primary w-full sm:w-16" id="srchBtn" >Go</button>
+				                <button type="button" class="btn btn-secondary w-full sm:w-16 mt-2 sm:mt-0 sm:ml-1" onclick="srchReset()" >Reset</button>
+				            </div>
+				        </form>
+				    </div>
+				    <div class="overflow-x-auto scrollbar-hidden">
+				        <div id="dataList" class="mt-5 table-report table-report--tabulator"></div>
+				    </div>
+				
+				</div>
+				<!-- END: HTML Table Data -->
+                
+            </div>
+        </div>
+    </body>
+</html>
+ 

@@ -13,35 +13,26 @@
         <script src="/dist/js/jquery-ui.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/litepicker/dist/litepicker.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.10/dayjs.min.js"></script>
-        <script src="/js/cmmn.js"></script>
+        <script src="/js/layout.js"></script>
         <title>책과 사람 사이</title>
         <script>
 			jQuery(document).ready(function(){
-				//$("include-html").each(function() {
-				//	element = $(this);
-				//	element.load(element.attr("target"), eval(element.attr("completed")));
-				//});
-				//await fetch('/club/admin').text()
+				
 	  		});
 	  		
-	  			//화면 후 로드
-jQuery(window).on('load', function () {
-	//디자인 코어 JS 반영
-    const script = document.createElement('script');
-    script.src = '/dist/js/app.js';
-    document.body.appendChild(script);
-    
-    //디자인 코어 CSS 반영
-    const link = document.createElement('link');
-    link.rel = 'stylesheet'
-    link.href = '/dist/css/app.css';
-	document.body.appendChild(link);
-})
+			function movePageView() {
+				location.href='/meeting/meeting.html?clubNo=1'
+			}
 		</script>
-	
     </head>
     <!-- END: Head -->
     <body class="py-5">
+    	<form action="/aaa" method="post" id="moveForm">
+		    <input type="hidden" name="clubNo" value="1" >
+		    <input type="hidden" name="msg" value="abc" >
+		</form>
+    
+    
         <!-- BEGIN: Mobile Menu -->
         <div class="mobile-menu md:hidden" id="mobile-menu"></div>
         
