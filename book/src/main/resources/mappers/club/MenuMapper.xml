@@ -9,6 +9,7 @@
 			 , (select count(*) from menu mn where mn.menu_upper_no = m.menu_no) as sub_menu_cnt 
 		  from menu m
 		 where 1=1 
+		   and m.use_yn = 'Y'
 		<if test='clubNo != null and clubNo != ""'>
 		   and m.club_no = #{clubNo}
 		</if>

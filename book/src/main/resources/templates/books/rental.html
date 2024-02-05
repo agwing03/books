@@ -3,7 +3,7 @@
     <!-- BEGIN: Head -->
     <head>
         <meta charset="utf-8">
-        <link href="dist/images/logo.svg" rel="shortcut icon">
+        <link href="../../dist/images/logo.svg" rel="shortcut icon">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="Midone admin is super flexible, powerful, clean & modern responsive tailwind admin template with unlimited possibilities.">
         <meta name="keywords" content="admin template, Midone Admin Template, dashboard template, flat admin template, responsive admin template, web app">
@@ -15,24 +15,22 @@
 		<script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.10/dayjs.min.js"></script>
         <script src="/js/layout.js"></script>
         <title>책과 사람 사이</title>
+        
+        <!-- 화면별 모듈 -->
+        <script src="/dist/js/tabulator.js"></script> 
+		<script src="/dist/js/jquery_wrapper.js"></script>  
+		<script src="/js/cmmn.js"></script>
+        
         <script>
 			jQuery(document).ready(function(){
-				
-	  		});
-	  		
-			function movePageView() {
-				location.href='/meeting/meeting.html?clubNo=1'
-			}
+				//메뉴선택
+				menuMove('12', '14', '도서', '도서대여', '')
+				 
+			})
 		</script>
     </head>
     <!-- END: Head -->
     <body class="py-5">
-    	<form action="/aaa" method="post" id="moveForm">
-		    <input type="hidden" name="clubNo" value="1" >
-		    <input type="hidden" name="msg" value="abc" >
-		</form>
-    
-    
         <!-- BEGIN: Mobile Menu -->
         <div class="mobile-menu md:hidden" id="mobile-menu"></div>
         
@@ -47,13 +45,17 @@
                 <div class="top-bar" id="top-bar"></div>
                 
                 <!-- BEGIN: Content DATA -->
-                <div id='importHtml'></div>
-                
+                <div class="intro-y flex flex-col sm:flex-row items-center mt-8">
+				     도서 대출
+				</div>	
+				
+				<!-- BEGIN: HTML Table Data -->
+				<div class="intro-y box p-5 mt-5">
+				
+				</div>
+				<!-- END: HTML Table Data -->
             </div>
         </div>
     </body>
-    
-    <!-- BEGIN: JS Assets-->
-	<script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
 </html>
-
+ 

@@ -20,7 +20,7 @@ public class ViewController {
 	 * HOME / 초기 페이지 진입
 	 */ 
 	@RequestMapping("/")
-	public String welcome() {return "/main";}
+	public String welcome() {return "/home";}
 	
 	/**
 	 * HOME

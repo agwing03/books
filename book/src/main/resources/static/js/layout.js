@@ -2,16 +2,11 @@
  *  layout 생성
  */
 jQuery(document).ready(function(){
-	console.log("layout ready")
-})
-
-jQuery(window).on('load', function () {
 	//nav
 	fetchApi('/menu/getMenuList.do', 'POST', {clubNo:'1'}, 'nav')
+	
 	//공통검색
 	jQuery("#top-bar").load("/cmmn/topBar.html")
-	//초기페이지 페이지 이동
-	//menuMove('', '', '운영관리', '운영관리', '/club/admin')
 	
 	//디자인 코어 JS 반영
     const script = document.createElement('script');
@@ -23,8 +18,8 @@ jQuery(window).on('load', function () {
     link.rel = 'stylesheet'
     link.href = '/dist/css/app.css';
 	document.body.appendChild(link);
-	console.log("layout load")
 })
+
 
 /** 
  *  fetch 데이터 통신
@@ -89,16 +84,6 @@ function layerClose(){
 	jQuery('#layerPupup').hide();
 }
 
-/** 
- *  HTML 페이지 이동
- */			
-//async function pageMove(url){
-//	await fetchHtml(url+'.html')
-//}
-
-function movePage(url, params) {
-	location.href=url+params
-}
 
 /** 
  *  fetch HTML 삽입
@@ -107,40 +92,45 @@ async function fetchHtml(url) {
     return await (await fetch(url)).text();
 }
 
-
 /**
  * 메뉴 페이지 이동 
  * 이벤트 디자인 적용
  */
 function menuMove(menu, subMenu, menuUpperNm, menuNm, menuUrl){
-	console.log(menu)
-	console.log(subMenu)
-	//대메뉴 클래스 제거 
-	jQuery('.menuUl').removeClass('side-menu__sub-open').css('display','none')
-	jQuery('.side-menu').removeClass('side-menu--active')
+	//메뉴 CSS 추가
+	setTimeout(function(){
+		console.log(menuUrl)
+		if(subMenu !== '' || subMenu === 'NOT'){
+			jQuery('#menu'+menu+' > .side-menu').addClass('side-menu--active')
+			//이동경로
+			jQuery('#breadcrumb1').text(menuUpperNm)
+			jQuery('#breadcrumb2').text(menuNm)		
+		}
+		jQuery('#menuUl'+menu).addClass('side-menu__sub-open').css('display','block')
+		jQuery('#menuSub'+subMenu).addClass('side-menu--active')
+	}, 500);
 	
-	//대메뉴 추가
-	jQuery('#menu'+menu).addClass('side-menu--active')
-	jQuery('#menuUl'+menu).addClass('side-menu__sub-open').css('display','block')
-	// <a href="javascript:;.html" class="side-menu side-menu--active">
-	// <ul class="side-menu__sub-open">
-	// <a href="index.html" class="side-menu side-menu--active">
-	
-	//소메뉴 추가
-	jQuery('#menuSub'+subMenu).addClass('side-menu--active')
-		
-	//이동경로
-	jQuery('#breadcrumb1').text(menuUpperNm)
-	jQuery('#breadcrumb2').text(menuNm)		
+	if(menuUrl){
+		movePage(menuUrl, '')
+	}
 }
 
+/** 
+ *  HTML 페이지 이동
+ */
+function movePage(url, params) {
+	let pageUrl = url
+	if(params){
+		pageUrl = pageUrl+'?'+params
+	}
+	location.href = pageUrl
+}
 
 /**
  *  사이드 메뉴 생성
  *  사이트 및 모바일 동시 생성 
  */
 function nav(data){
-	console.log("layout 네비")
 	let menuUpperNo = ''
 	let menuUpperNm = ''
 	
@@ -209,21 +199,22 @@ function nav(data){
 	/* 사이드 메뉴 */
 	menuUpperNo = ''
 	menuUpperNm = ''
-	html = 
-		'<a href="/" class="intro-x flex items-center pl-5 pt-4">'+
-		'   <img alt="책과 함께하는 우리들만의 이야기" class="w-6" src="../../dist/images/logo.svg">'+ 
-		'	<span class="hidden xl:block text-white text-lg ml-3"> 책과 사람 사이 </span>'+ 
-        '</a>'+ 
-		'<div class="side-nav__devider my-6"></div>'+ 
-		'	<ul>'+ 
-        '		<li>'+
-        '			<a href="#" class="side-menu side-menu--active" id="menu0" onclick="menuMove(this,0,\'HOME\',\'\');">'+
-		'				<div class="side-menu__icon"><i data-lucide="home"></i></div>'+
-    	'				<div class="side-menu__title">HOME'+
-		'					<div class="side-menu__sub-icon><i data-lucide="chevron-down"></i></div>'+
-		'				</div>'+
-		'			</a>'+
-		'		</li>'
+	html =`
+		<a href="/" class="intro-x flex items-center pl-5 pt-4">
+		   <img alt="책과 함께하는 우리들만의 이야기" class="w-6" src="../../dist/images/logo.svg"> 
+			<span class="hidden xl:block text-white text-lg ml-3"> 책과 사람 사이 </span> 
+        </a> 
+		<div class="side-nav__devider my-6"></div> 
+			<ul>
+        		<li id="menu0" onclick="menuMove('0','','HOME','','/home.html')">
+        			<a href="#" class="side-menu">
+						<div class="side-menu__icon"><i data-lucide="home"></i></div>
+    					<div class="side-menu__title">HOME
+							<div class="side-menu__sub-icon><i data-lucide="chevron-down"></i></div>
+						</div>
+					</a>
+				</li>`
+		
 	for(var i = 0; i < data.length; i++){
 		//4.대메뉴 닫기
 		if(i != 0 && menuUpperNo != data[i].menuUpperNo){
@@ -233,6 +224,7 @@ function nav(data){
 		if(data[i].menuLv == 1){ 
 			menuUpperNo = data[i].menuNo
 			menuUpperNm = data[i].menuNm
+			menuUpperUrl = data[i].menuUrl
 			//5.주메뉴 구분선
 			if(data[i].menuLv == 1 && data[i].menuOrder == 6){
 				html += '<li class="side-nav__devider my-6"></li>'
@@ -243,8 +235,8 @@ function nav(data){
 			//하위 메뉴 존재여부			
 			if(data[i].subMenuCnt > 0){ 
 				html += 	
-					'<li>'+
-			        '	<a href="javascript:void(0);" class="side-menu" id="menu'+menuUpperNo+'" onclick="menuMove('+menuUpperNo+',\'\',\''+menuUpperNm+'\',\'\',\'\')">'+
+					'<li id="menu'+menuUpperNo+'" onclick="menuMove('+menuUpperNo+',\'\',\''+menuUpperNm+'\',\'\',\'\')">'+
+			        '	<a href="javascript:void(0);" class="side-menu" >'+
 					'		<div class="side-menu__icon">'+
 					'			<i data-lucide="'+data[i].icon+'"></i>'+
 					'		</div>'+
@@ -255,8 +247,8 @@ function nav(data){
 					'	<ul id="menuUl'+menuUpperNo+'" class="menuUl">'
 			}else{
 				html += 	
-					'<li>'+
-			        '	<a href="javascript:void(0);" class="side-menu" id="menu'+menuUpperNo+'" onclick="menuMove('+menuUpperNo+',\'\',\''+menuUpperNm+'\',\'\',\'\')">'+
+					'<li id="menu'+menuUpperNo+'" onclick="menuMove('+menuUpperNo+',\'\',\''+menuUpperNm+'\',\'\',\''+menuUpperUrl+'\')">'+
+			        '	<a href="javascript:void(0);" class="side-menu" >'+
 					'		<div class="side-menu__icon">'+
 					'			<i data-lucide="'+data[i].icon+'"></i>'+
 					'		</div>'+
@@ -269,8 +261,8 @@ function nav(data){
 		//3.상위메뉴번호 같을 경우 소메뉴 생성
 		if(data[i].menuLv == 2 && menuUpperNo == data[i].menuUpperNo){
 			html +=
-				'	<li>'+
-				'		<a href="javascript:void(0);" class="side-menu" id="menuSub'+data[i].menuNo+'" onclick="menuMove('+menuUpperNo+','+data[i].menuNo+',\''+menuUpperNm+'\',\''+data[i].menuNm+'\',\'\')">'+
+				'	<li onclick="menuMove('+menuUpperNo+','+data[i].menuNo+',\''+menuUpperNm+'\',\''+data[i].menuNm+'\',\''+data[i].menuUrl+'\')">'+  
+				'		<a href="javascript:void(0);" class="menuSub side-menu" id="menuSub'+data[i].menuNo+'">'+
                 '			<div class="side-menu__icon"><i data-lucide="'+data[i].icon+'"></i></div>'+
 				'			<div class="side-menu__title">'+data[i].menuNm+'</div>'+
 				'		</a>'+
@@ -281,10 +273,11 @@ function nav(data){
     jQuery("#side-nav").append(html);
     
     /* 이동경로 */
-    html = 
+    html =
+    	'<i data-lucide="bookmark" class="mr-2"></i>'+ 
 		'<ol class="breadcrumb">'+
 		'	<li class="breadcrumb-item active" aria-current="page" id="breadcrumb1"></li>'+
-		'	<li class="breadcrumb-item" id="breadcrumb2">HOME</li>'+
+		'	<li class="breadcrumb-item" id="breadcrumb2"></li>'+
 		'</ol>'
 	jQuery('#breadcrumb').append(html)
 }

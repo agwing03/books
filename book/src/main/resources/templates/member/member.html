@@ -1,241 +1,285 @@
-<script src="/dist/js/tabulator.js"></script> 
-<script src="/dist/js/jquery_wrapper.js"></script>  
-<script>
-	jQuery(document).ready(function(){
-		//테이블 그리드 생성
-		const tableLayout = new Tabulator("#dataList", {
-			layout:"fitColumns",
-            pagination : "local",
-    		paginationSize : 20,
-    		paginationSizeSelector : [10, 20, 50, 100],
-            placeholder : "No Data Set",
-			columns : [
-			    {title:"No", field:"bookNo", width: 100, minWidth: 50},
-			    {title:"이름", field:"memberNm"},
-			    {title:"닉네임", field:"nickNm", hozAlign:"left"}, 
-			    {title:"성별", field:"sex", hozAlign:"center"},
-			    {title:"생년월일", field:"bookAvg", hozAlign:"center"},
-			    {title:"지역", field:"area", hozAlign:"center"},
-			    {title:"연락처", field:"phonNo", hozAlign:"center"},
-			    {title:"가입일", field:"joinDt", hozAlign:"center"},
-			    {title:"최종활동일", field:"", hozAlign:"center"}, 
-			]
-        })
+<!DOCTYPE html>
+<html lang="ko" class="light">
+    <!-- BEGIN: Head -->
+    <head>
+        <meta charset="utf-8">
+        <link href="../../dist/images/logo.svg" rel="shortcut icon">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Midone admin is super flexible, powerful, clean & modern responsive tailwind admin template with unlimited possibilities.">
+        <meta name="keywords" content="admin template, Midone Admin Template, dashboard template, flat admin template, responsive admin template, web app">
+        <meta name="author" content="LEFT4CODE">
+        <!-- 공통 모듈 -->
+        <script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="/dist/js/jquery-ui.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/litepicker/dist/litepicker.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.10/dayjs.min.js"></script>
+        <script src="/js/layout.js"></script>
+        <title>책과 사람 사이</title>
         
-        //검색조건 구분 공통코드
-        cmmnCode('MEMBER_GBN', 'srchGbn')
-        
-        //목록 데이터 조회
-        jQuery("#srchBtn").click(function () {
-			srchList(tableLayout, srchParam())
-		})
-		jQuery("#saveBtn").click(function () {
-			saveData()
-		})
+        <!-- 화면별 모듈 -->
+        <script src="/dist/js/tabulator.js"></script> 
+		<script src="/dist/js/jquery_wrapper.js"></script>  
+		<script src="/js/cmmn.js"></script>
+		<script>
+			jQuery(document).ready(function(){
+				//메뉴선택
+				menuMove('9', '10', '맴버', '맴버정보', '')
+				
+				//테이블 그리드 생성
+				const tableLayout = new Tabulator("#dataList", {
+					layout:"fitColumns",
+		            pagination : "local",
+		    		paginationSize : 20,
+		    		paginationSizeSelector : [10, 20, 50, 100],
+		            placeholder : "No Data Set",
+					columns : [
+					    {title:"No", field:"bookNo", width: 100, minWidth: 50},
+					    {title:"이름", field:"memberNm"},
+					    {title:"닉네임", field:"nickNm", hozAlign:"left"}, 
+					    {title:"성별", field:"sex", hozAlign:"center"},
+					    {title:"생년월일", field:"bookAvg", hozAlign:"center"},
+					    {title:"지역", field:"area", hozAlign:"center"},
+					    {title:"연락처", field:"phonNo", hozAlign:"center"},
+					    {title:"가입일", field:"joinDt", hozAlign:"center"},
+					    {title:"최종활동일", field:"", hozAlign:"center"}, 
+					]
+		        })
+		        
+		        //검색조건 구분 공통코드
+		        cmmnCode('MEMBER_GBN', 'srchGbn')
+		        
+		        //목록 데이터 조회
+		        jQuery("#srchBtn").click(function () {
+					srchList(tableLayout, srchParam())
+				})
+				jQuery("#saveBtn").click(function () {
+					saveData()
+				})
+				
+				//초기 목록 조회
+				srchList(tableLayout, srchParam())
+			})
 		
-		//초기 목록 조회
-		srchList(tableLayout, srchParam())
-	})
-
-	// 목록 데이터 조회
-	function srchList(tableLayout, params){
-		fetchApi('/member/getMemberList.do', 'POST', params, 'dataList')
-			.then((data) => {
-				if(data != null){
-					tableLayout.setData(data)
-				}else{
-					alert("데이터 없음")
+			// 목록 데이터 조회
+			function srchList(tableLayout, params){
+				fetchApi('/member/getMemberList.do', 'POST', params, 'dataList')
+					.then((data) => {
+						if(data != null){
+							tableLayout.setData(data)
+						}else{
+							alert("데이터 없음")
+						}
+					}).catch((error) => console.log(error))
+			}
+			
+			// 데이터 저장
+			function saveData(){
+				//데이터 셋 
+				const params = {
+					'memberNo' : $('#memberNo').val(),
+					'name' : $('#name').val(),
+					'nickNm' : $('#nickNm').val(),
+					'phonNo' : $('#phonNo').val(),
+					'sex' : $('input[name="sex"]:checked').val(),
+					'intro' : $('#intro').val(),
+					'accountNo' : $('#accountNo').val(),
+					'email' : $('#email').val(),
+					'brthday' : $('#brthday').val()
 				}
-			}).catch((error) => console.log(error))
-	}
-	
-	// 데이터 저장
-	function saveData(){
-		//데이터 셋 
-		const params = {
-			'memberNo' : $('#memberNo').val(),
-			'name' : $('#name').val(),
-			'nickNm' : $('#nickNm').val(),
-			'phonNo' : $('#phonNo').val(),
-			'sex' : $('input[name="sex"]:checked').val(),
-			'intro' : $('#intro').val(),
-			'accountNo' : $('#accountNo').val(),
-			'email' : $('#email').val(),
-			'brthday' : $('#brthday').val()
-		}
-		
-		console.log(params)
-		fetchApi('/member/saveMember.do', 'POST', params, 'save').catch((error) => console.log(error))
-	}
-</script> 
-	
-<div class="intro-y flex flex-col sm:flex-row items-center mt-8">
-    <h1 class="text-lg font-medium mr-auto">맴버</h1>
-    <div class="w-full sm:w-auto flex mt-4 sm:mt-0">
-        <button class="btn btn-primary shadow-md mr-2" data-tw-toggle="modal" data-tw-target="#header-footer-slide-over-preview">Add New Member</button>
-        <div class="dropdown ml-auto sm:ml-0">
-            <button class="dropdown-toggle btn px-2 box" aria-expanded="false" data-tw-toggle="dropdown">
-                <span class="w-5 h-5 flex items-center justify-center"> <i class="w-4 h-4" data-lucide="plus"></i> </span>
-            </button>
-            <div class="dropdown-menu w-40">
-                <ul class="dropdown-content">
-                    <li>
-                        <a href="" class="dropdown-item"> <i data-lucide="file-plus" class="w-4 h-4 mr-2"></i> New Category </a>
-                    </li>
-                    <li>
-                        <a href="" class="dropdown-item"> <i data-lucide="users" class="w-4 h-4 mr-2"></i> New Group </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-	</div>
-</div>	
-<!-- BEGIN: HTML Table Data -->
-<div class="intro-y box p-5 mt-5">
-    <div class="flex flex-col sm:flex-row sm:items-end xl:items-start">
-        <form id="tabulator-html-filter-form" class="xl:flex sm:mr-auto" >
-            <div class="sm:flex items-center sm:mr-4">
-                <select id="srchGbn" class="form-select w-full sm:w-32 2xl:w-full mt-2 sm:mt-0 sm:w-auto" id="srchGbn"></select>
-            </div>
-            <div class="sm:flex items-center sm:mr-4 mt-2 xl:mt-0">
-                <input id="srchText" type="text" class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0" placeholder="Search...">
-            </div>
-            <div class="relative w-56 mx-auto"> 
-            	 <input type="text" data-daterange="true" class="datepicker form-control w-56 block mx-auto" id="srchDt"> 
-            </div>
-            <div class="ml-2 mt-2 xl:mt-0">
-                <button type="button" class="btn btn-secondary w-full sm:w-16 mt-2 sm:mt-0 sm:ml-1" onclick="setSrchDate('-1')">1개월</button>
-                <button type="button" class="btn btn-secondary w-full sm:w-16 mt-2 sm:mt-0 sm:ml-1" onclick="setSrchDate('-3')">3개월</button>
-            </div>  
-            <div class="ml-5 mt-2 xl:mt-0">
-                <button type="button" class="btn btn-primary w-full sm:w-16" id="srchBtn" >Go</button>
-                <button type="button" class="btn btn-secondary w-full sm:w-16 mt-2 sm:mt-0 sm:ml-1" onclick="srchReset()" >Reset</button>
-            </div>
-        </form>
-        <div class="flex mt-5 sm:mt-0">
-            <button id="tabulator-print" class="btn btn-outline-secondary w-1/2 sm:w-auto mr-2"> <i data-lucide="printer" class="w-4 h-4 mr-2"></i> Print </button>
-            <div class="dropdown w-1/2 sm:w-auto">
-                <button class="dropdown-toggle btn btn-outline-secondary w-full sm:w-auto" aria-expanded="false" data-tw-toggle="dropdown"> <i data-lucide="file-text" class="w-4 h-4 mr-2"></i> Export <i data-lucide="chevron-down" class="w-4 h-4 ml-auto sm:ml-2"></i> </button>
-                <div class="dropdown-menu w-40">
-                    <ul class="dropdown-content">
-                        <li>
-                            <a id="tabulator-export-csv" href="javascript:;" class="dropdown-item"> <i data-lucide="file-text" class="w-4 h-4 mr-2"></i> Export CSV </a>
-                        </li>
-                        <li>
-                            <a id="tabulator-export-json" href="javascript:;" class="dropdown-item"> <i data-lucide="file-text" class="w-4 h-4 mr-2"></i> Export JSON </a>
-                        </li>
-                        <li>
-                            <a id="tabulator-export-xlsx" href="javascript:;" class="dropdown-item"> <i data-lucide="file-text" class="w-4 h-4 mr-2"></i> Export XLSX </a>
-                        </li>
-                        <li>
-                            <a id="tabulator-export-html" href="javascript:;" class="dropdown-item"> <i data-lucide="file-text" class="w-4 h-4 mr-2"></i> Export HTML </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="overflow-x-auto scrollbar-hidden">
-        <div id="dataList" class="mt-5 table-report table-report--tabulator"></div>
-    </div>
-
-	
-	
- 
-	<!-- BEGIN: Modal Content -->
-	<div id="header-footer-slide-over-preview" class="modal modal-slide-over" data-tw-backdrop="static" tabindex="-1" aria-hidden="true">
-    	<div class="modal-dialog">
-    		<!-- BEGIN: Slide Over Header -->
-        	<div class="modal-content"> <a data-tw-dismiss="modal" href="javascript:;"> <i data-lucide="x" class="w-8 h-8 text-slate-400"></i> </a> 
-            	<div class="modal-header">
-					<h2 class="font-medium text-base mr-auto">맴버등록</h2> 
-					<button class="btn btn-outline-secondary hidden sm:flex"><i data-lucide="file" class="w-4 h-4 mr-2"></i>Download Docs</button>
-                 	<div class="dropdown sm:hidden">
-                 		<a class="dropdown-toggle w-5 h-5 block" href="javascript:;" aria-expanded="false" data-tw-toggle="dropdown"> 
-                 			<i data-lucide="more-horizontal" class="w-5 h-5 text-slate-500"></i> 
-                 		</a>
-                    	<div class="dropdown-menu w-40">
-							<ul class="dropdown-content">
-                            	<li><a href="javascript:;" class="dropdown-item"><i data-lucide="file" class="w-4 h-4 mr-2"></i> Download Docs </a></li>
-                        	</ul>
-                    	</div>
-                	</div>
-            	</div> 
+				
+				console.log(params)
+				fetchApi('/member/saveMember.do', 'POST', params, 'save').catch((error) => console.log(error))
+			}
+		</script> 
+    </head>
+    
+    <!-- END: Head -->
+    <body class="py-5">
+        <!-- BEGIN: Mobile Menu -->
+        <div class="mobile-menu md:hidden" id="mobile-menu"></div>
+        
+        <div class="flex mt-[4.7rem] md:mt-0">
+            <!-- BEGIN: Side Menu -->
+            <nav class="side-nav" id="side-nav"></nav>
             
-	            <!-- BEGIN: Slide Over Body -->
-	            <div class="modal-body">
-	                <div>
-	                	<label for="name" class="form-label">이름</label> 
-	                	<input id="name" type="text" class="form-control" placeholder="이름을 입력해주세요.">
-	                	<input id="memberNo" type="hidden">  
-	                </div>
-	                <div class="mt-4"> 
-	                	<label for="nickNm" class="form-label">닉네임</label> 
-	                	<input id="nickNm" type="text" class="form-control" placeholder="닉네임을 입력해주세요."> 
-	                </div>
-	                <div class="mt-4"> 
-	                	<label for="phonNo" class="form-label">휴대폰번호</label> 
-	                	<input id="phonNo" type="text" class="form-control" placeholder="010-0000-0000"> 
-	                </div>
-	                <div class="mt-4"> 
-	                	<label for="sex" class="form-label">성별</label>
-	                	<div class="flex flex-col sm:flex-row mt-2">
-							<div class="form-check mr-2"> 
-								<input id="radio-switch-4" class="form-check-input" type="radio" name="sex" value="MALE"> 
-								<label class="form-check-label" for="radio-switch-4">남성</label> 
+            <!-- BEGIN: Content -->
+            <div class="content">
+				
+                <!-- BEGIN: Top Bar -->
+                <div class="top-bar" id="top-bar"></div>
+                
+                <!-- BEGIN: Content View Title -->
+				<div class="intro-y flex flex-col sm:flex-row items-center mt-8">
+				    <h1 class="text-lg font-medium mr-auto">맴버</h1>
+				    <div class="w-full sm:w-auto flex mt-4 sm:mt-0">
+				        <button class="btn btn-primary shadow-md mr-2" data-tw-toggle="modal" data-tw-target="#header-footer-slide-over-preview">Add New Member</button>
+				        <div class="dropdown ml-auto sm:ml-0">
+				            <button class="dropdown-toggle btn px-2 box" aria-expanded="false" data-tw-toggle="dropdown">
+				                <span class="w-5 h-5 flex items-center justify-center"> <i class="w-4 h-4" data-lucide="plus"></i> </span>
+				            </button>
+				            <div class="dropdown-menu w-40">
+				                <ul class="dropdown-content">
+				                    <li>
+				                        <a href="" class="dropdown-item"> <i data-lucide="file-plus" class="w-4 h-4 mr-2"></i> New Category </a>
+				                    </li>
+				                    <li>
+				                        <a href="" class="dropdown-item"> <i data-lucide="users" class="w-4 h-4 mr-2"></i> New Group </a>
+				                    </li>
+				                </ul>
+				            </div>
+				        </div>
+					</div>
+				</div>	
+				
+				<!-- BEGIN: HTML Table Data -->
+				<div class="intro-y box p-5 mt-5">
+				    <div class="flex flex-col sm:flex-row sm:items-end xl:items-start">
+				        <form id="tabulator-html-filter-form" class="xl:flex sm:mr-auto" >
+				            <div class="sm:flex items-center sm:mr-4">
+				                <select id="srchGbn" class="form-select w-full sm:w-32 2xl:w-full mt-2 sm:mt-0 sm:w-auto" id="srchGbn"></select>
+				            </div>
+				            <div class="sm:flex items-center sm:mr-4 mt-2 xl:mt-0">
+				                <input id="srchText" type="text" class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0" placeholder="Search...">
+				            </div>
+				            <div class="relative w-56 mx-auto"> 
+				            	 <input type="text" data-daterange="true" class="datepicker form-control w-56 block mx-auto" id="srchDt"> 
+				            </div>
+				            <div class="ml-2 mt-2 xl:mt-0">
+				                <button type="button" class="btn btn-secondary w-full sm:w-16 mt-2 sm:mt-0 sm:ml-1" onclick="setSrchDate('-1')">1개월</button>
+				                <button type="button" class="btn btn-secondary w-full sm:w-16 mt-2 sm:mt-0 sm:ml-1" onclick="setSrchDate('-3')">3개월</button>
+				            </div>  
+				            <div class="ml-5 mt-2 xl:mt-0">
+				                <button type="button" class="btn btn-primary w-full sm:w-16" id="srchBtn" >Go</button>
+				                <button type="button" class="btn btn-secondary w-full sm:w-16 mt-2 sm:mt-0 sm:ml-1" onclick="srchReset()" >Reset</button>
+				            </div>
+				        </form>
+				        <div class="flex mt-5 sm:mt-0">
+				            <button id="tabulator-print" class="btn btn-outline-secondary w-1/2 sm:w-auto mr-2"> <i data-lucide="printer" class="w-4 h-4 mr-2"></i> Print </button>
+				            <div class="dropdown w-1/2 sm:w-auto">
+				                <button class="dropdown-toggle btn btn-outline-secondary w-full sm:w-auto" aria-expanded="false" data-tw-toggle="dropdown"> <i data-lucide="file-text" class="w-4 h-4 mr-2"></i> Export <i data-lucide="chevron-down" class="w-4 h-4 ml-auto sm:ml-2"></i> </button>
+				                <div class="dropdown-menu w-40">
+				                    <ul class="dropdown-content">
+				                        <li>
+				                            <a id="tabulator-export-csv" href="javascript:;" class="dropdown-item"> <i data-lucide="file-text" class="w-4 h-4 mr-2"></i> Export CSV </a>
+				                        </li>
+				                        <li>
+				                            <a id="tabulator-export-json" href="javascript:;" class="dropdown-item"> <i data-lucide="file-text" class="w-4 h-4 mr-2"></i> Export JSON </a>
+				                        </li>
+				                        <li>
+				                            <a id="tabulator-export-xlsx" href="javascript:;" class="dropdown-item"> <i data-lucide="file-text" class="w-4 h-4 mr-2"></i> Export XLSX </a>
+				                        </li>
+				                        <li>
+				                            <a id="tabulator-export-html" href="javascript:;" class="dropdown-item"> <i data-lucide="file-text" class="w-4 h-4 mr-2"></i> Export HTML </a>
+				                        </li>
+				                    </ul>
+				                </div>
+				            </div>
+				        </div>
+				    </div>
+				    <div class="overflow-x-auto scrollbar-hidden">
+				        <div id="dataList" class="mt-5 table-report table-report--tabulator"></div>
+				    </div>
+				
+					
+					
+				 
+					<!-- BEGIN: Modal Content -->
+					<div id="header-footer-slide-over-preview" class="modal modal-slide-over" data-tw-backdrop="static" tabindex="-1" aria-hidden="true">
+				    	<div class="modal-dialog">
+				    		<!-- BEGIN: Slide Over Header -->
+				        	<div class="modal-content"> <a data-tw-dismiss="modal" href="javascript:;"> <i data-lucide="x" class="w-8 h-8 text-slate-400"></i> </a> 
+				            	<div class="modal-header">
+									<h2 class="font-medium text-base mr-auto">맴버등록</h2> 
+									<button class="btn btn-outline-secondary hidden sm:flex"><i data-lucide="file" class="w-4 h-4 mr-2"></i>Download Docs</button>
+				                 	<div class="dropdown sm:hidden">
+				                 		<a class="dropdown-toggle w-5 h-5 block" href="javascript:;" aria-expanded="false" data-tw-toggle="dropdown"> 
+				                 			<i data-lucide="more-horizontal" class="w-5 h-5 text-slate-500"></i> 
+				                 		</a>
+				                    	<div class="dropdown-menu w-40">
+											<ul class="dropdown-content">
+				                            	<li><a href="javascript:;" class="dropdown-item"><i data-lucide="file" class="w-4 h-4 mr-2"></i> Download Docs </a></li>
+				                        	</ul>
+				                    	</div>
+				                	</div>
+				            	</div> 
+				            
+					            <!-- BEGIN: Slide Over Body -->
+					            <div class="modal-body">
+					                <div>
+					                	<label for="name" class="form-label">이름</label> 
+					                	<input id="name" type="text" class="form-control" placeholder="이름을 입력해주세요.">
+					                	<input id="memberNo" type="hidden">  
+					                </div>
+					                <div class="mt-4"> 
+					                	<label for="nickNm" class="form-label">닉네임</label> 
+					                	<input id="nickNm" type="text" class="form-control" placeholder="닉네임을 입력해주세요."> 
+					                </div>
+					                <div class="mt-4"> 
+					                	<label for="phonNo" class="form-label">휴대폰번호</label> 
+					                	<input id="phonNo" type="text" class="form-control" placeholder="010-0000-0000"> 
+					                </div>
+					                <div class="mt-4"> 
+					                	<label for="sex" class="form-label">성별</label>
+					                	<div class="flex flex-col sm:flex-row mt-2">
+											<div class="form-check mr-2"> 
+												<input id="radio-switch-4" class="form-check-input" type="radio" name="sex" value="MALE"> 
+												<label class="form-check-label" for="radio-switch-4">남성</label> 
+											</div>
+									        <div class="form-check mr-2 mt-2 sm:mt-0"> 
+									        	<input id="radio-switch-5" class="form-check-input" type="radio" name="sex" value="FEMALE"> 
+									        	<label class="form-check-label" for="radio-switch-5">여성</label> 
+									       	</div>
+									    </div>
+					                </div>
+					                <div class="mt-4"> 
+					                	<label for="brthday" class="form-label">생년월일</label> 
+					                	<input id="brthday" type="text" class="form-control" placeholder="YYYY.MM.DD"> 
+					                </div>
+					                <div class="mt-4"> 
+					                	<label for="email" class="form-label">이메일</label> 
+					                	<input id="email" type="text" class="form-control" placeholder="example@gmail.com"> 
+					                </div>
+					                <div class="mt-4"> 
+					                	<label for="intro" class="form-label">자기소개</label> 
+					                	<input id="intro" type="text" class="form-control"> 
+					                </div>
+					                <div class="mt-4"> 
+					                	<label for="intro" class="form-label">계좌번호</label> 
+					                	<div class="grid grid-cols-12 gap-2"> 
+						                	<select id="modal-form-6" class="form-select col-span-3">
+												<option>하나</option>
+						                        <option>농협</option>
+						                        <option>카카오</option>
+						                        <option>SC제일</option>
+						                        <option>농협</option>
+						                        <option>신한</option>
+						                    </select> 
+						                	<input id="accountNo" type="text" class="form-control w-auto" style="width:312px;">
+					                	</div> 
+					                </div>
+					                <div class="mt-4"> 
+					                	<label for="intro" class="form-label">가입일</label>
+						                <div class="relative w-auto mx-auto">
+					     					<div class="absolute rounded-l w-10 h-full flex items-center justify-center bg-slate-100 border text-slate-500 dark:bg-darkmode-700 dark:border-darkmode-800 dark:text-slate-400"> 
+					     						<i data-lucide="calendar" class="w-4 h-4"></i> 
+					     					</div> 
+					     					<input id="joinDtm" type="text" class="datepicker form-control pl-12" data-single-mode="true">
+					 					</div>
+					                </div>
+					             </div>
+				             
+				             	<!-- BEGIN: Slide Over Footer -->
+				            	<div class="modal-footer w-full absolute bottom-0"> 
+				            		<button type="button" data-tw-dismiss="modal" class="btn btn-outline-secondary w-20 mr-1">취소</button> 
+				            		<button type="button" class="btn btn-primary w-20" id='saveBtn'>저장</button>
+				            	</div>
 							</div>
-					        <div class="form-check mr-2 mt-2 sm:mt-0"> 
-					        	<input id="radio-switch-5" class="form-check-input" type="radio" name="sex" value="FEMALE"> 
-					        	<label class="form-check-label" for="radio-switch-5">여성</label> 
-					       	</div>
-					    </div>
-	                </div>
-	                <div class="mt-4"> 
-	                	<label for="brthday" class="form-label">생년월일</label> 
-	                	<input id="brthday" type="text" class="form-control" placeholder="YYYY.MM.DD"> 
-	                </div>
-	                <div class="mt-4"> 
-	                	<label for="email" class="form-label">이메일</label> 
-	                	<input id="email" type="text" class="form-control" placeholder="example@gmail.com"> 
-	                </div>
-	                <div class="mt-4"> 
-	                	<label for="intro" class="form-label">자기소개</label> 
-	                	<input id="intro" type="text" class="form-control"> 
-	                </div>
-	                <div class="mt-4"> 
-	                	<label for="intro" class="form-label">계좌번호</label> 
-	                	<div class="grid grid-cols-12 gap-2"> 
-		                	<select id="modal-form-6" class="form-select col-span-3">
-								<option>하나</option>
-		                        <option>농협</option>
-		                        <option>카카오</option>
-		                        <option>SC제일</option>
-		                        <option>농협</option>
-		                        <option>신한</option>
-		                    </select> 
-		                	<input id="accountNo" type="text" class="form-control w-auto" style="width:312px;">
-	                	</div> 
-	                </div>
-	                <div class="mt-4"> 
-	                	<label for="intro" class="form-label">가입일</label>
-		                <div class="relative w-auto mx-auto">
-	     					<div class="absolute rounded-l w-10 h-full flex items-center justify-center bg-slate-100 border text-slate-500 dark:bg-darkmode-700 dark:border-darkmode-800 dark:text-slate-400"> 
-	     						<i data-lucide="calendar" class="w-4 h-4"></i> 
-	     					</div> 
-	     					<input id="joinDtm" type="text" class="datepicker form-control pl-12" data-single-mode="true">
-	 					</div>
-	                </div>
-	             </div>
-             
-             	<!-- BEGIN: Slide Over Footer -->
-            	<div class="modal-footer w-full absolute bottom-0"> 
-            		<button type="button" data-tw-dismiss="modal" class="btn btn-outline-secondary w-20 mr-1">취소</button> 
-            		<button type="button" class="btn btn-primary w-20" id='saveBtn'>저장</button>
-            	</div>
-			</div>
-     	</div>
- 	</div>
-</div>
-<!-- END: HTML Table Data -->
-
-<script src="dist/js/app.js"></script>
+				     	</div>
+				 	</div>
+				</div>
+				<!-- END: HTML Table Data -->
+		
+            </div>
+        </div>
+    </body>
+</html>
