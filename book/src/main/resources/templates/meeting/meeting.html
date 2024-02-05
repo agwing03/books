@@ -24,7 +24,16 @@
         <script>
 			jQuery(document).ready(function(){
 				//메뉴선택
-				menuMove('5', '7', '모임', '모임후기', '')
+				//menuMove('5', '7', '모임', '모임후기', '')
+				
+				jQuery('#menu5').addClass('side-menu--active')
+				jQuery('#menuUl5').addClass('side-menu__sub-open').css('display','block')
+				// <a href="javascript:;.html" class="side-menu side-menu--active">
+				// <ul class="side-menu__sub-open">
+				// <a href="index.html" class="side-menu side-menu--active">
+				
+				//소메뉴 추가
+				jQuery('#menuSub5').addClass('side-menu--active')
 				
 				//검색조건 초기화
 				srchReset()
@@ -51,7 +60,10 @@
 					    {title:"생성일", field:"frstRegDt", hozAlign:"center", width: 180}
 					]
 		        })
-		        
+				jQuery(window).on('load', function () {
+					alert('load 모임후기')
+					menuMove('5', '7', '모임', '모임후기', '')
+				})
 		        //목록 데이터 조회
 		        jQuery("#srchBtn").click(function () {
 					srchList(tableLayout)
@@ -98,7 +110,7 @@
                 
                 <!-- BEGIN: Content DATA -->
                 <div class="intro-y flex flex-col sm:flex-row items-center mt-8">
-				    <i data-lucide="book-open" class="w-7 h-7 mr-2"></i><h4 class="text-xl font-medium leading-none mr-auto">독서모임</h4>
+				    <i data-lucide="book-open" class="w-7 h-7 mr-2"></i><h4 class="text-xl font-medium leading-none mr-auto">모임</h4>
 				    <div class="w-full sm:w-auto flex mt-4 sm:mt-0">
 				        <button class="btn btn-primary shadow-md mr-2" onclick="movePageView('/meetingReview.do')">Add New Books</button>
 				        <div class="dropdown ml-auto sm:ml-0">

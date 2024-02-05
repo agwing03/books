@@ -2,15 +2,17 @@
  *  layout 생성
  */
 jQuery(document).ready(function(){
+	console.log("layout ready")
+})
+
+jQuery(window).on('load', function () {
 	//nav
 	fetchApi('/menu/getMenuList.do', 'POST', {clubNo:'1'}, 'nav')
 	//공통검색
 	jQuery("#top-bar").load("/cmmn/topBar.html")
 	//초기페이지 페이지 이동
-	menuMove('', '', '운영관리', '운영관리', '/club/admin')
-})
-
-jQuery(window).on('load', function () {
+	//menuMove('', '', '운영관리', '운영관리', '/club/admin')
+	
 	//디자인 코어 JS 반영
     const script = document.createElement('script');
     script.src = '/dist/js/app.js';
@@ -21,6 +23,7 @@ jQuery(window).on('load', function () {
     link.rel = 'stylesheet'
     link.href = '/dist/css/app.css';
 	document.body.appendChild(link);
+	console.log("layout load")
 })
 
 /** 
@@ -89,10 +92,13 @@ function layerClose(){
 /** 
  *  HTML 페이지 이동
  */			
-async function pageMove(url){
-	await fetchHtml(url+'.html')
-}
+//async function pageMove(url){
+//	await fetchHtml(url+'.html')
+//}
 
+function movePage(url, params) {
+	location.href=url+params
+}
 
 /** 
  *  fetch HTML 삽입
@@ -115,7 +121,11 @@ function menuMove(menu, subMenu, menuUpperNm, menuNm, menuUrl){
 	
 	//대메뉴 추가
 	jQuery('#menu'+menu).addClass('side-menu--active')
-	jQuery('#menu'+menu+' > ul').addClass('side-menu__sub-open').css('display','block')
+	jQuery('#menuUl'+menu).addClass('side-menu__sub-open').css('display','block')
+	// <a href="javascript:;.html" class="side-menu side-menu--active">
+	// <ul class="side-menu__sub-open">
+	// <a href="index.html" class="side-menu side-menu--active">
+	
 	//소메뉴 추가
 	jQuery('#menuSub'+subMenu).addClass('side-menu--active')
 		
@@ -130,6 +140,7 @@ function menuMove(menu, subMenu, menuUpperNm, menuNm, menuUrl){
  *  사이트 및 모바일 동시 생성 
  */
 function nav(data){
+	console.log("layout 네비")
 	let menuUpperNo = ''
 	let menuUpperNm = ''
 	

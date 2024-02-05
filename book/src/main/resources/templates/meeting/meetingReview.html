@@ -25,8 +25,13 @@
 			jQuery(document).ready(function(){
 				//메뉴선택
 				menuMove('5', '7', '모임', '모임후기', '')
-				
+				console.log('ready 모임후기')
 	  		})
+	  		
+			jQuery(window).on('load', function () {
+				menuMove('5', '7', '모임', '모임후기', '')
+				console.log('load 모임후기')
+			})
 		</script>
     </head>
     <!-- END: Head -->
@@ -47,8 +52,9 @@
                 <!-- BEGIN: Content DATA -->
                                 <!-- BEGIN: Content DATA -->
                 <div class="intro-y flex flex-col sm:flex-row items-center mt-8">
-				    <i data-lucide="book-open" class="w-7 h-7 mr-2"></i><h4 class="text-xl font-medium leading-none mr-auto">독서 모임 후기</h4>
+				    <i data-lucide="book-open" class="w-7 h-7 mr-2"></i><h4 class="text-xl font-medium leading-none mr-auto">모임후기</h4>
 				    <div class="w-full sm:w-auto flex mt-4 sm:mt-0">
+				    	<button class="btn btn-primary shadow-md mr-2" onclick="movePage('/meeting/meeting.html','')">목록</button>
 				        <button class="btn btn-primary shadow-md mr-2" onclick="movePageView('/meetingReview.do')">Add New Books</button>
 				        <div class="dropdown ml-auto sm:ml-0">
 				            <button class="dropdown-toggle btn px-2 box" aria-expanded="false" data-tw-toggle="dropdown">
