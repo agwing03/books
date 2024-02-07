@@ -35,4 +35,21 @@ public interface MeetingMapper {
 	 * @throw Exception
      */
 	int insertMeetingMember(MeetingVO vo);
+	
+	
+	/**
+	 * 모임 상세 조회
+	 * @param int meetingNo
+	 * @return MeetingVO
+	 * @throw Exception
+	 */
+	MeetingVO selectMeetingInfo(int meetingNo);
+	
+	/**
+	 * 맴버별 한줄평
+	 * @param int meetingNo
+	 * @return List<CamelMap>
+	 * @throw Exception
+     */
+	List<CamelMap> selectMeetingReviewList(int meetingNo);
 }

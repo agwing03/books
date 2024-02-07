@@ -114,4 +114,54 @@
 			, now()
 		)
 	</insert>
+	
+	<!-- 모임 정보 -->
+	<select id="selectMeetingInfo" parameterType="Integer" resultType="project.books.club.meeting.MeetingVO">
+		/*meetingMapper.selectMeetingInfo*/
+		select mt.meeting_no 	as meetingNo
+			 , mt.club_no 		as clubNo
+			 , (select code_dtl_nm 
+			      from cmmn_code_dtl ccd 
+			     where ccd.code_id = 'MEETING_GBN' 
+			       and ccd.code_dtl_id = mt.meeting_gbn) as meetingGbn
+		 	 , (select mb.name 
+		 	      from member mb 
+		 	     where mb.member_no = mt.host_no) as hostNm
+		 	 , mt.title
+		 	 , date_format(mt.dday, '%Y.%m.%d') as dday
+		 	 , concat(mt.hour, ':', mt.minute) as time
+		 	 , mt.place
+		 	 , mt.cost
+		 	 , mt.place_url 	as placeUrl
+		 	 , mt.attend_cnt	as attendCnt
+		 	 , (select concat(mb.name,'(',mb.nick_nm,')') 
+		 	      from member mb 
+		 	     where mb.member_no = mt.frst_reg_no) 			as frstRegNm
+		 	 , date_format(mt.frst_reg_dt, '%Y.%m.%d %H:%i:%S') as frstRegDt
+		 	 , (select concat(mb.name,'(',mb.nick_nm,')') 
+		 	      from member mb 
+		 	     where mb.member_no = mt.last_upd_no) 			as lastUpdNm
+		 	 , date_format(mt.last_upd_dt, '%Y.%m.%d %H:%i:%S') as lastUpdDt
+		  from meeting mt
+		 where mt.meeting_no = #{meetingNo}
+	</select>
+	
+	<!-- 모임 맴버별 한줄평 -->
+	<select id="selectMeetingReviewList" parameterType="Integer" resultType="project.books.sys.util.CamelMap">
+		/*meetingMapper.selectMeetingReviewList*/
+		select bv.eval_no
+		     , (select concat(bk.book_title ,'(', bk.book_writer, ')') 
+			      from books bk 
+		 	     where bk.book_no = bv.book_no) as book_nm 
+		     , (select concat(mb.name,'(',mb.nick_nm,')') 
+		 	      from member mb 
+		 	     where mb.member_no = bv.member_no) as member_nm 
+		 	 , bv.book_score 
+		 	 , bv.book_eval 
+		  from meeting_member mm 
+		       join books_eval bv 
+		         on mm.meeting_no = bv.meeting_no 
+		        and mm.member_no = bv.member_no 
+		 where mm.meeting_no = #{meetingNo}
+	</select>
 </mapper>

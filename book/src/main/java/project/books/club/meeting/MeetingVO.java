@@ -15,6 +15,7 @@ public class MeetingVO extends CommonVO{
 	//meeting
     private int meetingNo = 0;	//모임번호
     private int hostNo = 0;		//맴버번호(club_member)
+    private String hostNm;		//맴버이름
     private String title;		//모임명
     private String dday;		//모임일
     private String hour;		//모임시간-시
@@ -34,7 +35,7 @@ public class MeetingVO extends CommonVO{
     private String divAmount;	//분할금액
     private String calculYn;	//정산(결재) 여부
     
-    // 모임 후기 
+    // 모임 후기 한줄평 
 	private List<CamelMap> reviewList;
 	
     //SAVE 구분

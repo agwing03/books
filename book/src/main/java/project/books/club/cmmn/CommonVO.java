@@ -14,6 +14,15 @@ public class CommonVO {
 	private int userNo = 2;		// 생성자 NO
     private int saveCnt = 0;	// 저장 건수
     
+    private int frstRegNo; 		// 최초 등록자 번호
+    private String frstRegNm; 	// 최초 등록자 이름 
+    private String frstRegDt; 	// 최초 등록일 
+    private int lastUpdNo; 		// 최종 변경자 번호
+    private String lastUpdNm; 	// 최종 변경자 이름
+    private String lastUpdDt;	// 최종 변경일
+    private int regNo; 			// 등록자 
+    private String regDt; 		// 등록일
+    
     //반환 메세지 
     private String msg;
     

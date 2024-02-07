@@ -15,13 +15,27 @@ public class MeetingController {
 	 
 	/**
 	 * 모임 목록 조회
-	 * @param clubNo
+	 * @param SrchVO
+	 * @return SrchVO.List<CamelMap>
 	 */
 	@RequestMapping("/meeting/getMeetingList.do")
 	public SrchVO getMeetingList(
 			@RequestBody SrchVO vo
 		) throws Exception {
 		vo = meetingService.selectMeetingList(vo);
+		return vo;
+	}
+	
+	/**
+	 * 모임 상세 조회
+	 * @param MeetingVO
+	 * @return MeetingVO.CamelMap
+	 */
+	@RequestMapping("/meeting/getMeetingReview.do")
+	public MeetingVO getMeetingReview(
+			@RequestBody MeetingVO vo
+		) throws Exception {
+		vo = meetingService.getMeetingReview(vo);
 		return vo;
 	}
 	

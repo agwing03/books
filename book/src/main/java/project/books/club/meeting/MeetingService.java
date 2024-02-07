@@ -85,5 +85,20 @@ public class MeetingService {
 		log.debug("##### 모임 및 후기 등록 saveMeetingReview > 모임등록:"+mtCnt+"건 / 참석자등록:"+mtMemberCnt+"건 / 서평등록:"+mtReviewCnt+"건 #####");
 		return vo;
 	}
+	
+	/**
+	 * 모임 상세 조회
+	 * @param SrchVO
+	 * @return SrchVO.CamelMap
+	 * @throw Exception
+	 */
+	public MeetingVO getMeetingReview(MeetingVO vo) throws Exception{
+		int meetingNo = vo.getMeetingNo();
+		// 모임 정보
+		vo = meetingMapper.selectMeetingInfo(meetingNo);
+		// 맴버별 한줄평
+		vo.setReviewList(meetingMapper.selectMeetingReviewList(meetingNo));
+		return vo;
+	}
 }
 

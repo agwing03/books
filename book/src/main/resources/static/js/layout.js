@@ -37,23 +37,27 @@ async function fetchApi(url, method, body, gbn, headers = {}) {
 	const res = await fetch(url, options)
 	const data = await res.json()
 	if (res.ok) {
-		//side-nav html 생성
+		//네비 생성
 		if (gbn === 'nav'){
 			nav(data.menuList);
 			
-		//list 데이터 리턴
+		//공통 search 결과 조회
+		} else if (gbn === 'search'){ 
+			return data.dataList;
+			
+		//목록 데이터 리턴
 		} else if (gbn === 'dataList'){ 
 			return data.dataList;
+			
+		//상세 데이터 리턴
+		} else if (gbn === 'dataMap'){ 
+			return data;
 			
 		//save DB 데이터 적재
 		} else if (gbn === 'save'){
 			alert(data.msg)
 			location.reload()
 			
-		//공통 search 결과 조회
-		} else if (gbn === 'search'){ 
-			return data.dataList;
-		
 		//공통 활동지역 결과 조회
 		} else if (gbn === 'codeArea'){ 
 			return data.codeList;
@@ -99,7 +103,6 @@ async function fetchHtml(url) {
 function menuMove(menu, subMenu, menuUpperNm, menuNm, menuUrl){
 	//메뉴 CSS 추가
 	setTimeout(function(){
-		console.log(menuUrl)
 		if(subMenu !== '' || subMenu === 'NOT'){
 			jQuery('#menu'+menu+' > .side-menu').addClass('side-menu--active')
 			//이동경로

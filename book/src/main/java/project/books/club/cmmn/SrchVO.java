@@ -20,6 +20,7 @@ public class SrchVO {
 	
 	//공통 필드
 	private int clubNo;			// 클럽 NO
+	private int meetingNo;		// 모임 NO
 	private int regNo; 			// 생성자 NO
     private String regDt;		// 생성일자
     private int saveCnt = 0;	// 저장 건수
