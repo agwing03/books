@@ -34,13 +34,15 @@
 		    		paginationSizeSelector : [10, 20, 50, 100],
 		            placeholder : "검색된 데티터가 없습니다.",
 					columns : [
-					    {title:"No", field:"bookNo", hozAlign:"center", width: 100, minWidth: 50}, 
+						{title:"No", field:"bookNo", hozAlign:"center", width: 80},
 					    {title:"도서", field:"bookTitle", hozAlign:"left"},
 					    {title:"저자", field:"bookWriter", hozAlign:"left"},
-					    {title:"서평횟수", field:"bookApp", hozAlign:"right", width: 120, minWidth: 40}, 
+					    {title:"Rating", field:"rating", formatter:"star", formatterParams:{stars:5}, hozAlign:"left", width:200},
 					    {title:"평점", field:"bookAvg", hozAlign:"right", width: 120, minWidth: 40}, 
+					    {title:"서평횟수", field:"bookApp", hozAlign:"right", width: 120, minWidth: 40}, 
 					]
 		        })
+		        jQuery("svg").css('display','')
 		        
 		        //목록 데이터 조회
 		        jQuery("#srchBtn").click(function () {
@@ -64,6 +66,14 @@
 			}
 		</script>
     </head>
+    
+    <style>
+	    svg {
+			display: '' !important;
+			vertical-align: middle;
+		}
+    </style>
+    
     <!-- END: Head -->
     <body class="py-5">
         <!-- BEGIN: Mobile Menu -->
@@ -106,49 +116,40 @@
 				<div class="intro-y box p-5 mt-5">
 				    <div class="flex flex-col sm:flex-row sm:items-end xl:items-start">
 				        <form id="tabulator-html-filter-form" class="xl:flex sm:mr-auto" >
+				        	<!-- 검색 구분 -->
 				            <div class="sm:flex items-center sm:mr-4">
-				                <select id="srchGbn" class="form-select w-full sm:w-32 2xl:w-full mt-2 sm:mt-0 sm:w-auto" id="srchGbn">
-				                    <option value="B">도서명</option>
-				                    <option value="W">작가</option>
+				                <select class="form-select w-full sm:w-32 2xl:w-full mt-2 sm:mt-0 sm:w-auto" id="srchGbn">
+				                	<option value="">전체</option>
 				                </select>
 				            </div>
+				            <!-- 검색어 -->
 				            <div class="sm:flex items-center sm:mr-4 mt-2 xl:mt-0">
-				                <input id="srchText" type="text" class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0" placeholder="Search...">
+				                <input type="text" class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0" placeholder="Search..." id="srchText">
 				            </div>
-				            <div class="relative w-56 mx-auto"> 
-				            	 <input type="text" data-daterange="true" class="datepicker form-control w-56 block mx-auto" id="srchDt"> 
-				            </div>
+				            <!-- 검색 시작일 -->
+				        	<div class="relative w-40 mx-auto mr-2 ">
+							    <div class="absolute rounded-l w-10 h-full flex items-center justify-center bg-slate-100 border text-slate-500 dark:bg-darkmode-700 dark:border-darkmode-800 dark:text-slate-400"> 
+							    	<i data-lucide="calendar" class="w-4 h-4"></i> 
+							    </div> 
+							    <input type="text" class="datepicker form-control pl-12" data-single-mode="true" id="srchStartDt">
+							</div>
+				        	<!-- 검색 종료일 -->
+				        	<div class="relative w-40 mx-auto">
+							    <div class="absolute rounded-l w-10 h-full flex items-center justify-center bg-slate-100 border text-slate-500 dark:bg-darkmode-700 dark:border-darkmode-800 dark:text-slate-400"> 
+							    	<i data-lucide="calendar" class="w-4 h-4"></i> 
+							    </div> 
+							    <input type="text" class="datepicker form-control pl-12" data-single-mode="true" id="srchEndDt">
+							</div>
+							<!-- 버튼 -->
 				            <div class="ml-2 mt-2 xl:mt-0">
-				                <button type="button" class="btn btn-secondary w-full sm:w-16 mt-2 sm:mt-0 sm:ml-1" onclick="setSrchDate('-1')">1개월</button>
-				                <button type="button" class="btn btn-secondary w-full sm:w-16 mt-2 sm:mt-0 sm:ml-1" onclick="setSrchDate('-3')">3개월</button>
+				                <button type="button" class="btn btn-secondary w-full sm:w-16 mt-2 sm:mt-0 sm:ml-1" onclick="setSrchDate('-6')">6월</button>
+				                <button type="button" class="btn btn-secondary w-full sm:w-16 mt-2 sm:mt-0 sm:ml-1" onclick="setSrchDate('-12')">12월</button>
 				            </div>  
 				            <div class="ml-5 mt-2 xl:mt-0">
 				                <button type="button" class="btn btn-primary w-full sm:w-16" id="srchBtn" >Go</button>
 				                <button type="button" class="btn btn-secondary w-full sm:w-16 mt-2 sm:mt-0 sm:ml-1" onclick="srchReset()" >Reset</button>
 				            </div>
 				        </form>
-				        <div class="flex mt-5 sm:mt-0">
-				            <button id="tabulator-print" class="btn btn-outline-secondary w-1/2 sm:w-auto mr-2"> <i data-lucide="printer" class="w-4 h-4 mr-2"></i> Print </button>
-				            <div class="dropdown w-1/2 sm:w-auto">
-				                <button class="dropdown-toggle btn btn-outline-secondary w-full sm:w-auto" aria-expanded="false" data-tw-toggle="dropdown"> <i data-lucide="file-text" class="w-4 h-4 mr-2"></i> Export <i data-lucide="chevron-down" class="w-4 h-4 ml-auto sm:ml-2"></i> </button>
-				                <div class="dropdown-menu w-40">
-				                    <ul class="dropdown-content">
-				                        <li>
-				                            <a id="tabulator-export-csv" href="javascript:;" class="dropdown-item"> <i data-lucide="file-text" class="w-4 h-4 mr-2"></i> Export CSV </a>
-				                        </li>
-				                        <li>
-				                            <a id="tabulator-export-json" href="javascript:;" class="dropdown-item"> <i data-lucide="file-text" class="w-4 h-4 mr-2"></i> Export JSON </a>
-				                        </li>
-				                        <li>
-				                            <a id="tabulator-export-xlsx" href="javascript:;" class="dropdown-item"> <i data-lucide="file-text" class="w-4 h-4 mr-2"></i> Export XLSX </a>
-				                        </li>
-				                        <li>
-				                            <a id="tabulator-export-html" href="javascript:;" class="dropdown-item"> <i data-lucide="file-text" class="w-4 h-4 mr-2"></i> Export HTML </a>
-				                        </li>
-				                    </ul>
-				                </div>
-				            </div>
-				        </div>
 				    </div>
 				    <div class="overflow-x-auto scrollbar-hidden">
 				        <div id="dataList" class="mt-5 table-report table-report--tabulator"></div>

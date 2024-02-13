@@ -40,14 +40,25 @@
 		    		paginationSizeSelector : [10, 20, 50, 100],
 		            placeholder : "No Data Set",
 					columns : [
-					    {title:"No", field:"meetingNo", hozAlign:"left", width: 80},
+					    {title:"No", field:"meetingNo", hozAlign:"center", width: 80},
 					    {title:"구분", field:"meetingGbn", hozAlign:"center", width: 100}, 
 					    {title:"모임명", field:"title", hozAlign:"left"},
 					    {title:"모임일", field:"dday", hozAlign:"center", width: 120}, 
 					    {title:"모임시간", field:"time", hozAlign:"center", width: 120},
-					    {title:"모임장소", field:"place", hozAlign:"left", width: 170},
-					    {title:"주최자", field:"hostNm", hozAlign:"left", width: 140},
-					    {title:"참석자수", field:"attendCnt", hozAlign:"center", width: 130},
+					    {title:"모임장소", field:"place", hozAlign:"left", width: 160},
+					    {title:"주최자", field:"hostNm", hozAlign:"center", width: 130},
+					    {title:"참석자수", field:"attendCnt", hozAlign:"center", width: 120},
+					    {title:"상태", field:"active", hozAlign:"center", width:120, 
+					    	formatter:function(cell){
+       							var value = cell.getValue();
+        						if(value === 'true'){
+            						return `<div class="flex items-center justify-center text-success"><i data-lucide="check-square" class="w-4 h-4 mr-2"></i>Active</div>`
+        						}else{
+            						return `<div class="flex items-center justify-center text-danger"><i data-lucide="check-square" class="w-4 h-4 mr-2"></i>Complete</div>`
+        						}
+    						}
+    					},
+					    {title:"후기", field:"reviewYn", hozAlign:"center", formatter:"tickCross", width:100},
 					    {title:"생성일", field:"frstRegDt", hozAlign:"center", width: 180}
 					]
 		        })
