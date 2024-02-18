@@ -1,0 +1,169 @@
+<script>
+	jQuery(function(){
+		//모임대상 목록
+		srchMeetingReviewList()
+		
+		//평점
+		for(var i = 7 ; i < 22; i++){
+			var html = "<option value="+i+">"+i+"</option>"
+			jQuery("#meeting-form-timeHour").append(html) 		    
+		}
+	})
+ 
+	// 목록 데이터 조회
+	function srchMeetingReviewList(){
+		fetchApi('/meeting/getMeetingPopupList.do', 'POST', {clubNo:'1'}, 'dataList')
+			.then((data) => {
+				if(data != null){
+					let html 
+					for (const idx in data){
+						console.log(data[idx])
+						html += '<option value="'+data[idx].meetingNo+'&'+data[idx].attendCnt+'">'+data[idx].title+'</option>'
+					}
+					jQuery("#meeting-review-form-meetingNo").append(html);
+				}
+			}).catch((error) => console.log(error))
+	}
+	
+	//모임후기 저장
+	function saveMeeting(){
+		//validation
+		if(!jQuery('#meeting-form-title').val()){
+			alert('모임 제목을 입력해주세요.')
+			jQuery('#meeting-form-title').focus()
+			return false
+		}
+		if(!jQuery('#meeting-form-hostNo').val()){
+			alert('주최자를 검색하여 선택해주세요.')
+			jQuery('#meeting-form-hostNm').focus()
+			return false
+		}
+		if(!jQuery('#meeting-form-dday').val()){
+			alert('모임 일자를 입력해주세요.')
+			jQuery('#meeting-form-dday').focus()
+			return false
+		}
+		if(!jQuery('#meeting-form-place').val()){
+			alert('모임 장소를 입력해주세요.')
+			jQuery('#meeting-form-place').focus()
+			return false
+		}
+		if(!jQuery('#meeting-form-cost').val()){
+			alert('참석 비용을 입력해주세요.')
+			jQuery('#meeting-form-cost').focus()
+			return false
+		}
+			
+		//data set
+		var saveData = {
+			// 모임 생성
+			'title':jQuery('#meeting-form-title').val(),
+			'meetingGbn':jQuery('#meeting-form-meetingGbn').val(),
+			'hostNo':jQuery('#meeting-form-hostNo').val(),
+			'dday':jQuery('#meeting-form-dday').val().replaceAll('.',''),
+			'hour':jQuery('#meeting-form-timeHour').val(),
+			'minute':jQuery('#meeting-form-timeMinute').val(),
+			'place':jQuery('#meeting-form-place').val(),	
+			'cost':jQuery('#meeting-form-cost').val(),
+			'attendCnt':jQuery('#meeting-form-attendCnt').val(),
+		}
+		console.log(saveData);
+		if(saveData){
+			fetchApi('/meeting/saveMeeting.do', 'POST', saveData, 'save')
+			meetingPopupClose()
+		}
+	}
+	//모임후기 생성 팝업 닫기
+	function meetingReviewPopupShow(){
+		let modal = jQuery('#meeting-review-form-modal')
+		modal.show()
+	}
+	
+	//모임후기 생성 팝업 닫기
+	function meetingReviewPopupClose(){
+		let modal = jQuery('#meeting-review-form-modal')
+		modal.hide()
+	}
+</script>
+
+<!-- BEGIN: Modal Content -->
+<div id="meeting-review-form-modal" class="modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- BEGIN: Modal Header -->
+            <div class="modal-header">
+                <h2 class="font-medium text-base mr-auto">모임 후기 생성</h2>
+            </div>
+            
+            <!-- BEGIN: Modal Body -->
+            <div class="modal-body grid gap-4 gap-y-3">
+            	<!-- 모임선택 -->
+                <div class="col-span-12 sm:col-span-6"> 
+                	<label for="meeting-review-form-meetingNo" class="form-label">모임선택</label></br>
+                	<select class="form-select" aria-label="Default select example" id="meeting-review-form-meetingNo"></select>
+                </div>
+                
+                <!-- 참석자 추가 영역--> 
+                <div class="col-span-12 sm:col-span-6 mt-2"> 
+                	<!-- 참석자 이름 -->	
+                	<input type="text" class="form-control dropdown-toggle" aria-expanded="false" data-tw-toggle="dropdown" placeholder="참석자" id="meeting-review-form-memberNm1">
+                	<input type="hidden" id="meeting-review-form-memberNm1">
+					<div class="dropdown-menu w-40">
+				        <ul class="dropdown-content overflow-y-auto h-32" id="memberSrchBox1"></ul>
+				    </div>
+				    <!-- 닉네임 -->
+				    <input type="text" class="form-control" placeholder="닉네임" id="meeting-review-form-memberNickNm">
+					<!-- 신규맴버 팝업 -->
+                	 
+                </div>
+                <!-- 주최자 -->
+                <div class="col-span-12 sm:col-span-6 mt-2"> 
+                	<label for="hostNm" class="form-label">주최자</label> 
+                	<input type="text" class="form-control" id="meeting-form-hostNm" value="박지열">
+                	<input type="hidden" id="meeting-form-hostNo" value="2"> 
+                	
+                </div>
+                <!-- 모임일시 -->
+                <div class="col-span-12 sm:col-span-6 mt-2"> 
+                	<label for="meeting-form-dday" class="form-label">모임일시</label>
+                	<div class="flex flex-col sm:flex-row items-center">
+	                	<div class="relative w-40 mr-2">
+		                	<div class="absolute rounded-l w-10 h-full flex items-center justify-center bg-slate-100 border text-slate-500 dark:bg-darkmode-700 dark:border-darkmode-800 dark:text-slate-400"> 
+						    	<i data-lucide="calendar" class="w-4 h-4"></i> 
+						    </div> 
+						    <input type="text" class="datepicker form-control pl-12" data-single-mode="true" id="meeting-form-dday">
+	                	</div>
+	                	<select class="form-select mr-2" aria-label="Default select example" style="width: 80px;" id="meeting-form-timeHour">
+                            <option value="19">19</option>
+                        </select>
+                        <select class="form-select" aria-label="Default select example" style="width: 80px;" id="meeting-form-timeMinute">
+                            <option value="00">00</option>
+                        </select>
+                	</div>
+                </div>
+                <!-- 장소 -->
+                <div class="col-span-12 sm:col-span-6 mt-2"> 
+                	<label for="meeting-form-place" class="form-label">모임장소</label> 
+                	<input type="text" class="form-control" id="meeting-form-place" value="책과 삶">
+                </div>
+                <!-- 비용 -->
+                <div class="col-span-12 sm:col-span-6 mt-2"> 
+                	<label for="meeting-form-cost" class="form-label">비용</label> 
+                	<input type="text" class="form-control" id="meeting-form-cost" value="개인음료+@">
+                </div>
+                <!-- 참석인원 -->
+                <div class="col-span-12 sm:col-span-6 mt-2"> 
+                	<label for="meeting-form-attendCnt" class="form-label">참석인원</label></br>
+                	<select class="form-select" aria-label="Default select example" style="width: 80px;" id="meeting-form-attendCnt"></select>
+                </div>
+            </div>
+            
+            <!-- BEGIN: Button -->
+            <div class="modal-footer">
+            	<button type="button" class="btn btn-primary w-20" onclick="saveMeeting()">저장</button>
+            	<button type="button" data-tw-dismiss="modal" class="btn btn-outline-secondary w-20 mr-1" onclick="meetingPopupClose()">취소</button> 
+            </div>
+        </div>
+    </div>
+</div> 
+<!-- END: Modal Content -->

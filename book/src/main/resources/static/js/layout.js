@@ -2,22 +2,25 @@
  *  layout 생성
  */
 jQuery(document).ready(function(){
-	//nav
+	//layout > nav
 	fetchApi('/menu/getMenuList.do', 'POST', {clubNo:'1'}, 'nav')
 	
-	//공통검색
+	//layout > top-bar
 	jQuery("#top-bar").load("/cmmn/topBar.html")
 	
+	//layout > message
+	jQuery("#cmmn-message").load("/cmmn/message.html")
+	
 	//디자인 코어 JS 반영
-    const script = document.createElement('script');
-    script.src = '/dist/js/app.js';
-    document.body.appendChild(script);
+    const script = document.createElement('script')
+    script.src = '/dist/js/app.js'
+    document.body.appendChild(script)
     
     //디자인 코어 CSS 반영
-    const link = document.createElement('link');
+    const link = document.createElement('link')
     link.rel = 'stylesheet'
-    link.href = '/dist/css/app.css';
-	document.body.appendChild(link);
+    link.href = '/dist/css/app.css'
+	document.body.appendChild(link)
 })
 
 
@@ -55,8 +58,10 @@ async function fetchApi(url, method, body, gbn, headers = {}) {
 			
 		//save DB 데이터 적재
 		} else if (gbn === 'save'){
-			alert(data.msg)
-			location.reload()
+			sendMessage('success', data.msg, '')
+			setTimeout(function(){
+			    srchList(tableLayout)
+			}, 3000);
 			
 		//공통 활동지역 결과 조회
 		} else if (gbn === 'codeArea'){ 
@@ -66,28 +71,6 @@ async function fetchApi(url, method, body, gbn, headers = {}) {
     	throw Error(data)
 	}
 }
-
-
-/** 
- * 레이어 팝업
- * 수정 필요 ++ 
- */
-function layerPopup(){
-	jQuery("#layer_shadow").show()
-	jQuery("#layerPupup").fadeIn();
- 	//화면 중앙 띄우기
-	let target = jQuery("#layerPupup");
-	var left = ( jQuery(window).scrollLeft() + (jQuery(window).width() - target.width()) / 2 );
-	var top = ( jQuery(window).scrollTop() + (jQuery(window).height() - target.height()) / 2 );
-	//CSS
-	target.css({'left':left,'top':top, 'position':'absolute'});
-	jQuery('body').css('position','relative').append(target);
-}
-function layerClose(){
-	jQuery("#layer_shadow").hide()
-	jQuery('#layerPupup').hide();
-}
-
 
 /** 
  *  fetch HTML 삽입

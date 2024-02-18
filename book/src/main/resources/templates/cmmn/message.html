@@ -1,0 +1,153 @@
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script>
+	jQuery(function(){
+		
+	})
+	
+	/**
+	 *  공통 Toast 메세지
+	 *  gbn 구분 : success, confirm, fail, info
+	 *  msg1 : 변경할 타이틀 메세지
+	 *  msg2 : 변경할 서브 메세지
+	 *  func : 수행 펑션
+	 */
+	function sendMessage(gbn, msg1, msg2, func){
+		console.log(gbn, msg1, msg2, func)
+		let toastOption = {}
+		
+		//메세지 변경
+		if(msg1){
+			jQuery("#"+gbn+"ToastMsg1").text(msg1) 
+		}
+		if(msg2){
+			jQuery("#"+gbn+"ToastMsg2").text(msg2) 
+		}
+		if(func){
+			jQuery("#"+gbn+"Func").attr("onclick", func)
+		}
+		
+		//성공 메세지
+		if(gbn === 'success'){ 
+			toastOption = { 
+				node: $("#success-notification-content").clone().removeClass("hidden")[0], 
+				duration: 3000, // -1 : 고정
+				newWindow: true, 
+				close: true, 
+				gravity: "top", 
+				position: "right", 
+				stopOnFocus: true, 
+			}
+		//확인 메세지 
+		} else if(gbn === 'confirm'){
+			toastOption = { 
+				node: $("#notification-with-actions-content") .clone() .removeClass("hidden")[0], 
+				duration: -1, 
+				newWindow: true, 
+				close: true, 
+				gravity: "top", 
+				position: "right", 
+				stopOnFocus: true, 
+			}
+		//정보 메세지 
+		} else if(gbn === 'info'){
+			toastOption = { 
+				node: $("#basic-non-sticky-notification-content").clone().removeClass("hidden")[0], 
+				duration: 3000, // -1 : 고정
+				newWindow: true, 
+				close: true, 
+				gravity: "top", 
+				position: "right", 
+				stopOnFocus: true, 
+			}
+		}
+			
+		//메세지 출력
+		Toastify(toastOption).showToast()
+	}
+
+	//메세지 닫기
+	function messageClose(targetMsg){
+		// toast-close
+		// jQuery("#"+targetMsg).addClass("hidden") 
+	}
+</script>
+
+<!-- 기본 알림 -->
+<div id="basic-non-sticky-notification-content" class="toastify-content hidden flex">
+	<div class="font-medium" id='infoToastMsg1'></div> 
+	<a class="font-medium text-primary dark:text-slate-400 mt-1 sm:mt-0 sm:ml-40" href="" id='infoToastMsg2'></a>
+</div>
+
+<!-- 성공 메세지 -->
+<div id="success-notification-content" class="toastify-content hidden flex"> 
+	<i class="text-success" data-lucide="check-circle"></i> 
+	<div class="ml-4 mr-4"> 
+		<div class="font-medium" id='successToastMsg1'>저장 되었습니다.</div> 
+		<div class="text-slate-500 mt-1" id='successToastMsg2'>메세지는 3초 뒤에 사라집니다.</div> 
+	</div> 
+</div>
+
+<!-- 확인 메세지 confirm --> 
+<div id="notification-with-actions-content" class="toastify-content hidden flex"> 
+	<i data-lucide="edit"></i> 
+	<div class="ml-4 mr-4"> 
+		<div class="font-medium" id='confirmToastMsg1'></div> 
+		<div class="text-slate-500 mt-1" id='confirmToastMsg2'></div> 
+		<div class="font-medium flex mt-1.5"> 
+			<a class="text-primary dark:text-slate-400" id="confirmFunc" onclick="">확인</a> 
+			<a class="text-slate-500 ml-3" onclick="messageClose('notification-with-actions-content')">취소</a> 
+ 		</div> 
+ 	</div> 
+</div>   
+
+
+<!-- 심플 메세지 -->
+<div class="alert alert-primary-soft show flex items-center mb-2 hidden" role="alert"> 
+	<i data-lucide="alert-circle" class="w-6 h-6 mr-2"></i> Awesome alert with icon 
+	<button type="button" class="btn-close" data-tw-dismiss="alert" aria-label="Close"> 
+		<i data-lucide="x" class="w-4 h-4"></i> 
+	</button> 
+</div>
+
+<div class="alert alert-secondary-soft show flex items-center mb-2 hidden" role="alert"> 
+ 	<i data-lucide="alert-octagon" class="w-6 h-6 mr-2"></i> Awesome alert with icon
+ 	<button type="button" class="btn-close" data-tw-dismiss="alert" aria-label="Close"> 
+		<i data-lucide="x" class="w-4 h-4"></i> 
+	</button> 
+</div> 
+ 
+<div class="alert alert-success-soft show flex items-center mb-2 hidden" role="alert"> 
+ 	<i data-lucide="alert-triangle" class="w-6 h-6 mr-2"></i> Awesome alert with icon
+ 	<button type="button" class="btn-close" data-tw-dismiss="alert" aria-label="Close"> 
+		<i data-lucide="x" class="w-4 h-4"></i> 
+	</button>
+</div> 
+ 
+<div class="alert alert-warning-soft show flex items-center mb-2 hidden" role="alert"> 
+ 	<i data-lucide="alert-circle" class="w-6 h-6 mr-2"></i> Awesome alert with icon
+ 	<button type="button" class="btn-close" data-tw-dismiss="alert" aria-label="Close"> 
+		<i data-lucide="x" class="w-4 h-4"></i> 
+	</button>
+</div> 
+ 
+<div class="alert alert-pending-soft show flex items-center mb-2 hidden" role="alert"> 
+ 	<i data-lucide="alert-triangle" class="w-6 h-6 mr-2"></i> Awesome alert with icon
+ 	<button type="button" class="btn-close" data-tw-dismiss="alert" aria-label="Close"> 
+		<i data-lucide="x" class="w-4 h-4"></i> 
+	</button>
+</div>
+ 
+<div class="alert alert-danger-soft show flex items-center mb-2 hidden" role="alert"> 
+ 	<i data-lucide="alert-octagon" class="w-6 h-6 mr-2"></i> Awesome alert with icon
+ 	<button type="button" class="btn-close" data-tw-dismiss="alert" aria-label="Close"> 
+		<i data-lucide="x" class="w-4 h-4"></i> 
+	</button>
+</div> 
+ 
+<div class="alert alert-dark-soft show flex items-center mb-2 hidden" role="alert"> 
+ 	<i data-lucide="alert-triangle" class="w-6 h-6 mr-2"></i> Awesome alert with icon
+ 	<button type="button" class="btn-close" data-tw-dismiss="alert" aria-label="Close"> 
+		<i data-lucide="x" class="w-4 h-4"></i> 
+	</button> 
+</div>
+  

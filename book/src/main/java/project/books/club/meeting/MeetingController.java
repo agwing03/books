@@ -49,5 +49,33 @@ public class MeetingController {
 		) throws Exception {
 		meetingService.saveMeetingReview(vo);
 	}
+	
+	/**
+	 * 모임 생성
+	 * @target meetingFormPopup
+	 * @param MeetingVO
+	 * @return MeetingVO
+	 */
+	@RequestMapping("/meeting/saveMeeting.do")
+	public MeetingVO saveMeeting(
+			@RequestBody MeetingVO vo
+		) throws Exception {
+		vo = meetingService.saveMeeting(vo);
+		return vo;
+	}
+	
+	/**
+	 * 모임후기 대상 목록 조회 
+	 * @target meetingReviewFormPopup
+	 * @param SrchVO
+	 * @return SrchVO.List<CamelMap>
+	 */
+	@RequestMapping("/meeting/getMeetingPopupList.do")
+	public SrchVO getMeetingPopupList(
+			@RequestBody SrchVO vo
+		) throws Exception {
+		vo = meetingService.selectMeetingPopupList(vo);
+		return vo;
+	}
 }
  

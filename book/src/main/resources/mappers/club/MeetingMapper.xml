@@ -4,7 +4,7 @@
 	
 	<!-- 모임 목록 -->
 	<select id="selectMeetingList" parameterType="project.books.club.cmmn.SrchVO" resultType="project.books.sys.util.CamelMap">
-		/*clubMapper.selectMeetingList*/
+		/*meetingMapper.selectMeetingList*/
 		select mt.meeting_no
 		     , mt.title
 		     , mt.club_no 
@@ -15,16 +15,19 @@
 		     , mt.place 
 		     , concat(cast((select count(*) from meeting_member mm where mm.meeting_no = mt.meeting_no) AS CHAR(2)),'/', mt.attend_cnt) as attend_cnt
 		     , date_format(mt.frst_reg_dt, '%Y.%m.%d %H:%i:%S') as frst_reg_dt
-		     , if(mt.dday >= date_format(now(), '%Y%m%d'), 'true', 'false') as active
+		     , case when mt.dday <![CDATA[ >= ]]> date_format(now(), '%Y%m%d') then 'active'
+     				when mt.dday <![CDATA[ < ]]> date_format(now(), '%Y%m%d') and mt.review_yn = 'N' then 'review'
+     				else 'complete' end as state
 		 	 , if(mt.review_yn = 'Y', 'true', 'false') as review_yn
-		  from meeting mt  
+		  from meeting mt
+		  
 		<include refid="meeingListWhere"></include>
 		 order by mt.dday desc, mt.hour desc, mt.minute desc 
 	</select>
 	
 	<!-- 모임 목록 수 -->
 	<select id="selectMeetingListCnt" parameterType="project.books.club.cmmn.SrchVO" resultType="Integer">
-		/*clubMapper.selectMeetingListCnt*/
+		/*meetingMapper.selectMeetingListCnt*/
 		select count(*) 
 		  from meeting mt
 		<include refid="meeingListWhere"></include>
@@ -61,7 +64,7 @@
 	
 	<!-- 모임 생성 -->
 	<insert id="insertMeeting" useGeneratedKeys="true" keyProperty="meetingNo" parameterType="project.books.club.meeting.MeetingVO">
-		/*clubMapper.insertMeeting*/
+		/*meetingMapper.insertMeeting*/
 		insert into meeting(
 			  club_no
 			, host_no
@@ -76,6 +79,8 @@
 			, meeting_gbn
 			, frst_reg_no
 			, frst_reg_dt
+			, last_upd_no
+			, last_upd_dt
 		)values(
 			  #{clubNo}
 			, #{hostNo}
@@ -90,8 +95,29 @@
 			, #{meetingGbn}
 			, #{userNo}
 			, now()
+			, #{userNo}
+			, now()
 		)
 	</insert>
+	
+	<!-- 모임 수정 -->
+	<update id="updateMeeting" parameterType="project.books.club.meeting.MeetingVO">
+		/*meetingMapper.updateMeeting*/
+		update meeting
+		   set host_no      = #{hostNo}  
+			 , title        = #{title}   
+			 , dday         = #{dday}    
+			 , hour         = #{hour}    
+			 , minute       = #{minute}  
+			 , place        = #{place}   
+			 , cost         = #{cost}    
+			 , place_url	= #{placeUrl}
+			 , attend_cnt	= #{attendCnt}
+			 , meeting_gbn  = #{meetingGbn}
+			 , last_upd_no  = #{userNo}
+			 , last_upd_dt  = now()
+		 where meeting_no	= #{meetingNo}
+	</update>
 	
 	<!-- 모임 참석자 -->
 	<insert id="insertMeetingMember" parameterType="project.books.club.meeting.MeetingVO">
@@ -165,5 +191,27 @@
 		         on mm.meeting_no = bv.meeting_no 
 		        and mm.member_no = bv.member_no 
 		 where mm.meeting_no = #{meetingNo}
+	</select>
+	
+	<!-- 모임후기 대상 목록 -->
+	<select id="selectMeetingPopupList" resultType="project.books.sys.util.CamelMap">
+		/*meetingMapper.selectMeetingPopupList*/
+		select *
+		  from (select mt.meeting_no
+		     		 , mt.title
+		     		 , mt.club_no 
+		     		 , (select count(*) from meeting_member mm where mm.meeting_no = mt.meeting_no) as attend_meber_cnt
+		     		 , mt.attend_cnt
+		     		 , case when mt.dday <![CDATA[ >= ]]> date_format(now(), '%Y%m%d') then 'active'
+							when mt.dday <![CDATA[ < ]]>  date_format(now(), '%Y%m%d') and mt.review_yn = 'N' then 'review'
+							else 'complete' end as state
+		  			 , mt.dday
+		  		  from meeting mt) mt
+		  		 where mt.state = 'review'
+				<if test='clubNo != null and clubNo != ""'>
+				   and mt.club_no = #{clubNo}
+				</if>
+		 where mt.state = 'review'
+		 order by mt.dday desc 
 	</select>
 </mapper>

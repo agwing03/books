@@ -26,7 +26,7 @@ public class MeetingVO extends CommonVO{
     private String placeUrl;	//장소지도URL
     private String attendCnt;	//참석자수
     private String comment; 	//작성자 코멘트
-    private boolean active;		//활성화상태
+    private String state;		//활성화상태
     private boolean reviewYn;	//후기작성여부
     
     //meeting_member

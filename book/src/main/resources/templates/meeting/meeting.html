@@ -13,16 +13,23 @@
         <script src="/dist/js/jquery-ui.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/litepicker/dist/litepicker.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.10/dayjs.min.js"></script>
-        <script src="/js/layout.js"></script>
         <title>책과 사람 사이</title>
         
         <!-- 화면별 모듈 -->
         <script src="/dist/js/tabulator.js"></script> 
-		<script src="/dist/js/jquery_wrapper.js"></script>  
+		<script src="/dist/js/jquery_wrapper.js"></script>
+		<script src="/js/layout.js"></script>  
 		<script src="/js/cmmn.js"></script>
         
         <script>
+        	//전역변수
+        	let tableLayout
+        	
 			jQuery(document).ready(function(){
+				//팝업추가
+				jQuery("#meeting-form-popup").load("/cmmn/popup/meetingFormPopup.html")
+				jQuery("#meeting-review-form-popup").load("/cmmn/popup/meetingReviewFormPopup.html")
+				
 				//메뉴선택
 				menuMove('5', '7', '모임', '모임후기', '')
 				
@@ -33,7 +40,7 @@
 				cmmnCode('MEETING_GBN', 'srchGbn', 'ALL')
 				
 				//테이블 그리드 생성
-				let tableLayout = new Tabulator("#dataList", {
+				tableLayout = new Tabulator("#dataList", {
 					layout:"fitColumns",
 		            pagination : "local",
 		    		paginationSize : 20,
@@ -48,43 +55,63 @@
 					    {title:"모임장소", field:"place", hozAlign:"left", width: 160},
 					    {title:"주최자", field:"hostNm", hozAlign:"center", width: 130},
 					    {title:"참석자수", field:"attendCnt", hozAlign:"center", width: 120},
-					    {title:"상태", field:"active", hozAlign:"center", width:120, 
+					    {title:"진행상태", field:"state", hozAlign:"center", width:120, 
 					    	formatter:function(cell){
-       							var value = cell.getValue();
-        						if(value === 'true'){
+        						if(cell.getValue() === 'active'){
             						return `<div class="flex items-center justify-center text-success"><i data-lucide="check-square" class="w-4 h-4 mr-2"></i>Active</div>`
+            					}else if(cell.getValue() === 'review'){
+									return `<div class="flex items-center justify-center text-warning" data-tw-toggle="modal" data-tw-target="#header-footer-modal-preview"><i data-lucide="edit" class="w-4 h-4 mr-2"></i>Review</div>`
         						}else{
-            						return `<div class="flex items-center justify-center text-danger"><i data-lucide="check-square" class="w-4 h-4 mr-2"></i>Complete</div>`
-        						}
+            						return `<div class="flex items-center justify-center text-primary"><i data-lucide="bookmark" class="w-4 h-4 mr-2"></i>Complete</div>`
+            					}
     						}
     					},
-					    {title:"후기", field:"reviewYn", hozAlign:"center", formatter:"tickCross", width:100},
+					    {title:"후기", field:"reviewYn", hozAlign:"center", formatter:"tickCross", width:100,
+					     	cellClick: function(e, cell) {
+								if(cell.getValue() === 'false'){
+									reviewWritePopup()
+								}
+							}
+					    },
 					    {title:"생성일", field:"frstRegDt", hozAlign:"center", width: 180}
 					]
 		        })
 		        
 		        //목록 데이터 조회
 		        jQuery("#srchBtn").click(function () {
-					srchList(tableLayout)
+					srchList()
 				})
 				
 				//초기 목록 조회
-				srchList(tableLayout)
+				srchList()
 				
 				//초기 목록 조회
 				tableLayout.on("rowDblClick", function(e, row){
-					location.href='/meeting/review.html?meetingNo='+row.getData().meetingNo
+					let state = row.getData().state //모임 상태 : active, review, complete
+					let reviewYn = row.getData().reviewYn //모임 리뷰작성 여부 
+					if(state === 'complete'){
+						location.href='/meeting/review.html?meetingNo='+row.getData().meetingNo	
+					}else if(state === 'review'){
+						sendMessage('confirm','모임 후기가 작성되어 있지 않습니다.','모임 후기를 작성하시겠습니까?','reviewWritePopup()')
+					}else{
+						sendMessage('info','모임이 진행된 후 후기작성이 가능합니다.','','')
+					}
 				})
 	  		})
 	  		
 	  		// 목록 데이터 조회
-			function srchList(tableLayout){
+			function srchList(){
 				fetchApi('/meeting/getMeetingList.do', 'POST', srchParam(), 'dataList')
 					.then((data) => {
 						if(data != null){
 							tableLayout.setData(data)
 						}
 					}).catch((error) => console.log(error))
+			}
+			
+			// 모임후기 작성 팝업
+			function reviewWritePopup(){
+				sendMessage('success','','')
 			}
 		</script>
     </head>
@@ -107,7 +134,10 @@
                 <div class="intro-y flex flex-col sm:flex-row items-center mt-8">
 				    <i data-lucide="book-open" class="w-7 h-7 mr-2"></i><h4 class="text-xl font-medium leading-none mr-auto">모임 후기</h4>
 				    <div class="w-full sm:w-auto flex mt-4 sm:mt-0">
-				        <button class="btn btn-primary shadow-md mr-2" onclick="movePageView('/meetingReview.do')">Add New Books</button>
+				    	<button class="btn btn-primary shadow-md mr-2" data-tw-toggle="modal" data-tw-target="#meeting-review-form-modal" onclick="meetingReviewPopupShow()"></button>
+				        <button class="btn btn-primary shadow-md mr-2" data-tw-toggle="modal" data-tw-target="#meeting-form-modal" onclick="meetingPopupShow()">
+				         	<i class="w-5 h-5 mr-2" data-lucide="plus"></i> 신규
+				        </button>
 				        <div class="dropdown ml-auto sm:ml-0">
 				            <button class="dropdown-toggle btn px-2 box" aria-expanded="false" data-tw-toggle="dropdown">
 				                <span class="w-5 h-5 flex items-center justify-center"> <i class="w-4 h-4" data-lucide="plus"></i> </span>
@@ -155,8 +185,8 @@
 							</div>
 							<!-- 버튼 -->
 				            <div class="ml-2 mt-2 xl:mt-0">
-				                <button type="button" class="btn btn-secondary w-full sm:w-16 mt-2 sm:mt-0 sm:ml-1" onclick="setSrchDate('-6')">6월</button>
-				                <button type="button" class="btn btn-secondary w-full sm:w-16 mt-2 sm:mt-0 sm:ml-1" onclick="setSrchDate('-12')">12월</button>
+				                <button type="button" class="btn btn-secondary w-full sm:w-16 mt-2 sm:mt-0 sm:ml-1" onclick="setSrchDate('-6','1')">6월</button>
+				                <button type="button" class="btn btn-secondary w-full sm:w-16 mt-2 sm:mt-0 sm:ml-1" onclick="setSrchDate('-12','1')">12월</button>
 				            </div>  
 				            <div class="ml-5 mt-2 xl:mt-0">
 				                <button type="button" class="btn btn-primary w-full sm:w-16" id="srchBtn" >Go</button>
@@ -170,9 +200,16 @@
 				
 				</div>
 				<!-- END: HTML Table Data -->
-                
             </div>
         </div>
+        
+ 		<!-- BEGIN: 메세지 영역 -->
+        <div id="cmmn-message"></div>
+        
+        <!-- BEGIN: POPUP 영역 -->
+        <div id="meeting-form-popup"></div><!-- 모임 생성 -->
+        <div id="meeting-review-form-popup"></div><!-- 모임 리뷰 생성 -->
     </body>
 </html>
+
  

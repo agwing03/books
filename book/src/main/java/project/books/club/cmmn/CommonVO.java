@@ -29,7 +29,7 @@ public class CommonVO {
     //MSG 셋팅
     public String getMsg(){
     	if(this.saveCnt > 0) {
-    		msg = "정상적으로 처리되었습니다.";
+    		msg = "저장 되었습니다.";
         } else {
         	msg = "정상적으로 처리되지 않았습니다. 관리자에게 문의해 주시기 바랍니다.";
         }

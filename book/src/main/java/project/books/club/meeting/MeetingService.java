@@ -33,6 +33,7 @@ public class MeetingService {
 		return vo;
 	}
 	
+	
 	/**
 	 * 모임 및 후기 등록
 	 * @param MeetingVO
@@ -82,9 +83,10 @@ public class MeetingService {
 			}
 		}
 		vo.setSaveCnt(mtCnt+mtMemberCnt+mtReviewCnt);
-		log.debug("##### 모임 및 후기 등록 saveMeetingReview > 모임등록:"+mtCnt+"건 / 참석자등록:"+mtMemberCnt+"건 / 서평등록:"+mtReviewCnt+"건 #####");
+		log.debug("##### 모임 및 후기 등록 saveMeetingReview > FLAG:"+vo.getSaveFlag()+" / 모임등록:"+mtCnt+"건 / 참석자등록:"+mtMemberCnt+"건 / 서평등록:"+mtReviewCnt+"건 #####");
 		return vo;
 	}
+	
 	
 	/**
 	 * 모임 상세 조회
@@ -98,6 +100,42 @@ public class MeetingService {
 		vo = meetingMapper.selectMeetingInfo(meetingNo);
 		// 맴버별 한줄평
 		vo.setReviewList(meetingMapper.selectMeetingReviewList(meetingNo));
+		return vo;
+	}
+	
+	
+	/**
+	 * 모임 생성
+	 * @target meetingFormPopup
+	 * @param MeetingVO
+	 * @return MeetingVO
+	 * @throw Exception
+	 */
+	public MeetingVO saveMeeting(MeetingVO vo) throws Exception{
+		//저장 카운트
+		int mtCnt = 0;
+		
+		//모임 key check
+		if(vo.getSaveFlag().equals("I")) {//등록
+			//모임 등록
+			mtCnt = meetingMapper.insertMeeting(vo);
+		} else { //수정
+			//모임 등록
+			mtCnt = meetingMapper.updateMeeting(vo);
+		}
+		vo.setSaveCnt(mtCnt);
+		log.debug("##### 모임 생성 saveMeeting > FLAG:"+vo.getSaveFlag()+" / 모임생성:"+mtCnt+"건 #####");
+		return vo;
+	}
+	
+	/**
+	 * 모임후기 대상 목록 조회 
+	 * @target meetingReviewFormPopup
+	 * @param SrchVO
+	 * @return SrchVO.List<CamelMap>
+	 */
+	public SrchVO selectMeetingPopupList(SrchVO vo) throws Exception{
+		vo.setDataList(meetingMapper.selectMeetingPopupList());
 		return vo;
 	}
 }

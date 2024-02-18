@@ -2,7 +2,6 @@ jQuery(document).ready(function(){
 	
 });
 
-
 /**
  *  파라미터 셋팅 
  */
@@ -25,16 +24,16 @@ function srchParam(){
 function srchReset(){
 	jQuery("#srchGbn").val("")
 	jQuery('#srchText').val("")
-	setSrchDate('-6')
+	setSrchDate('-6', '1')
 }
 
 
 /**
  *  날짜 기간 _ 6개월/12개월 
  */
-function setSrchDate(month){
-	let date1 = dayjs().add(month, "month").format('YYYY.MM.D')
-	let date2 = dayjs().format('YYYY.MM.D')
+function setSrchDate(monthStr,monthEnd){
+	let date1 = dayjs().add(monthStr, "month").format('YYYY.MM.D')
+	let date2 = dayjs().add(monthEnd, "month").format('YYYY.MM.D')
 	jQuery('#srchStartDt').val(date1)
 	jQuery('#srchEndDt').val(date2)
 }
