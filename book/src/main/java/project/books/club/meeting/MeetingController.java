@@ -14,7 +14,7 @@ public class MeetingController {
 	private final MeetingService meetingService;
 	 
 	/**
-	 * 모임 목록 조회
+	 * 모임 및 모임후기 목록 조회
 	 * @param SrchVO
 	 * @return SrchVO.List<CamelMap>
 	 */
@@ -27,7 +27,48 @@ public class MeetingController {
 	}
 	
 	/**
-	 * 모임 상세 조회
+	 * 모임 정보 조회
+	 * @param SrchVO
+	 * @return SrchVO.CamelMap
+	 */
+	@RequestMapping("/meeting/getMeeting.do")
+	public SrchVO getMeeting(
+			@RequestBody SrchVO vo
+		) throws Exception {
+		vo = meetingService.selectMeeting(vo);
+		return vo;
+	}
+	
+	/**
+	 * 모임 저장
+	 * @target meetingFormPopup
+	 * @param MeetingVO
+	 * @return MeetingVO
+	 */
+	@RequestMapping("/meeting/saveMeeting.do")
+	public MeetingVO saveMeeting(
+			@RequestBody MeetingVO vo
+		) throws Exception {
+		vo = meetingService.saveMeeting(vo);
+		return vo;
+	}
+	
+	/**
+	 * 모임 삭제
+	 * @target meetingFormPopup
+	 * @param MeetingVO
+	 * @return MeetingVO
+	 */
+	@RequestMapping("/meeting/delMeeting.do")
+	public MeetingVO delMeeting(
+			@RequestBody MeetingVO vo
+		) throws Exception {
+		vo = meetingService.deleteMeeting(vo);
+		return vo;
+	}
+	
+	/**
+	 * 모임후기 상세 조회
 	 * @param MeetingVO
 	 * @return MeetingVO.CamelMap
 	 */
@@ -40,7 +81,7 @@ public class MeetingController {
 	}
 	
 	/**
-	 * 모임 후기 등록
+	 * 모임후기 저장
 	 * @param ClubVO
 	 */
 	@RequestMapping("/meeting/saveMeetingReview.do")
@@ -50,19 +91,7 @@ public class MeetingController {
 		meetingService.saveMeetingReview(vo);
 	}
 	
-	/**
-	 * 모임 생성
-	 * @target meetingFormPopup
-	 * @param MeetingVO
-	 * @return MeetingVO
-	 */
-	@RequestMapping("/meeting/saveMeeting.do")
-	public MeetingVO saveMeeting(
-			@RequestBody MeetingVO vo
-		) throws Exception {
-		vo = meetingService.saveMeeting(vo);
-		return vo;
-	}
+	
 	
 	/**
 	 * 모임후기 대상 목록 조회 

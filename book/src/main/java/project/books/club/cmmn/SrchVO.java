@@ -14,6 +14,7 @@ public class SrchVO {
 	private String srchGbn;		//검색구분
 	private String srchStartDt; //검색시작일
 	private String srchEndDt; 	//검색종료일
+	private String srchPageGbn; //화면구분
 	
 	//페이징 공통
 	private int totCnt = 0;
@@ -28,6 +29,9 @@ public class SrchVO {
     //반환 메세지 
     private String msg;
     
+    //공통
     private List<CamelMap> dataList;
+    private List<Integer> intList;
+    private List<String> stringList;
     private CamelMap dataMap;
 }

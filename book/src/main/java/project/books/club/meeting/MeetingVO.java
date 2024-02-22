@@ -10,8 +10,6 @@ import project.books.sys.util.CamelMap;
 @Getter
 @Setter
 public class MeetingVO extends CommonVO{
-	private String saveFlag;	//I,U
-	
 	//meeting
     private int meetingNo = 0;	//모임번호
     private int hostNo = 0;		//맴버번호(club_member)
@@ -30,23 +28,16 @@ public class MeetingVO extends CommonVO{
     private boolean reviewYn;	//후기작성여부
     
     //meeting_member
-    private int attend_no;		//모임 참석 번호
-    private int memberNo;		//참석자 번호
+    private int attendNo;		//모임 참석 번호
+    private int memberNo; 		//참석자 번호
     private String attendYn;	//참석여부
     private String afterPartyYn;//뒤풀이참석여부
     private String divAmount;	//분할금액
     private String calculYn;	//정산(결재) 여부
+    private List<Integer> memberNoArr; //참석자 번호(in)
+    private List<CamelMap> memberList; //참석자 목록(out)
+    
     
     // 모임 후기 한줄평 
 	private List<CamelMap> reviewList;
-	
-    //SAVE 구분
-    String getSaveFlag(){
-    	if(this.meetingNo > 0) {
-        	this.saveFlag = "U";
-        }else {
-        	this.saveFlag = "I";
-        }
-    	return this.saveFlag;
-    }
 }

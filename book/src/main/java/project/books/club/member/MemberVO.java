@@ -42,14 +42,5 @@ public class MemberVO extends CommonVO{
     private String rejoinYn;	//재가입여부
     private String blackYn;		//블랙리스트여부
     
-    //SAVE 구분
-    String getSaveFlag(){
-    	if(this.memberNo > 0) {
-        	this.saveFlag = "U";
-        }else {
-        	this.saveFlag = "I";
-        }
-    	return this.saveFlag;
-    }
 }
 

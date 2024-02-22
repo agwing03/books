@@ -43,8 +43,8 @@ public class MemberController {
 	 * @param String
 	 * @throw Exception
 	 */
-	@RequestMapping("/member/selectMemberSrch.do")
-	public SrchVO selectMemberSrch(
+	@RequestMapping("/member/getMemberSrch.do")
+	public SrchVO getMemberSrch(
 			@RequestBody SrchVO vo
 		) throws Exception {
 		return memberService.selectMemberSrch(vo);

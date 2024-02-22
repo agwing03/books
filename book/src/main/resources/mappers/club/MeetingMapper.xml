@@ -33,11 +33,42 @@
 		<include refid="meeingListWhere"></include>
 	</select>
 	
+	<!-- 모임 정보 -->
+	<select id="selectMeeting" parameterType="project.books.club.cmmn.SrchVO" resultType="project.books.sys.util.CamelMap">
+		/*meetingMapper.selectMeeting*/
+		select mt.meeting_no
+		     , mt.title
+		     , mt.club_no 
+		     , (select nick_nm from member m where m.member_no = mt.host_no) as host_nm
+		     , mt.host_no
+		     , mt.meeting_gbn
+		     , date_format(mt.dday, '%Y.%m.%d') as dday
+		     , mt.hour
+			 , mt.minute
+		     , mt.place 
+		     , mt.attend_cnt
+		     , mt.cost 
+		     , c.account
+		     , c.bank_cd 
+		  from meeting mt
+		       left join club c on c.club_no = mt.club_no 
+		<include refid="meeingListWhere"></include>
+	</select>
+	
 	<!-- 모임 목록 Where -->
 	<sql id="meeingListWhere">
 		where 1=1
+		<!-- 클럽 번호 -->
 		<if test='clubNo != null and clubNo != ""'>
 		  and mt.club_no = #{clubNo}
+		</if>
+		<!-- 모임 번호 -->
+		<if test='meetingNo != null and meetingNo != ""'>
+		  and mt.meeting_no = #{meetingNo}
+		</if>
+		<!-- 화면 구분 -->
+		<if test='srchPageGbn != null and srchPageGbn != "" and srchPageGbn == "info"'>
+		  and mt.dday <![CDATA[ >= ]]> date_format(now(), '%Y%m%d')
 		</if>
 		<!-- 모임 구분 -->
 		<if test='srchGbn != null and srchGbn != ""'>
@@ -119,7 +150,24 @@
 		 where meeting_no	= #{meetingNo}
 	</update>
 	
-	<!-- 모임 참석자 -->
+	<!-- 모임 삭제 -->
+	<delete id="deleteMeeting" parameterType="project.books.club.meeting.MeetingVO">
+		/*meetingMapper.deleteMeeting*/
+		delete from meeting
+		 where meeting_no = #{meetingNo}  
+	</delete>
+	
+	<!-- 모임 참석자 목록 -->
+	<select id="selectMeetingMemberList" parameterType="project.books.club.cmmn.SrchVO" resultType="Integer">
+		/*meetingMapper.selectMeetingMemberList*/
+		select mt.member_no
+		  from meeting_member mt
+		 where mt.meeting_no = #{meetingNo}
+	</select>
+	
+	
+	
+	<!-- 모임 참석자 등록 -->
 	<insert id="insertMeetingMember" parameterType="project.books.club.meeting.MeetingVO">
 		/*meetingMapper.insertMeetingMember*/
 		insert into meeting_member(
@@ -142,6 +190,12 @@
 			, now()
 		)
 	</insert>
+	
+	<!-- 모임 참석자 등록 -->
+	<delete id="deleteMeetingMember" parameterType="project.books.club.meeting.MeetingVO">
+		delete from meeting_member
+		 where meeting_no = #{meetingNo}
+	</delete>
 	
 	<!-- 모임 정보 -->
 	<select id="selectMeetingInfo" parameterType="Integer" resultType="project.books.club.meeting.MeetingVO">
@@ -177,16 +231,18 @@
 	<!-- 모임 맴버별 한줄평 -->
 	<select id="selectMeetingReviewList" parameterType="Integer" resultType="project.books.sys.util.CamelMap">
 		/*meetingMapper.selectMeetingReviewList*/
-		select bv.eval_no
+		select mm.meeting_no
+			 , mm.member_no 
+			 , concat(m.name,' • ',m.nick_nm) as member_nm
+		     , bv.eval_no
 		     , (select concat(bk.book_title ,'(', bk.book_writer, ')') 
 			      from books bk 
 		 	     where bk.book_no = bv.book_no) as book_nm 
-		     , (select concat(mb.name,'(',mb.nick_nm,')') 
-		 	      from member mb 
-		 	     where mb.member_no = bv.member_no) as member_nm 
+		 	 , bv.book_eval
 		 	 , bv.book_score 
-		 	 , bv.book_eval 
-		  from meeting_member mm 
+		  from meeting_member mm
+		       left join member m 
+		       	 on m.member_no = mm.member_no 
 		       join books_eval bv 
 		         on mm.meeting_no = bv.meeting_no 
 		        and mm.member_no = bv.member_no 
@@ -206,11 +262,12 @@
 							when mt.dday <![CDATA[ < ]]>  date_format(now(), '%Y%m%d') and mt.review_yn = 'N' then 'review'
 							else 'complete' end as state
 		  			 , mt.dday
-		  		  from meeting mt) mt
-		  		 where mt.state = 'review'
+		  		  from meeting mt
+		  		 where 1=1
 				<if test='clubNo != null and clubNo != ""'>
 				   and mt.club_no = #{clubNo}
 				</if>
+			   ) mt
 		 where mt.state = 'review'
 		 order by mt.dday desc 
 	</select>

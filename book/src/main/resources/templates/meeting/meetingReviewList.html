@@ -27,8 +27,7 @@
         	
 			jQuery(document).ready(function(){
 				//팝업추가
-				jQuery("#meeting-form-popup").load("/cmmn/popup/meetingFormPopup.html")
-				jQuery("#meeting-review-form-popup").load("/cmmn/popup/meetingReviewFormPopup.html")
+				jQuery("#popup-area").load("/cmmn/popup/meetingReviewFormPopup.html")
 				
 				//메뉴선택
 				menuMove('5', '7', '모임', '모임후기', '')
@@ -53,7 +52,7 @@
 					    {title:"모임일", field:"dday", hozAlign:"center", width: 120}, 
 					    {title:"모임시간", field:"time", hozAlign:"center", width: 120},
 					    {title:"모임장소", field:"place", hozAlign:"left", width: 160},
-					    {title:"주최자", field:"hostNm", hozAlign:"center", width: 130},
+					    {title:"주최자", field:"hostNm", hozAlign:"center", width: 120},
 					    {title:"참석자수", field:"attendCnt", hozAlign:"center", width: 120},
 					    {title:"진행상태", field:"state", hozAlign:"center", width:120, 
 					    	formatter:function(cell){
@@ -66,7 +65,7 @@
             					}
     						}
     					},
-					    {title:"후기", field:"reviewYn", hozAlign:"center", formatter:"tickCross", width:100,
+					    {title:"후기", field:"reviewYn", hozAlign:"center", formatter:"tickCross", width:90,
 					     	cellClick: function(e, cell) {
 								if(cell.getValue() === 'false'){
 									reviewWritePopup()
@@ -90,7 +89,7 @@
 					let state = row.getData().state //모임 상태 : active, review, complete
 					let reviewYn = row.getData().reviewYn //모임 리뷰작성 여부 
 					if(state === 'complete'){
-						location.href='/meeting/review.html?meetingNo='+row.getData().meetingNo	
+						location.href='/meeting/meetingReviewDtl.html?meetingNo='+row.getData().meetingNo	
 					}else if(state === 'review'){
 						sendMessage('confirm','모임 후기가 작성되어 있지 않습니다.','모임 후기를 작성하시겠습니까?','reviewWritePopup()')
 					}else{
@@ -101,7 +100,13 @@
 	  		
 	  		// 목록 데이터 조회
 			function srchList(){
-				fetchApi('/meeting/getMeetingList.do', 'POST', srchParam(), 'dataList')
+				//파라미터 SET
+				let params = srchParam()
+				params.clubNo = '1'
+				params.srchPageGbn = 'review'
+				
+				//API 호출
+				fetchApi('/meeting/getMeetingList.do', 'POST', params, 'dataList')
 					.then((data) => {
 						if(data != null){
 							tableLayout.setData(data)
@@ -132,11 +137,10 @@
                 
                 <!-- BEGIN: Content DATA -->
                 <div class="intro-y flex flex-col sm:flex-row items-center mt-8">
-				    <i data-lucide="book-open" class="w-7 h-7 mr-2"></i><h4 class="text-xl font-medium leading-none mr-auto">모임 후기</h4>
+				    <i data-lucide="coffee" class="w-7 h-7 mr-2"></i><h4 class="text-xl font-medium leading-none mr-auto pt-1">모임 후기</h4>
 				    <div class="w-full sm:w-auto flex mt-4 sm:mt-0">
-				    	<button class="btn btn-primary shadow-md mr-2" data-tw-toggle="modal" data-tw-target="#meeting-review-form-modal" onclick="meetingReviewPopupShow()"></button>
-				        <button class="btn btn-primary shadow-md mr-2" data-tw-toggle="modal" data-tw-target="#meeting-form-modal" onclick="meetingPopupShow()">
-				         	<i class="w-5 h-5 mr-2" data-lucide="plus"></i> 신규
+				        <button class="btn btn-primary shadow-md mr-2" data-tw-toggle="modal" data-tw-target="#meeting-review-form-modal" onclick="meetingReviewPopupShow()">
+				         	<i class="w-5 h-5 mr-2" data-lucide="plus"></i> 후기
 				        </button>
 				        <div class="dropdown ml-auto sm:ml-0">
 				            <button class="dropdown-toggle btn px-2 box" aria-expanded="false" data-tw-toggle="dropdown">
@@ -207,8 +211,7 @@
         <div id="cmmn-message"></div>
         
         <!-- BEGIN: POPUP 영역 -->
-        <div id="meeting-form-popup"></div><!-- 모임 생성 -->
-        <div id="meeting-review-form-popup"></div><!-- 모임 리뷰 생성 -->
+        <div id="popup-area"></div>
     </body>
 </html>
 

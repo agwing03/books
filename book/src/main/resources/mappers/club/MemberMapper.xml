@@ -118,14 +118,29 @@
 	<!-- 모임 실시간 검색 -->
 	<select id="selectMemberSrch" parameterType="project.books.club.cmmn.SrchVO" resultType="project.books.sys.util.CamelMap">
 		/*MemberMapper.selectMemberSrch*/
-		select m.member_no 
-		     , m.name
-		  from member m 
-		       left join club_member cm 
-		         on m.member_no = cm.member_no 
-		 where 1=1 
-		   and m.nick_nm like concat('%',#{srchText},'%')
-		    or m.name like concat('%',#{srchText},'%')
-		 order by m.name asc 
+		select * 
+		  from (select m.member_no 
+				     , concat(m.name,' • ',m.nick_nm) as member_nm
+				     , ca.club_author_no 
+				     , (select count(*) 
+				          from meeting_member mm 
+				         where mm.member_no = cm.member_no) as attend_member_cnt
+				  from member m 
+				       left join club_member cm 
+				         on m.member_no = cm.member_no 
+				       left join club_author ca 
+				         on cm.club_author_no = ca.club_author_no
+				 where 1=1
+				<!-- 클럽번호 -->
+		 		<if test='clubNo != null and clubNo != ""'>
+		   		  and cm.club_no = #{clubNo}
+		 		</if>
+		 		<!-- 검색어 -->
+		 		<if test='srchText != null and srchText != ""'>
+		   		  and m.nick_nm like concat('%',#{srchText},'%')
+		    		  or m.name like concat('%',#{srchText},'%')
+		 		</if> 
+			   )m
+		 order by m.club_author_no asc, attend_member_cnt desc, member_nm asc 
 	</select>
 </mapper>

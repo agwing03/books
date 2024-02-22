@@ -1,110 +1,188 @@
 <script>
+	//화면ID
+	const viewId = '#meeting-form-'
+	let meetingFormFlag = '' //오픈 될때 삽입 I, U
+	
 	jQuery(function(){
-		//모임구분
+		//공통코드
 		cmmnCode('MEETING_GBN', 'meeting-form-meetingGbn', '')
+		cmmnCode('BANK_CD', 'meeting-form-bankCd', '')
+		
+		//모임생성시 맴버 등록
+		setMeberList()
 		
 		//시간, 분
 		for(var i = 7 ; i < 22; i++){
 			var html = "<option value="+i+">"+i+"</option>"
-			jQuery("#meeting-form-timeHour").append(html) 		    
+			jQuery(viewId+"hour").append(html) 		    
 		}
 		for(var i = 1 ; i < 60; i++){
 			var html = "<option value="+i+">"+i+"</option>"
-			jQuery("#meeting-form-timeMinute").append(html) 		    
+			jQuery(viewId+"minute").append(html) 		    
 		}
 		//참석인원
 		for(var i = 4 ; i < 31; i++){
 			var selected = (i===8)?'selected':''
 			
 			var html = '<option value="'+i+'" '+selected+'>'+i+' 명</option>'
-			jQuery("#meeting-form-attendCnt").append(html) 		    
+			jQuery(viewId+"attendCnt").append(html) 		    
 		}
-		
-		//날짜 셋팅
-	  	setDate('toDay')
 	})
-
-	// 날짜로 기본 정보 셋팅
-	function setDate(gbn){
-		var today, year, month, date, day
-		const week = ['일', '월', '화', '수', '목', '금', '토'];
-		if(gbn === 'toDay'){
-			today = new Date();   
-			year = today.getFullYear();//년도
-			month = today.getMonth() + 1;//월
-			date = today.getDate();//날짜
-			day = today.getDay();//요일 0~6(일~토)
-			day = week[new Date(day).getDay()];
-			// 모임 일자
-			jQuery("#meeting-form-dday").val(year+(("00"+month.toString()).slice(-2))+(("00"+date.toString()).slice(-2))) 
-			// 모임 제목 만들기
-			year = year.toString().substr(2,4)//끝2자
-			jQuery("#meeting-form-title").val(year+'.'+(("00"+month.toString()).slice(-2))+'.'+(("00"+date.toString()).slice(-2))+'('+day+') 독서모임')
-		}else{
-			day = week[new Date(gbn).getDay()];
-			// 모임 제목 만들기
-			jQuery("#meeting-form-title").val(year+'.'+day+'.'+day+'('+day+') 독서모임')
-		}
-	}
-	
-	//모임 저장
-	function saveMeeting(){
-		//validation
-		if(!jQuery('#meeting-form-title').val()){
-			alert('모임 제목을 입력해주세요.')
-			jQuery('#meeting-form-title').focus()
-			return false
-		}
-		if(!jQuery('#meeting-form-hostNo').val()){
-			alert('주최자를 검색하여 선택해주세요.')
-			jQuery('#meeting-form-hostNm').focus()
-			return false
-		}
-		if(!jQuery('#meeting-form-dday').val()){
-			alert('모임 일자를 입력해주세요.')
-			jQuery('#meeting-form-dday').focus()
-			return false
-		}
-		if(!jQuery('#meeting-form-place').val()){
-			alert('모임 장소를 입력해주세요.')
-			jQuery('#meeting-form-place').focus()
-			return false
-		}
-		if(!jQuery('#meeting-form-cost').val()){
-			alert('참석 비용을 입력해주세요.')
-			jQuery('#meeting-form-cost').focus()
-			return false
-		}
-			
-		//data set
-		var saveData = {
-			// 모임 생성
-			'title':jQuery('#meeting-form-title').val(),
-			'meetingGbn':jQuery('#meeting-form-meetingGbn').val(),
-			'hostNo':jQuery('#meeting-form-hostNo').val(),
-			'dday':jQuery('#meeting-form-dday').val().replaceAll('.',''),
-			'hour':jQuery('#meeting-form-timeHour').val(),
-			'minute':jQuery('#meeting-form-timeMinute').val(),
-			'place':jQuery('#meeting-form-place').val(),	
-			'cost':jQuery('#meeting-form-cost').val(),
-			'attendCnt':jQuery('#meeting-form-attendCnt').val(),
-		}
-		console.log(saveData);
-		if(saveData){
-			fetchApi('/meeting/saveMeeting.do', 'POST', saveData, 'save')
-			meetingPopupClose()
-		}
-	}
+		
 	//모임 생성 팝업 닫기
-	function meetingPopupShow(){
-		let modal = jQuery('#meeting-form-modal')
-		modal.show()
+	function meetingPopupShow(key){
+		//모임 수정
+		if(key === 'I'){
+			meetingFormFlag = 'I'
+			
+			//날자로 기본 값 셋팅
+			setDate('toDay')
+			
+			//기본 값 '카카오뱅크'
+			$(viewId+"bankCd").val("90")
+
+		}else{
+			meetingFormFlag = 'U'
+			getMeeting(key)
+		}
 	}
 	
 	//모임 생성 팝업 닫기
 	function meetingPopupClose(){
 		let modal = jQuery('#meeting-form-modal')
 		modal.hide()
+	}
+
+	// 날짜로 기본 정보 셋팅
+	function setDate(gbn){
+		var today, year, month, date, day
+		const week = ['일', '월', '화', '수', '목', '금', '토'];
+		if(gbn === 'toDay'){
+			today = new Date()
+			year = today.getFullYear();//년도
+			month = today.getMonth() + 1;//월
+			date = today.getDate();//날짜
+			day = today.getDay();//요일 0~6(일~토)
+			//요일
+			day = week[new Date(day).getDay()]
+			// 모임 일자
+			jQuery(viewId+"dday").val(year+'.'+(("00"+month.toString()).slice(-2))+'.'+(("00"+date.toString()).slice(-2))) 
+			// 모임 제목 만들기
+			year = year.toString().substr(2,4)//끝2자
+			jQuery(viewId+"title").val(year+'.'+(("00"+month.toString()).slice(-2))+'.'+(("00"+date.toString()).slice(-2))+'('+day+') 독서모임')
+		}else{
+			//요일
+			day = week[new Date(gbn).getDay()]
+			// 모임 제목 만들기
+			jQuery(viewId+"title").val(year+'.'+day+'.'+day+'('+day+') 독서모임')
+		}
+	}
+	
+	// 모임 생성시 맴버 등록
+	function setMeberList(){
+		fetchApi('/member/getMemberSrch.do', 'POST', {clubNo:'1'}, 'dataList')
+			.then((data) => {
+				if(data != null){
+					let html
+					jQuery(viewId+"hostNo").empty()
+					jQuery(viewId+"memberNo").empty()
+					for (const idx in data){
+						html = '<option value="'+data[idx].memberNo+'">'+data[idx].memberNm+'</option>'
+						jQuery(viewId+"memberNo").append(html)
+						jQuery(viewId+"hostNo").append(html)					
+					}
+				}
+			}).catch((error) => console.log(error))
+		jQuery(viewId+"memberNo").val('2')
+			
+	}
+	
+	//모임 저장
+	function saveMeeting(){
+		//validation
+		if(!jQuery(viewId+'title').val()){
+			alert('모임 제목을 입력해주세요.')
+			jQuery(viewId+'title').focus()
+			return false
+		}
+		if(!jQuery(viewId+'hostNo').val()){
+			alert('주최자를 검색하여 선택해주세요.')
+			jQuery(viewId+'hostNm').focus()
+			return false
+		}
+		if(!jQuery(viewId+'dday').val()){
+			alert('모임 일자를 입력해주세요.')
+			jQuery(viewId+'dday').focus()
+			return false
+		}
+		if(!jQuery(viewId+'place').val()){
+			alert('모임 장소를 입력해주세요.')
+			jQuery(viewId+'place').focus()
+			return false
+		}
+		if(!jQuery(viewId+'cost').val()){
+			alert('참석 비용을 입력해주세요.')
+			jQuery(viewId+'cost').focus()
+			return false
+		}
+			
+		//data set
+		var saveData = {
+			// 모임 생성
+			'saveFlag':meetingFormFlag,
+			'title':jQuery(viewId+'title').val(),
+			'meetingGbn':jQuery(viewId+'meetingGbn').val(),
+			'hostNo':jQuery(viewId+'hostNo').val(),
+			'dday':jQuery(viewId+'dday').val().replaceAll('.',''),
+			'hour':jQuery(viewId+'hour').val(),
+			'minute':jQuery(viewId+'minute').val(),
+			'place':jQuery(viewId+'place').val(),	
+			'cost':jQuery(viewId+'cost').val(),
+			'account':jQuery(viewId+'account').val(),
+			'bankCd':jQuery(viewId+'bankCd').val(),
+			'attendCnt':jQuery(viewId+'attendCnt').val(),
+			'memberNoArr':jQuery(viewId+'memberNo').val()
+		}
+		
+		//key 셋팅
+		if(meetingFormFlag === 'U'){
+			saveData.meetingNo = jQuery(viewId+'meetingNo').val()
+		}
+		
+		//Save DATA
+		if(saveData){
+			fetchApi('/meeting/saveMeeting.do', 'POST', saveData, 'save')
+			meetingPopupClose()
+		}
+	}
+	
+	//모임 수정
+	function getMeeting(key){
+		params = {clubNo:'1'}
+		if(key){
+			params.meetingNo = key 	
+		}
+		//모임 정보 조회
+		fetchApi('/meeting/getMeeting.do', 'POST', params, 'dataMap')
+			.then((data) => {
+				console.log(data)
+				if(data != null){
+					jQuery(viewId+'meetingNo').val(data.meetingNo)
+					jQuery(viewId+'meetingGbn').val(data.meetingGbn)
+					jQuery(viewId+'title').val(data.title)
+					jQuery(viewId+'hostNm').val(data.hostNm)
+					jQuery(viewId+'hostNo').val(data.hostNo)
+					jQuery(viewId+'dday').val(data.dday)
+					jQuery(viewId+'hour').val(data.hour)
+					jQuery(viewId+'minute').val(data.minute)
+					jQuery(viewId+'place').val(data.place)
+					jQuery(viewId+'cost').val(data.cost)
+					jQuery(viewId+'account').val(data.account)
+					jQuery(viewId+'bankCd').val(data.bankCd)
+					jQuery(viewId+'attendCnt').val(data.attendCnt)
+					console.log(data)
+				}
+			}).catch((error) => console.log(error))
 	}
 </script>
 
@@ -114,23 +192,22 @@
         <div class="modal-content">
             <!-- BEGIN: Modal Header -->
             <div class="modal-header">
-                <h2 class="font-medium text-base mr-auto">모임 생성</h2>
+                <h2 class="font-medium text-base mr-auto">모임 정보</h2>
             </div>
             
             <!-- BEGIN: Modal Body -->
             <div class="modal-body grid gap-4 gap-y-3">
             	<!-- 모임 타이틀 -->
                 <div class="col-span-12 sm:col-span-6"> 
-                	<label for="meeting-form-meetingGbn" class="form-label">제목</label></br>
-                	<select class="form-select" aria-label="Default select example" style="width: 120px;" id="meeting-form-meetingGbn"></select>
-                	<input type="text" class="form-control" style="width: 296px" id="meeting-form-title"> 
+                	<label for="meeting-form-meetingGbn" class="form-label">모임명</label></br>
+                	<select class="form-select mr-2" placeholder="모임명" style="width: 120px;" id="meeting-form-meetingGbn"></select>
+                	<input type="text" class="form-control" style="width: 288px" id="meeting-form-title">
+                	<input type="hidden" id="meeting-form-meetingNo">  
                 </div>
                 <!-- 주최자 -->
                 <div class="col-span-12 sm:col-span-6 mt-2"> 
-                	<label for="hostNm" class="form-label">주최자</label> 
-                	<input type="text" class="form-control" id="meeting-form-hostNm" value="박지열">
-                	<input type="hidden" id="meeting-form-hostNo" value="2"> 
-                	
+                	<label for="meeting-form-hostNo" class="form-label">주최자</label> 
+                	<select data-placeholder="주최자" class="tom-select2 w-full" id="meeting-form-hostNo"></select>
                 </div>
                 <!-- 모임일시 -->
                 <div class="col-span-12 sm:col-span-6 mt-2"> 
@@ -142,10 +219,10 @@
 						    </div> 
 						    <input type="text" class="datepicker form-control pl-12" data-single-mode="true" id="meeting-form-dday">
 	                	</div>
-	                	<select class="form-select mr-2" aria-label="Default select example" style="width: 80px;" id="meeting-form-timeHour">
+	                	<select class="form-select mr-2" style="width: 80px;" id="meeting-form-hour">
                             <option value="19">19</option>
                         </select>
-                        <select class="form-select" aria-label="Default select example" style="width: 80px;" id="meeting-form-timeMinute">
+                        <select class="form-select" style="width: 80px;" id="meeting-form-minute">
                             <option value="00">00</option>
                         </select>
                 	</div>
@@ -153,17 +230,24 @@
                 <!-- 장소 -->
                 <div class="col-span-12 sm:col-span-6 mt-2"> 
                 	<label for="meeting-form-place" class="form-label">모임장소</label> 
-                	<input type="text" class="form-control" id="meeting-form-place" value="책과 삶">
+                	<input type="text" class="form-control" placeholder="모임장소" id="meeting-form-place" value="책과 삶">
                 </div>
-                <!-- 비용 -->
+                <!-- 참석비 -->
                 <div class="col-span-12 sm:col-span-6 mt-2"> 
-                	<label for="meeting-form-cost" class="form-label">비용</label> 
-                	<input type="text" class="form-control" id="meeting-form-cost" value="개인음료+@">
+                	<label for="meeting-form-cost" class="form-label">참석비</label></br> 
+                	<input type="text" class="form-control mr-2" placeholder="참석비" style="width: 100px;" id="meeting-form-cost" value="1,000">
+                	<input type="text" class="form-control mr-2" placeholder="모임계좌" style="width: 180px;" id="meeting-form-account" value="3333-29-2185403">
+                	<select class="form-select" style="width: 116px;" id="meeting-form-bankCd"></select>
                 </div>
                 <!-- 참석인원 -->
                 <div class="col-span-12 sm:col-span-6 mt-2"> 
                 	<label for="meeting-form-attendCnt" class="form-label">참석인원</label></br>
-                	<select class="form-select" aria-label="Default select example" style="width: 80px;" id="meeting-form-attendCnt"></select>
+                	<select class="form-select" style="width: 80px;" id="meeting-form-attendCnt"></select>
+                </div>
+                <!-- 참석 맴버등록 -->
+                <div class="col-span-12 sm:col-span-6 mt-2">
+                	<label for="meeting-form-memberNo" class="form-label">참석맴버</label></br> 
+					<select data-placeholder="참석 맴버 검색" class="tom-select w-full" id="meeting-form-memberNo" multiple></select>
                 </div>
             </div>
             

@@ -1,7 +1,10 @@
 package project.books.club.cmmn;
 
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
+import project.books.sys.util.CamelMap;
 
 @Getter
 @Setter
@@ -13,7 +16,8 @@ public class CommonVO {
 	private int clubNo = 1; 	// 클럽 NO
 	private int userNo = 2;		// 생성자 NO
     private int saveCnt = 0;	// 저장 건수
-    
+    private String saveFlag;	// I,U,D
+    private String resultCode;	// 200:성공, 500:실패
     private int frstRegNo; 		// 최초 등록자 번호
     private String frstRegNm; 	// 최초 등록자 이름 
     private String frstRegDt; 	// 최초 등록일 
@@ -29,10 +33,16 @@ public class CommonVO {
     //MSG 셋팅
     public String getMsg(){
     	if(this.saveCnt > 0) {
-    		msg = "저장 되었습니다.";
-        } else {
-        	msg = "정상적으로 처리되지 않았습니다. 관리자에게 문의해 주시기 바랍니다.";
-        }
+    		resultCode = "200";
+    		if(this.saveFlag.equals("I") || this.saveFlag.equals("U")) {
+    			msg = "저장 되었습니다.";
+    		}else if(this.saveFlag.equals("D")) {
+    			msg = "삭제 되었습니다.";
+    		}
+    	}else {
+    		resultCode = "500";
+    		msg = "정상적으로 처리되지 않았습니다. 관리자에게 문의해 주시기 바랍니다.";
+    	}
     	return msg;
     }
 }

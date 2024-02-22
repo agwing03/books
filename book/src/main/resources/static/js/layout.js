@@ -42,21 +42,21 @@ async function fetchApi(url, method, body, gbn, headers = {}) {
 	if (res.ok) {
 		//네비 생성
 		if (gbn === 'nav'){
-			nav(data.menuList);
+			nav(data.menuList)
 			
 		//공통 search 결과 조회
 		} else if (gbn === 'search'){ 
-			return data.dataList;
+			return data.dataList
 			
 		//목록 데이터 리턴
 		} else if (gbn === 'dataList'){ 
-			return data.dataList;
+			return data.dataList
 			
 		//상세 데이터 리턴
 		} else if (gbn === 'dataMap'){ 
-			return data;
+			return data.dataMap
 			
-		//save DB 데이터 적재
+		//저장 DB 데이터 적재
 		} else if (gbn === 'save'){
 			sendMessage('success', data.msg, '')
 			setTimeout(function(){
