@@ -1,0 +1,40 @@
+<script>
+	jQuery(function(){
+		//모임생성시 맴버 등록
+		 
+	})
+		
+	//모임 생성 팝업 닫기
+	let memberFormFlag = '' //오픈 될때 삽입 I, U
+	function memberPopupShow(){
+	}
+	
+	//모임 생성 팝업 닫기
+	function memberPopupClose(){
+		let modal = jQuery('#member-form-modal')
+		modal.hide()
+	}
+</script>
+
+<!-- BEGIN: Modal Content -->
+<div id="member-form-modal" class="modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- BEGIN: Modal Header -->
+            <div class="modal-header">
+                <h2 class="font-medium text-base mr-auto">도서 등록</h2>
+            </div>
+            
+            <!-- BEGIN: Modal Body -->
+            <div class="modal-body grid gap-4 gap-y-3">
+            </div>
+            
+            <!-- BEGIN: Button -->
+            <div class="modal-footer">
+            	<button type="button" class="btn btn-primary w-20" onclick="saveMember()">저장</button>
+            	<button type="button" data-tw-dismiss="modal" class="btn btn-outline-secondary w-20 mr-1" onclick="memberPopupClose()">취소</button> 
+            </div>
+        </div>
+    </div>
+</div> 
+<!-- END: Modal Content -->

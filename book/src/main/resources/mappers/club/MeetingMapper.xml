@@ -135,19 +135,43 @@
 	<update id="updateMeeting" parameterType="project.books.club.meeting.MeetingVO">
 		/*meetingMapper.updateMeeting*/
 		update meeting
-		   set host_no      = #{hostNo}  
-			 , title        = #{title}   
-			 , dday         = #{dday}    
-			 , hour         = #{hour}    
-			 , minute       = #{minute}  
-			 , place        = #{place}   
-			 , cost         = #{cost}    
-			 , place_url	= #{placeUrl}
-			 , attend_cnt	= #{attendCnt}
-			 , meeting_gbn  = #{meetingGbn}
-			 , last_upd_no  = #{userNo}
+		   set last_upd_no  = #{userNo}
 			 , last_upd_dt  = now()
-		 where meeting_no	= #{meetingNo}
+			<if test='hostNo != null and hostNo != ""'>
+		   	 , host_no = #{hostNo}
+		   	</if>  
+		   	<if test='title != null and title != ""'>
+			 , title = #{title}
+			</if>   
+			<if test='dday != null and dday != ""'>
+			 , dday = #{dday}
+			</if>    
+			<if test='hour != null and hour != ""'>
+			 , hour = #{hour}
+			</if>    
+			<if test='minute != null and minute != ""'>
+			 , minute = #{minute}
+			</if> 
+			<if test='place != null and place != ""'>
+			 , place = #{place}
+			</if>   
+			<if test='cost != null and cost != ""'>
+			 , cost = #{cost}
+			</if>    
+			<if test='placeUrl != null and placeUrl != ""'>
+			 , place_url = #{placeUrl}
+			</if>
+			<if test='attendCnt != null and attendCnt != ""'>
+			 , attend_cnt = #{attendCnt}
+			</if>
+			<if test='meetingGbn != null and meetingGbn != ""'> 
+			 , meeting_gbn = #{meetingGbn}
+			</if>
+			<if test='comment != null and comment != ""'>
+			 , comment = #{comment}
+			</if>
+			 , review_yn = 'Y'
+		 where meeting_no = #{meetingNo}
 	</update>
 	
 	<!-- 모임 삭제 -->
@@ -216,6 +240,7 @@
 		 	 , mt.cost
 		 	 , mt.place_url 	as placeUrl
 		 	 , mt.attend_cnt	as attendCnt
+		 	 , mt.comment
 		 	 , (select concat(mb.name,'(',mb.nick_nm,')') 
 		 	      from member mb 
 		 	     where mb.member_no = mt.frst_reg_no) 			as frstRegNm
@@ -233,19 +258,22 @@
 		/*meetingMapper.selectMeetingReviewList*/
 		select mm.meeting_no
 			 , mm.member_no 
-			 , concat(m.name,' • ',m.nick_nm) as member_nm
-		     , bv.eval_no
-		     , (select concat(bk.book_title ,'(', bk.book_writer, ')') 
-			      from books bk 
-		 	     where bk.book_no = bv.book_no) as book_nm 
-		 	 , bv.book_eval
-		 	 , bv.book_score 
+			 , concat(m.name,'(',m.nick_nm,')') as member_nm
+		     , ifnull(bv.eval_no, '') as eval_no
+		     , ifnull(bv.book_no, '') as book_no 
+		     , ifnull( bk.book_title, '') as book_title
+		     , ifnull(bk.book_writer, '') as book_writer
+		     , concat(bk.book_title , '(', bk.book_writer, ')') as book_info 
+		 	 , ifnull(bv.book_eval, '') as book_eval
+		 	 , ifnull(bv.book_score, '') as book_score
 		  from meeting_member mm
 		       left join member m 
 		       	 on m.member_no = mm.member_no 
-		       join books_eval bv 
+		       left join books_eval bv
 		         on mm.meeting_no = bv.meeting_no 
 		        and mm.member_no = bv.member_no 
+		       left join books bk
+		         on bk.book_no = bv.book_no 
 		 where mm.meeting_no = #{meetingNo}
 	</select>
 	

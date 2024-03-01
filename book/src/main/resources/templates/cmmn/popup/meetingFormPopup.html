@@ -4,13 +4,13 @@
 	let meetingFormFlag = '' //오픈 될때 삽입 I, U
 	
 	jQuery(function(){
-		//공통코드
-		cmmnCode('MEETING_GBN', 'meeting-form-meetingGbn', '')
-		cmmnCode('BANK_CD', 'meeting-form-bankCd', '')
-		
 		//모임생성시 맴버 등록
 		setMeberList()
 		
+		//공통코드
+		cmmnCode('MEETING_GBN', 'meeting-form-meetingGbn', '')
+		cmmnCode('BANK_CD', 'meeting-form-bankCd', '')
+	
 		//시간, 분
 		for(var i = 7 ; i < 22; i++){
 			var html = "<option value="+i+">"+i+"</option>"
@@ -83,18 +83,13 @@
 		fetchApi('/member/getMemberSrch.do', 'POST', {clubNo:'1'}, 'dataList')
 			.then((data) => {
 				if(data != null){
-					let html
-					jQuery(viewId+"hostNo").empty()
-					jQuery(viewId+"memberNo").empty()
+					let html = ''
 					for (const idx in data){
-						html = '<option value="'+data[idx].memberNo+'">'+data[idx].memberNm+'</option>'
-						jQuery(viewId+"memberNo").append(html)
-						jQuery(viewId+"hostNo").append(html)					
+						html += '<option value="'+data[idx].memberNo+'">'+data[idx].memberNm+'</option>'
 					}
+					jQuery("#multiple-select").append(html)
 				}
 			}).catch((error) => console.log(error))
-		jQuery(viewId+"memberNo").val('2')
-			
 	}
 	
 	//모임 저장
@@ -207,7 +202,10 @@
                 <!-- 주최자 -->
                 <div class="col-span-12 sm:col-span-6 mt-2"> 
                 	<label for="meeting-form-hostNo" class="form-label">주최자</label> 
-                	<select data-placeholder="주최자" class="tom-select2 w-full" id="meeting-form-hostNo"></select>
+                	<select class="form-select w-full" id="meeting-form-hostNo">
+                		<option value="2">박지열 • 박지열</option>
+                		<option value="7">김봉수 • 김봉수</option>
+                	</select>
                 </div>
                 <!-- 모임일시 -->
                 <div class="col-span-12 sm:col-span-6 mt-2"> 
@@ -247,7 +245,7 @@
                 <!-- 참석 맴버등록 -->
                 <div class="col-span-12 sm:col-span-6 mt-2">
                 	<label for="meeting-form-memberNo" class="form-label">참석맴버</label></br> 
-					<select data-placeholder="참석 맴버 검색" class="tom-select w-full" id="meeting-form-memberNo" multiple></select>
+					<!-- <select data-placeholder="참석 맴버 검색" class="tom-select w-full" multiple></select> -- >
                 </div>
             </div>
             

@@ -48,14 +48,18 @@ async function fetchApi(url, method, body, gbn, headers = {}) {
 		} else if (gbn === 'search'){ 
 			return data.dataList
 			
-		//목록 데이터 리턴
+		//List 데이터 리턴
 		} else if (gbn === 'dataList'){ 
 			return data.dataList
 			
-		//상세 데이터 리턴
+		//Map 데이터 리턴
 		} else if (gbn === 'dataMap'){ 
 			return data.dataMap
 			
+		//데이터 리턴
+		} else if (gbn === 'data'){ 
+			return data
+				
 		//저장 DB 데이터 적재
 		} else if (gbn === 'save'){
 			sendMessage('success', data.msg, '')

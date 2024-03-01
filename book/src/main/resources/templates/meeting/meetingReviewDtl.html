@@ -37,22 +37,30 @@
 	  		//모임 상세 조회
 			function srchData(meetingNo){
 				let params = {meetingNo : meetingNo}
-				fetchApi('/meeting/getMeetingReview.do', 'POST', params, 'dataMap')
+				fetchApi('/meeting/getMeetingReview.do', 'POST', params, 'data')
 					.then((data) => {
 						console.log(data)
 						if(data != null){
-							let html = ''
+							//모임 정보 생성
 							jQuery("#meetingTitle").text(data.title)
 							jQuery("#hostNm").text(data.hostNm)
 							jQuery("#frstRegDt").text(data.frstRegDt)
+							
+							//리뷰 생성
+							let html 
 							let review = data.reviewList
 							jQuery("#review").empty()
 							for(var i = 0 ; i < review.length; i++){
-								html ='<p>'+review[i].memberNm+' - '+review[i].bookNm+'</p>'
-								jQuery("#review").append(html)
-								html ='<p class="mb-5">&nbsp&nbsp&nbsp&nbsp"'+review[i].bookEval+'" ('+review[i].bookScore+')'+'</p>'
+								html =`
+								<br>
+								<span style="margin: 0px 20px 0px 20px">`+review[i].memberNm+` - `+review[i].bookInfo+`</span><br>
+								<span style="margin: 0px 20px 5px 20px">"`+review[i].bookEval+`"(`+review[i].bookScore+`)`+`</span>
+								<br>`
 								jQuery("#review").append(html) 	
 							}
+							//코멘트 셍성
+							html ='<textarea style="margin: 0px 20px 5px 20px">'+data.comment+'</textarea>'
+							jQuery("#comment").append(html) 	
 						}
 					}).catch((error) => console.log(error))
 			}
@@ -133,8 +141,9 @@
 				    </div>
 				    
 				    <!-- 리뷰 내용 -->
-					<div class="intro-y text-justify leading-relaxed border-t mt-6 py-5" id="review">
-				        <p class="mb-5">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using &#039;Content here, content here&#039;, making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for &#039;lorem ipsum&#039; will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>
+					<div class="intro-y text-justify leading-relaxed border-t mt-6 py-5">
+						<div id="review" style="padding: 10px;"></div>
+						<div id="comment"></div>
 				    </div>
 				    
 				    <!-- 기타 정보 -->

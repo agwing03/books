@@ -16,6 +16,7 @@ public class BookVO extends CommonVO{
 	private String bookTitle;	//도서명
 	private String bookWriter;	//작가
 	private String publicDt;	//발간일
+	private String progressYn;	//모임진행 Y:N
 	
 	//books_eval
 	private String bookScore;	//평점

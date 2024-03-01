@@ -43,11 +43,19 @@ public interface BookMapper {
 	
 	/**
 	 * 서평 등록
-	 * @param CamelMap
+	 * @param BookVO
 	 * @return integer
 	 * @throw Exception
      */
 	int insertBookEval(BookVO vo);
+	
+	/**
+	 * 서평 삭제
+	 * @param BookVO
+	 * @return integer
+	 * @throw Exception
+     */
+	int deleteBookEval(BookVO vo);
 	
 	/**
 	 * 도서 실시간 검색

@@ -3,11 +3,6 @@
 		//모임대상 목록
 		srchMeetingReviewList()
 		
-		//평점
-		for(var i = 7 ; i < 22; i++){
-			var html = "<option value="+i+">"+i+"</option>"
-			jQuery("#meeting-form-timeHour").append(html) 		    
-		}
 	})
  
 	// 모임 목록 데이터 조회
@@ -17,120 +12,191 @@
 				if(data != null){
 					let html = '<option value="">선택</option>'
 					for (const idx in data){
-						html += '<option value="'+data[idx].meetingNo+'&'+data[idx].attendCnt+'">'+data[idx].title+'</option>'
+						html += '<option value="'+data[idx].meetingNo+'">'+data[idx].title+'</option>'
 					}
-					jQuery("#meeting-review-form-meeting").append(html);
+					jQuery('#meeting-review-form-meetingNo').append(html);
 				}
 			}).catch((error) => console.log(error))
 	}
 	
+	//맴버 로우
+	var mNum = 0
+	//운영로우 값체크 제외
+	var passNum = 0
+	
 	//모임 선택 이벤트
-	function setMeetingInfo(val){
-		let info = val.split('&')
-		const meetingNo = info[0] 
-		const attendCnt = info[1]
-		 
-		if(meetingNo){
-			let html 
-			// 모임 번호 SET
-			jQuery("#meeting-review-form-meetingNo").val(meetingNo)
-			
-			// 참석자 FORM 생성
-			if(attendCnt > 0){
-				for(var i = 1; i <= attendCnt; i++){
-					html = `
+	function setMeetingInfo(meetingNo){
+		let params = {
+			meetingNo : meetingNo,
+			clubNo : '1'
+		}
+		fetchApi('/meeting/getMeetingReview.do', 'POST', params, 'data')
+			.then((data) => {
+				if(data != null){
+					//리뷰 생성
+					let html 
+					let bookNew = ''
+					let readonly = true
+					let review = data.reviewList
+					
+					//맴버 리뷰 
+					jQuery('#meeting-review-form-memberArea').empty()
+					//맴버 코멘트
+					jQuery('#meeting-review-form-commentArea').empty()
+					
+					for(var i = 0 ; i < review.length; i++){
+						//저장된도서:false, 신규도서:true
+						if(review[i].bookNo === '' || review[i].bookNo === undefined){
+							bookNew = 'checked'
+							readonly = false
+						}
+						
+						//후기 목록 html 
+						html = `
 	                	<div class="border-t border-slate-200/60 dark:border-darkmode-400 p-3">
 	                		<div class="flex flex-col sm:flex-row items-center">
 		                		<!-- 참석자 이름 -->
-		                		<div class="flex items-center">
+		                		<div class="flex items-center mr-auto">
 						            <div class="w-12 h-12 flex-none image-fit">
-						                <img alt="Midone - HTML Admin Template" class="rounded-full" src="../../img/IU_01.jpg">
+						                <img alt="`+review[i].memberNm+`" class="rounded-full" src="../../img/IU_01.jpg">
 						            </div>
-						            <div class="ml-3 mr-auto h-6">
-						                <a href="" class="font-medium" id="hostNm">박지열
-						                	<img style="position: absolute; top: 27px; left: 105px;" class="tooltip w-6 h-6 sm:w-7 sm:h-7" title="운영진" src="../../img/icon-crown-32.png">
-						                </a>
-						               	<span class="">•</span>
-						               	<span class="" id="nickNm">Good Boy</span>
-						               	<span class="">•</span>
-						               	<span class="" id="nickNm">2024.02.20</span>
+						            <div class="ml-3 mr-auto h-6 mr-auto">
+						                <a href="" class="font-medium" id="hostNm">`+review[i].memberNm+`</a>
 						            </div>
-						            <input type="hidden" id="meeting-review-form-memberNo`+i+`">
+						            <input type="hidden" id="meeting-review-form-memberNo`+i+`" value="`+review[i].memberNo+`">
 						        </div>
-							</div>    
-							<div class="flex flex-col sm:flex-row items-center mt-2">
-		                		<!-- 도서명 -->
-		                		<div class="dropdown" style="width: 100%;">
-		                			<input type="text" class="form-control dropdown-toggle border-danger" aria-expanded="false" data-tw-toggle="dropdown" placeholder="도서(저자)" id="meeting-review-form-bookTitle`+i+`" onkeyup="getSrchBook(this.value, '`+i+`');">
-		                			<div class="dropdown-menu w-full">
-							        	<ul class="dropdown-content overflow-y-auto h-32" id="meeting-review-form-bookSrchBox`+i+`"></ul>
-							    	</div>
-							    	<!-- 도서번호 -->
-		                			<input type="hidden" id="meeting-review-form-bookNo`+i+`">
+						        <div class="flex items-center">
+						        	<!-- 모임 운영 체크 -->    
+						            <div class="form-check form-switch"> 
+						            	<label class="form-check-label mr-2 progressLabel" id="progressLabel`+i+`"></label>
+						            	<input class="form-check-input progressYn" type="checkbox" id="progressYn`+i+`" onchange="progressChange('`+i+`')">  
+						            </div>
+						        </div>
+							</div>
+							<div class="reviewArea" id="reviewArea`+i+`">    
+								<div class="flex flex-col sm:flex-row items-center mt-2">
+			                		<!-- 도서 -->
+			                		<div class="dropdown mr-2" style="width: 100%;">
+			                			<!-- 도서명 -->
+			                			<input type="text" class="form-control dropdown-toggle" aria-expanded="false" data-tw-toggle="dropdown" placeholder="도서" 
+			                				id="meeting-review-form-bookTitle`+i+`" onkeyup="getSrchBook(this.value, '`+i+`');" value="`+review[i].bookTitle+`">
+			                			<div class="dropdown-menu w-full">
+								        	<ul class="dropdown-content overflow-y-auto h-32" id="meeting-review-form-bookSrchBox`+i+`"></ul>
+								    	</div>
+								    	<!-- 도서번호 -->
+			                			<input type="hidden" id="meeting-review-form-bookNo`+i+`" value="`+review[i].bookNo+`">
+								    </div>
+								    <!-- 저자 -->
+								    <div class="dropdown mr-4" style="width: 330px">
+								    	<input type="text" class="form-control" placeholder="저자" id="meeting-review-form-bookWriter`+i+`" value="`+review[i].bookWriter+`" readonly=`+readonly+`>
+			                		</div>
+			                		<div class="form-check mr-1" style="width: 55px">
+			                			<label class="form-check-label mr-2" for="checkbox-switch-4">New</label> 
+							         	<input class="form-check-input" type="checkbox" id="meeting-review-form-bookNew`+i+`" value="Y" `+bookNew+` onClick="return false;" > 
+							        </div>
+		                		</div>
+		                		<div class="flex flex-col sm:flex-row items-center mt-2">
+		                			<!-- 한출평 -->
+			                		<input type="text" class="form-control mr-2" placeholder="한줄평" id="meeting-review-form-eval`+i+`" value="`+review[i].bookEval+`">	                		
+			                		<!-- 평점 -->
+			                		<select class="form-select mr-2 selectScore1" style="width: 65px" id="meeting-review-form-score1-`+i+`"></select>•&nbsp&nbsp
+			                		<select class="form-select selectScore2" style="width: 60px" id="meeting-review-form-score2-`+i+`"></select>
 		                		</div>
 	                		</div>
-	                		<div class="flex flex-col sm:flex-row items-center mt-2">
-	                			<!-- 한출평 -->
-		                		<input type="text" class="form-control border-danger mr-2" placeholder="한줄평" id="meeting-review-form-eval`+i+`">
-		                		<!-- 평점 -->
-		                		<input type="text" class="form-control border-danger" placeholder="평점 10.0" id="meeting-review-form-score`+i+`" style="width: 150px;">
-	                		</div>
-	                	</div>`
-	                jQuery("#attendMember").append(html);
-	            }
-			}
-		}
+	                	</div>`	
+						jQuery('#meeting-review-form-memberArea').append(html)
+						mNum = i
+					}
+					
+					//평점
+					html = ''
+					jQuery(".selectScore1").empty()
+					for(var i = 10 ; i > 0; i--){html += "<option value="+i+">"+i+"</option>"}
+					jQuery(".selectScore1").append(html)
+					html = ''
+					jQuery(".selectScore2").empty()
+					for(var i = 0 ; i < 10; i++){html += "<option value="+i+">"+i+"</option>"}
+					jQuery(".selectScore2").append(html)
+					
+					//코멘트
+					jQuery('#meeting-review-form-commentArea').append(`<textarea id="meeting-review-form-comment" class="form-control" name="comment" placeholder="Comment" minlength="10"></textarea>`)
+				}
+			}).catch((error) => console.log(error))
 	}
 	
+	//모임 운영 이벤트
+	function progressChange(num){
+		passNum = num
+		if(jQuery('#progressYn'+num).is(":checked")){
+			//다른 체크박스 해제 
+			jQuery('.progressYn').prop("checked", false)
+			//disabled
+			jQuery('.reviewArea').show()
+			jQuery('.progressLabel').text("")
+			
+			//대상 체크
+			jQuery('#progressYn'+num).prop("checked", true)
+			//disabled
+			jQuery('#reviewArea'+num).hide()
+			jQuery('#progressLabel'+num).text("모임운영")
+		}else{
+			//다른 체크박스 해제 
+			jQuery('.progressYn').prop("checked", false)
+			//disabled
+			jQuery('.reviewArea').show()
+			jQuery('.progressLabel').text("")
+		}
+	}
 	
 	//모임후기 저장
 	function saveMeeting(){
-		//validation
-		if(!jQuery('#meeting-form-title').val()){
-			alert('모임 제목을 입력해주세요.')
-			jQuery('#meeting-form-title').focus()
-			return false
-		}
-		if(!jQuery('#meeting-form-hostNo').val()){
-			alert('주최자를 검색하여 선택해주세요.')
-			jQuery('#meeting-form-hostNm').focus()
-			return false
-		}
-		if(!jQuery('#meeting-form-dday').val()){
-			alert('모임 일자를 입력해주세요.')
-			jQuery('#meeting-form-dday').focus()
-			return false
-		}
-		if(!jQuery('#meeting-form-place').val()){
-			alert('모임 장소를 입력해주세요.')
-			jQuery('#meeting-form-place').focus()
-			return false
-		}
-		if(!jQuery('#meeting-form-cost').val()){
-			alert('참석 비용을 입력해주세요.')
-			jQuery('#meeting-form-cost').focus()
-			return false
-		}
-			
 		//data set
-		var saveData = {
-			// 모임 생성
-			'title':jQuery('#meeting-form-title').val(),
-			'meetingGbn':jQuery('#meeting-form-meetingGbn').val(),
-			'hostNo':jQuery('#meeting-form-hostNo').val(),
-			'dday':jQuery('#meeting-form-dday').val().replaceAll('.',''),
-			'hour':jQuery('#meeting-form-timeHour').val(),
-			'minute':jQuery('#meeting-form-timeMinute').val(),
-			'place':jQuery('#meeting-form-place').val(),	
-			'cost':jQuery('#meeting-form-cost').val(),
-			'attendCnt':jQuery('#meeting-form-attendCnt').val(),
+		let saveData = {
+			'meetingNo':jQuery('#meeting-review-form-meetingNo').val(),
+			'comment':jQuery('#meeting-review-form-comment').val()
 		}
-		console.log(saveData);
+		let review = []
+		//validation
+		for(var i = 0; i <= mNum; i++){
+			//모임 진행여부
+			let progressYn = (jQuery('#progressYn'+i).is(":checked"))?'Y':'N'
+			if(progressYn !== 'Y'){// 모임 운영 값체크 제외 
+				if(!jQuery('#meeting-review-form-bookTitle'+i).val()){
+					alert('도서를 검색 또는 입력해주세요.')
+					jQuery('#meeting-review-form-bookTitle'+i).focus()
+					return false
+				}
+				if(!jQuery('#meeting-review-form-bookWriter'+i).val()){
+					alert('저자를 입력해주세요.')
+					jQuery('#meeting-review-form-bookWriter'+i).focus()
+					return false
+				}
+				if(!jQuery('#meeting-review-form-eval'+i).val()){
+					alert('한줄평을 입력해주세요.')
+					jQuery('#meeting-review-form-eval'+i).focus()
+					return false
+				}
+			}
+			var bookNew = jQuery('input:checkbox[id="meeting-review-form-bookNew'+i+'"]:checked').val()
+			review.push({
+				'memberNo': jQuery('#meeting-review-form-memberNo'+i).val(),
+				'bookNew': (bookNew)? bookNew:'N',
+				'bookNo': jQuery('#meeting-review-form-bookNo'+i).val(),
+				'bookTitle': jQuery('#meeting-review-form-bookTitle'+i).val(),
+				'bookWriter': jQuery('#meeting-review-form-bookWriter'+i).val(),
+				'bookEval': jQuery('#meeting-review-form-eval'+i).val(),
+				'bookScore': jQuery('#meeting-review-form-score1-'+i).val()+'.'+jQuery('#meeting-review-form-score2-'+i).val(),
+				'progressYn': progressYn
+			})
+		}
+		saveData.reviewList = review
+		//console.log(saveData)
 		if(saveData){
-			fetchApi('/meeting/saveMeeting.do', 'POST', saveData, 'save')
-			meetingPopupClose()
+			fetchApi('/meeting/saveMeetingReview.do', 'POST', saveData, 'save')
+			meetingReviewPopupClose()
 		}
 	}
+	
 	//모임후기 생성 팝업 닫기
 	function meetingReviewPopupShow(){
 		let modal = jQuery('#meeting-review-form-modal')
@@ -147,48 +213,34 @@
 	// 도서 실시간 검색
 	function getSrchBook(text, num){
 		if(text.length > 0){
+			//도서 입력시
+			jQuery('#meeting-review-form-bookWriter'+num).attr('readonly', false) //저자 readonly 해제
+			jQuery('#meeting-review-form-bookNew'+num).prop('checked',true) //신규도서 체크
+			jQuery('#meeting-review-form-bookNo'+num).val('') //도서번호 비우기
+			
 			var params = {"srchText":text}
 			fetchApi('/book/selectBookSrch.do', 'POST', params, 'dataList')
 			.then((data) => {
 				if(data != null){
 					jQuery('#meeting-review-form-bookSrchBox'+num).empty()
 					for(var i = 0; i < data.length; i++){
-						let html = '<li><a href="#" onclick="setSrchBookData(\''+num+'\',\''+data[i].bookNo+'\',\''+data[i].bookTitle+'\',\''+data[i].bookWriter+'\')">'+data[i].bookInfo+'</a></li>'
+						let html = '<li><a href="#" onclick="setSrchBookData(\''+num+'\',\''+data[i].bookNo+'\',\''+data[i].bookTitle+'\',\''+data[i].bookInfo+'\',\''+data[i].bookWriter+'\')">'+data[i].bookInfo+'</a></li>'
 						jQuery('#meeting-review-form-bookSrchBox'+num).append(html)
 					}
 				}
 			}).catch((error) => console.log(error))
 		}
 	}
-	
-	// 맴버 실시간 검색
-	function getSrchMember(text, num){
-		if(text.length > 0){
-			var params = {"srchText":text}
-			fetchApi('/member/selectMemberSrch.do', 'POST', params, 'dataList')
-			.then((data) => {
-				if(data != null){
-					jQuery('#meeting-review-form-memberSrchBox'+num).empty()
-					for(var i = 0; i < data.length; i++){
-						let html = '<li><a href="#" onclick="setSrchMemberData(\''+num+'\',\''+data[i].memberNo+'\',\''+data[i].name+'\')">'+data[i].name+'</a></li>'
-						jQuery('#meeting-review-form-memberSrchBox'+num).append(html)
-					}
-				}
-			}).catch((error) => console.log(error))
-		}
-	}
-	
-	// 실시간 리턴 데이터셋 
-	function setSrchBookData(num, bookNo, bookTitle, bookWriter){
+	// 도서 실시간 리턴 데이터셋
+	function setSrchBookData(num, bookNo, bookTitle, bookInfo, bookWriter){
 		jQuery('#meeting-review-form-bookNo'+num).val(bookNo)
 		jQuery('#meeting-review-form-bookTitle'+num).val(bookTitle)
-		jQuery('#meeting-review-form-bookWriter'+num).val(bookWriter)
+		jQuery('#meeting-review-form-bookWriter'+num).val(bookWriter).attr('readonly', true)
 		jQuery('#meeting-review-form-bookSrchBox'+num).empty()
-	}
-	function setSrchMemberData(num, memberNo, memberNm){
-		jQuery('#meeting-review-form-memberNo'+num).val(memberNo)
-		jQuery('#meeting-review-form-memberNm'+num).val(memberNm)
-		jQuery('#meeting-review-form-memberSrchBox'+num).empty()
+		//신규가 아닌 경우 > 체크 해제
+		if(jQuery('#meeting-review-form-bookNew'+num).is(':checked')){
+			jQuery('#meeting-review-form-bookNew'+num).prop('checked',false);
+		}
 	}
 </script>
 
@@ -202,10 +254,10 @@
                 
                 <!-- 신규도서 팝업 -->
             	<div class="float-right">
-                	<button class="btn btn-sm btn-primary w-30 mr-2"> 
+                	<button class="btn btn-sm btn-primary w-30 mr-2" data-tw-toggle="modal" data-tw-target="#book-form-modal"> 
                 		<i data-lucide="book" class="w-5 h-5 mr-2"></i>New 도서
                 	</button>
-                	<button class="btn btn-sm btn-dark w-30 mr-2"> 
+                	<button class="btn btn-sm btn-dark w-30 mr-2" data-tw-toggle="modal" data-tw-target="#member-form-modal"> 
                     	<i data-lucide="user-plus" class="w-5 h-5 mr-2"></i>New 맴버 
                     </button> 
                 </div> 
@@ -215,26 +267,21 @@
             <div class="modal-body gap-4 gap-y-3">
             	<!-- 모임선택 -->
                 <div class="col-span-12 sm:col-span-6 p-3"> 
-                	<label for="meeting-review-form-meeting" class="form-label">모임선택</label></br>
-                	<select class="form-select" aria-label="Default select example" id="meeting-review-form-meeting" onchange="setMeetingInfo(this.value)"></select>
+                	<label for="meeting-review-form-meetingNo" class="form-label">모임선택</label></br>
+                	<select class="form-select" aria-label="Default select example" id="meeting-review-form-meetingNo" onchange="setMeetingInfo(this.value)"></select>
                 </div>
-                
                 <form id="meeting-review-form">
-                	<!-- 모임 번호-->
-	            	<input type="hidden" id="meeting-review-form-meetingNo">
-	            	
-	                <!-- 참석자 추가 영역--> 
-	                <div class="col-span-12 sm:col-span-6" id="attendMember"></div>
-	                
-	                <!-- 메모-->
-	                <div class="col-span-12 sm:col-span-6" id="attendMember"></div>
+                	<!-- 모임 맴버 -->
+                	<div id="meeting-review-form-memberArea"></div>
+                	<!-- 모임 코멘트 -->
+                	<div class="mt-3 p-3" id="meeting-review-form-commentArea"></div>
 	            </form>
 			</div>
             
             <!-- BEGIN: Button -->
             <div class="modal-footer">
             	<button type="button" class="btn btn-primary w-20" onclick="saveMeeting()">저장</button>
-            	<button type="button" data-tw-dismiss="modal" class="btn btn-outline-secondary w-20 mr-1" onclick="meetingPopupClose()">취소</button> 
+            	<button type="button" data-tw-dismiss="modal" class="btn btn-outline-secondary w-20 mr-1" onclick="meetingReviewPopupClose()">취소</button> 
             </div>
         </div>
     </div>
