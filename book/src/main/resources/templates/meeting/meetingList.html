@@ -163,9 +163,11 @@
                 <div class="intro-y flex flex-col sm:flex-row items-center mt-8">
 				    <i data-lucide="book-open" class="w-7 h-7 mr-2"></i><h4 class="text-xl font-medium leading-none mr-auto pt-1">모임 정보</h4>
 				    <div class="w-full sm:w-auto flex mt-4 sm:mt-0">
+				    	<!-- 
 				        <button class="btn btn-primary shadow-md mr-2" data-tw-toggle="modal" data-tw-target="#meeting-form-modal" onclick="meetingPopupShow('I')">
 				         	<i class="w-5 h-5 mr-2" data-lucide="plus"></i> 신규
 				        </button>
+				        -->
 				        <div class="dropdown ml-auto sm:ml-0">
 				            <button class="dropdown-toggle btn px-2 box" aria-expanded="false" data-tw-toggle="dropdown">
 				                <span class="w-5 h-5 flex items-center justify-center"><i class="w-4 h-4" data-lucide="plus"></i></span>
@@ -173,10 +175,14 @@
 				            <div class="dropdown-menu w-40">
 				                <ul class="dropdown-content">
 				                    <li>
-				                        <a href="" class="dropdown-item"><i data-lucide="file-plus" class="w-4 h-4 mr-2"></i> New Category</a>
+				                        <a class="dropdown-item" data-tw-toggle="modal" data-tw-target="#meeting-form-modal" onclick="meetingPopupShow('I')">
+				                        	<i data-lucide="plus-circle" class="w-4 h-4 mr-2"></i> 신규 모임
+				                       	</a>
 				                    </li>
 				                    <li>
-				                        <a href="" class="dropdown-item"><i data-lucide="users" class="w-4 h-4 mr-2"></i> New Group</a>
+				                        <a class="dropdown-item">
+				                        	<i data-lucide="refresh-cw" class="w-4 h-4 mr-2" onclick="meetingPopupShow()"></i> 이전 모임
+				                        </a>
 				                    </li>
 				                </ul>
 				            </div>
