@@ -6,8 +6,8 @@
 	<select id="selectMeetingList" parameterType="project.books.club.cmmn.SrchVO" resultType="project.books.sys.util.CamelMap">
 		/*meetingMapper.selectMeetingList*/
 		select mt.meeting_no
+			 , mt.club_no 
 		     , mt.title
-		     , mt.club_no 
 		     , (select nick_nm from member m where m.member_no = mt.host_no) as host_nm
 		     , (select ccd.code_dtl_nm from cmmn_code_dtl ccd where ccd.code_dtl_id = mt.meeting_gbn) as meeting_gbn
 		     , date_format(mt.dday, '%Y-%m-%d') as dday
@@ -20,7 +20,6 @@
      				else 'complete' end as state
 		 	 , if(mt.review_yn = 'Y', 'true', 'false') as review_yn
 		  from meeting mt
-		  
 		<include refid="meeingListWhere"></include>
 		 order by mt.dday desc, mt.hour desc, mt.minute desc 
 	</select>
@@ -37,8 +36,8 @@
 	<select id="selectMeeting" parameterType="project.books.club.cmmn.SrchVO" resultType="project.books.sys.util.CamelMap">
 		/*meetingMapper.selectMeeting*/
 		select mt.meeting_no
+			 , mt.club_no 
 		     , mt.title
-		     , mt.club_no 
 		     , (select nick_nm from member m where m.member_no = mt.host_no) as host_nm
 		     , mt.host_no
 		     , mt.meeting_gbn
@@ -226,21 +225,27 @@
 		/*meetingMapper.selectMeetingInfo*/
 		select mt.meeting_no 	as meetingNo
 			 , mt.club_no 		as clubNo
+			 , mt.meeting_gbn   as meetingGbn
 			 , (select code_dtl_nm 
 			      from cmmn_code_dtl ccd 
 			     where ccd.code_id = 'MEETING_GBN' 
-			       and ccd.code_dtl_id = mt.meeting_gbn) as meetingGbn
-		 	 , (select mb.name 
+			       and ccd.code_dtl_id = mt.meeting_gbn) as meetingGbnNm
+			 , mt.title
+			 , mt.host_no		 as hostNo
+		 	 , (select concat(mb.name,'(',mb.nick_nm,')') 
 		 	      from member mb 
 		 	     where mb.member_no = mt.host_no) as hostNm
-		 	 , mt.title
 		 	 , date_format(mt.dday, '%Y.%m.%d') as dday
+		 	 , mt.hour
+			 , mt.minute
 		 	 , concat(mt.hour, ':', mt.minute) as time
 		 	 , mt.place
 		 	 , mt.cost
 		 	 , mt.place_url 	as placeUrl
 		 	 , mt.attend_cnt	as attendCnt
 		 	 , mt.comment
+		 	 , c.account
+		     , c.bank_cd 		as bankCd
 		 	 , (select concat(mb.name,'(',mb.nick_nm,')') 
 		 	      from member mb 
 		 	     where mb.member_no = mt.frst_reg_no) 			as frstRegNm
@@ -250,6 +255,7 @@
 		 	     where mb.member_no = mt.last_upd_no) 			as lastUpdNm
 		 	 , date_format(mt.last_upd_dt, '%Y.%m.%d %H:%i:%S') as lastUpdDt
 		  from meeting mt
+		  	   left join club c on c.club_no = mt.club_no
 		 where mt.meeting_no = #{meetingNo}
 	</select>
 	
@@ -266,6 +272,7 @@
 		     , concat(bk.book_title , '(', bk.book_writer, ')') as book_info 
 		 	 , ifnull(bv.book_eval, '') as book_eval
 		 	 , ifnull(bv.book_score, '') as book_score
+		 	 , bv.progress_yn
 		  from meeting_member mm
 		       left join member m 
 		       	 on m.member_no = mm.member_no 

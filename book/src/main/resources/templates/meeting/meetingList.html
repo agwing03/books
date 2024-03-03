@@ -15,11 +15,6 @@
 		<script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.10/dayjs.min.js"></script>
         <title>책과 사람 사이</title>
         
-        <!-- 화면별 모듈 -->
-		<script src="/dist/js/jquery_wrapper.js"></script>
-		<script src="/js/layout.js"></script>  
-		<script src="/js/cmmn.js"></script>
-        
         <script>
         	//전역변수
         	let tableLayout
@@ -128,6 +123,14 @@
 				                    </div>`
 				            	jQuery('#dataList').append(html)
 							}
+							html = `<div class="intro-y col-span-12 md:col-span-6 xl:col-span-4 box">
+										<a class="dropdown-item" data-tw-toggle="modal" data-tw-target="#meeting-form-modal" style="cursor : pointer;" onclick="meetingPopupShow('I')">
+											<div style='position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);'>
+												<img alt="Midone - HTML Admin Template" src="../../img/plus.png">
+											</div>
+										</a>
+				                    </div>`
+				            	jQuery('#dataList').append(html)
 						}
 					}).catch((error) => console.log(error))
 			}
@@ -165,7 +168,7 @@
 				        </button>
 				        <div class="dropdown ml-auto sm:ml-0">
 				            <button class="dropdown-toggle btn px-2 box" aria-expanded="false" data-tw-toggle="dropdown">
-				                <span class="w-5 h-5 flex items-center justify-center"> <i class="w-4 h-4" data-lucide="plus"></i> </span>
+				                <span class="w-5 h-5 flex items-center justify-center"><i class="w-4 h-4" data-lucide="plus"></i></span>
 				            </button>
 				            <div class="dropdown-menu w-40">
 				                <ul class="dropdown-content">
@@ -194,6 +197,11 @@
         <!-- BEGIN: POPUP 영역 -->
         <div id="popup-area"></div>
     </body>
+    
+    <!-- 화면별 모듈 -->
+	<script src="/dist/js/jquery_wrapper.js"></script>
+	<script src="/js/layout.js"></script>  
+	<script src="/js/cmmn.js"></script>
 </html>
 
  

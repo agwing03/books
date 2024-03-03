@@ -1,12 +1,12 @@
 <script>
 	//화면ID
-	const viewId = '#meeting-form-'
 	let meetingFormFlag = '' //오픈 될때 삽입 I, U
 	
-	jQuery(function(){
+	//Ready
+    jQuery(function(){
 		//모임생성시 맴버 등록
 		setMeberList()
-		
+			
 		//공통코드
 		cmmnCode('MEETING_GBN', 'meeting-form-meetingGbn', '')
 		cmmnCode('BANK_CD', 'meeting-form-bankCd', '')
@@ -14,18 +14,17 @@
 		//시간, 분
 		for(var i = 7 ; i < 22; i++){
 			var html = "<option value="+i+">"+i+"</option>"
-			jQuery(viewId+"hour").append(html) 		    
+			jQuery('#meeting-form-hour').append(html) 		    
 		}
 		for(var i = 1 ; i < 60; i++){
 			var html = "<option value="+i+">"+i+"</option>"
-			jQuery(viewId+"minute").append(html) 		    
+			jQuery('#meeting-form-minute').append(html) 		    
 		}
 		//참석인원
 		for(var i = 4 ; i < 31; i++){
 			var selected = (i===8)?'selected':''
-			
 			var html = '<option value="'+i+'" '+selected+'>'+i+' 명</option>'
-			jQuery(viewId+"attendCnt").append(html) 		    
+			jQuery('#meeting-form-attendCnt').append(html) 		    
 		}
 	})
 		
@@ -39,7 +38,7 @@
 			setDate('toDay')
 			
 			//기본 값 '카카오뱅크'
-			$(viewId+"bankCd").val("90")
+			jQuery('#meeting-form-bankCd').val("90")
 
 		}else{
 			meetingFormFlag = 'U'
@@ -66,15 +65,15 @@
 			//요일
 			day = week[new Date(day).getDay()]
 			// 모임 일자
-			jQuery(viewId+"dday").val(year+'.'+(("00"+month.toString()).slice(-2))+'.'+(("00"+date.toString()).slice(-2))) 
+			jQuery('#meeting-form-dday').val(year+'.'+(("00"+month.toString()).slice(-2))+'.'+(("00"+date.toString()).slice(-2))) 
 			// 모임 제목 만들기
 			year = year.toString().substr(2,4)//끝2자
-			jQuery(viewId+"title").val(year+'.'+(("00"+month.toString()).slice(-2))+'.'+(("00"+date.toString()).slice(-2))+'('+day+') 독서모임')
+			jQuery('#meeting-form-title').val(year+'.'+(("00"+month.toString()).slice(-2))+'.'+(("00"+date.toString()).slice(-2))+'('+day+') 독서모임')
 		}else{
 			//요일
 			day = week[new Date(gbn).getDay()]
 			// 모임 제목 만들기
-			jQuery(viewId+"title").val(year+'.'+day+'.'+day+'('+day+') 독서모임')
+			jQuery('#meeting-form-title').val(year+'.'+day+'.'+day+'('+day+') 독서모임')
 		}
 	}
 	
@@ -84,6 +83,7 @@
 			.then((data) => {
 				if(data != null){
 					let html = ''
+					jQuery("#multiple-select").empty()
 					for (const idx in data){
 						html += '<option value="'+data[idx].memberNo+'">'+data[idx].memberNm+'</option>'
 					}
@@ -95,29 +95,29 @@
 	//모임 저장
 	function saveMeeting(){
 		//validation
-		if(!jQuery(viewId+'title').val()){
-			alert('모임 제목을 입력해주세요.')
-			jQuery(viewId+'title').focus()
+		if(!jQuery('#meeting-form-title').val()){
+			sendMessage('failed','필수 입력 값 누락!','모임 제목을 입력해주세요.','')
+			jQuery('#meeting-form-title').focus()
 			return false
 		}
-		if(!jQuery(viewId+'hostNo').val()){
-			alert('주최자를 검색하여 선택해주세요.')
-			jQuery(viewId+'hostNm').focus()
+		if(!jQuery('#meeting-form-hostNo').val()){
+			sendMessage('failed','필수 입력 값 누락!','주최자를 검색하여 선택해주세요.','')
+			jQuery('#meeting-form-hostNm').focus()
 			return false
 		}
-		if(!jQuery(viewId+'dday').val()){
-			alert('모임 일자를 입력해주세요.')
-			jQuery(viewId+'dday').focus()
+		if(!jQuery('#meeting-form-dday').val()){
+			sendMessage('failed','필수 입력 값 누락!','모임 일자를 입력해주세요.','')
+			jQuery('#meeting-form-dday').focus()
 			return false
 		}
-		if(!jQuery(viewId+'place').val()){
-			alert('모임 장소를 입력해주세요.')
-			jQuery(viewId+'place').focus()
+		if(!jQuery('#meeting-form-place').val()){
+			sendMessage('failed','필수 입력 값 누락!','모임 장소를 입력해주세요.','')
+			jQuery('#meeting-form-place').focus()
 			return false
 		}
-		if(!jQuery(viewId+'cost').val()){
-			alert('참석 비용을 입력해주세요.')
-			jQuery(viewId+'cost').focus()
+		if(!jQuery('#meeting-form-cost').val()){
+			sendMessage('failed','필수 입력 값 누락!','참석 비용을 입력해주세요.','')
+			jQuery('#meeting-form-cost').focus()
 			return false
 		}
 			
@@ -125,23 +125,23 @@
 		var saveData = {
 			// 모임 생성
 			'saveFlag':meetingFormFlag,
-			'title':jQuery(viewId+'title').val(),
-			'meetingGbn':jQuery(viewId+'meetingGbn').val(),
-			'hostNo':jQuery(viewId+'hostNo').val(),
-			'dday':jQuery(viewId+'dday').val().replaceAll('.',''),
-			'hour':jQuery(viewId+'hour').val(),
-			'minute':jQuery(viewId+'minute').val(),
-			'place':jQuery(viewId+'place').val(),	
-			'cost':jQuery(viewId+'cost').val(),
-			'account':jQuery(viewId+'account').val(),
-			'bankCd':jQuery(viewId+'bankCd').val(),
-			'attendCnt':jQuery(viewId+'attendCnt').val(),
-			'memberNoArr':jQuery(viewId+'memberNo').val()
+			'title':jQuery('#meeting-form-title').val(),
+			'meetingGbn':jQuery('#meeting-form-meetingGbn').val(),
+			'hostNo':jQuery('#meeting-form-hostNo').val(),
+			'dday':jQuery('#meeting-form-dday').val().replaceAll('.',''),
+			'hour':jQuery('#meeting-form-hour').val(),
+			'minute':jQuery('#meeting-form-minute').val(),
+			'place':jQuery('#meeting-form-place').val(),	
+			'cost':jQuery('#meeting-form-cost').val(),
+			'account':jQuery('#meeting-form-account').val(),
+			'bankCd':jQuery('#meeting-form-bankCd').val(),
+			'attendCnt':jQuery('#meeting-form-attendCnt').val(),
+			'memberNoArr':jQuery('#meeting-form-memberNo').val()
 		}
 		
 		//key 셋팅
 		if(meetingFormFlag === 'U'){
-			saveData.meetingNo = jQuery(viewId+'meetingNo').val()
+			saveData.meetingNo = jQuery('#meeting-form-meetingNo').val()
 		}
 		
 		//Save DATA
@@ -158,23 +158,23 @@
 			params.meetingNo = key 	
 		}
 		//모임 정보 조회
-		fetchApi('/meeting/getMeeting.do', 'POST', params, 'dataMap')
+		fetchApi('/meeting/getMeetingReview.do', 'POST', params, 'dataMap')
 			.then((data) => {
 				console.log(data)
 				if(data != null){
-					jQuery(viewId+'meetingNo').val(data.meetingNo)
-					jQuery(viewId+'meetingGbn').val(data.meetingGbn)
-					jQuery(viewId+'title').val(data.title)
-					jQuery(viewId+'hostNm').val(data.hostNm)
-					jQuery(viewId+'hostNo').val(data.hostNo)
-					jQuery(viewId+'dday').val(data.dday)
-					jQuery(viewId+'hour').val(data.hour)
-					jQuery(viewId+'minute').val(data.minute)
-					jQuery(viewId+'place').val(data.place)
-					jQuery(viewId+'cost').val(data.cost)
-					jQuery(viewId+'account').val(data.account)
-					jQuery(viewId+'bankCd').val(data.bankCd)
-					jQuery(viewId+'attendCnt').val(data.attendCnt)
+					jQuery('#meeting-form-meetingNo').val(data.meetingNo)
+					jQuery('#meeting-form-meetingGbn').val(data.meetingGbn)
+					jQuery('#meeting-form-title').val(data.title)
+					jQuery('#meeting-form-hostNm').val(data.hostNm)
+					jQuery('#meeting-form-hostNo').val(data.hostNo)
+					jQuery('#meeting-form-dday').val(data.dday)
+					jQuery('#meeting-form-hour').val(data.hour)
+					jQuery('#meeting-form-minute').val(data.minute)
+					jQuery('#meeting-form-place').val(data.place)
+					jQuery('#meeting-form-cost').val(data.cost)
+					jQuery('#meeting-form-account').val(data.account)
+					jQuery('#meeting-form-bankCd').val(data.bankCd)
+					jQuery('#meeting-form-attendCnt').val(data.attendCnt)
 					console.log(data)
 				}
 			}).catch((error) => console.log(error))
@@ -187,7 +187,8 @@
         <div class="modal-content">
             <!-- BEGIN: Modal Header -->
             <div class="modal-header">
-                <h2 class="font-medium text-base mr-auto">모임 정보</h2>
+				<i data-lucide="plus-circle" class="w-5 h-5 mr-1"></i> 
+                <h2 class="font-medium font-semibold text-base mr-auto pt-1" style='padding-top: 3px'>모임 정보</h2>
             </div>
             
             <!-- BEGIN: Modal Body -->
@@ -245,7 +246,9 @@
                 <!-- 참석 맴버등록 -->
                 <div class="col-span-12 sm:col-span-6 mt-2">
                 	<label for="meeting-form-memberNo" class="form-label">참석맴버</label></br> 
-					<!-- <select data-placeholder="참석 맴버 검색" class="tom-select w-full" multiple></select> -- >
+					<select data-placeholder="참석 맴버 검색" class="tom-select w-full" multiple id="multiple-select">
+						<option value="2">박지열 • 박지열</option>
+					</select>
                 </div>
             </div>
             

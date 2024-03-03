@@ -6,7 +6,7 @@
 	
 	/**
 	 *  공통 Toast 메세지
-	 *  gbn 구분 : success, confirm, fail, info
+	 *  gbn 구분 : success, confirm, failed, info
 	 *  msg1 : 변경할 타이틀 메세지
 	 *  msg2 : 변경할 서브 메세지
 	 *  func : 수행 펑션
@@ -30,6 +30,17 @@
 		if(gbn === 'success'){ 
 			toastOption = { 
 				node: $("#success-notification-content").clone().removeClass("hidden")[0], 
+				duration: 3000, // -1 : 고정
+				newWindow: true, 
+				close: true, 
+				gravity: "top", 
+				position: "right", 
+				stopOnFocus: true, 
+			}
+		//실패 메세지
+		} else if(gbn === 'failed'){ 
+			toastOption = { 
+				node: $("#failed-notification-content").clone().removeClass("hidden")[0], 
 				duration: 3000, // -1 : 고정
 				newWindow: true, 
 				close: true, 
@@ -87,6 +98,15 @@
 	</div> 
 </div>
 
+<!-- 실패 메세지 -->
+<div id="failed-notification-content" class="toastify-content hidden flex" >
+    <i class="text-danger" data-lucide="x-circle"></i> 
+    <div class="ml-4 mr-4">
+        <div class="font-medium" id='failedToastMsg1'></div>
+        <div class="text-slate-500 mt-1" id='failedToastMsg2'></div>
+    </div>
+</div>
+
 <!-- 확인 메세지 confirm --> 
 <div id="notification-with-actions-content" class="toastify-content hidden flex"> 
 	<i data-lucide="edit"></i> 
@@ -99,7 +119,7 @@
  		</div> 
  	</div> 
 </div>   
-
+                            
 
 <!-- 심플 메세지 -->
 <div class="alert alert-primary-soft show flex items-center mb-2 hidden" role="alert"> 

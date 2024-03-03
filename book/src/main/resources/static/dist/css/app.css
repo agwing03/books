@@ -4030,6 +4030,9 @@ select{
 .align-top{
     vertical-align: top;
 }
+.align-middle{
+    vertical-align: middle;
+}
 .text-xs{
     font-size: 0.75rem;
     line-height: 1rem;

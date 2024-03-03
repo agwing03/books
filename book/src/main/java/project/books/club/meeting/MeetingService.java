@@ -86,7 +86,7 @@ public class MeetingService {
 		}
 		
 		//참석자 존재 여부
-		if(memberList.size() > 0) {
+		if(!memberList.isEmpty() && memberList.size() > 0) {
 			if(vo.getSaveFlag().equals("U")) {
 				mtCnt = meetingMapper.deleteMeetingMember(vo);
 			}
@@ -96,7 +96,6 @@ public class MeetingService {
 				mtCnt = meetingMapper.insertMeetingMember(vo);
 			}
 		}
-		
 		vo.setSaveCnt(mtCnt);
 		log.debug("##### 모임 생성 saveMeeting > FLAG:"+vo.getSaveFlag()+" / 모임생성:"+mtCnt+"건 #####");
 		return vo;

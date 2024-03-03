@@ -16,6 +16,7 @@ public class MeetingVO extends CommonVO{
     private String hostNm;		//맴버이름
     private String title;		//모임명
     private String dday;		//모임일
+    private String time;		//시간
     private String hour;		//모임시간-시
     private String minute;		//모임시간-분
     private String place;		//모임장소
