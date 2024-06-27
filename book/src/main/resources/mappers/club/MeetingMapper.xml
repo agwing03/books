@@ -66,29 +66,34 @@
 		  and mt.meeting_no = #{meetingNo}
 		</if>
 		<!-- 화면 구분 -->
-		<if test='srchPageGbn != null and srchPageGbn != "" and srchPageGbn == "info"'>
-		  and mt.dday <![CDATA[ >= ]]> date_format(now(), '%Y%m%d')
-		</if>
-		<!-- 모임 구분 -->
-		<if test='srchGbn != null and srchGbn != ""'>
+	  	<choose>
+	  		<!-- 모임 : info -->
+			<when test='srchPageGbn != null and srchPageGbn != "" and srchPageGbn == "info"'>
+	      	</when>
+	      	<!-- 모임 : review -->
+	      	<otherwise>			
+	  			<!-- 모임 구분 -->
+				<if test='srchGbn != null and srchGbn != ""'>
 		  and mt.meeting_gbn = #{srchGbn}
-		</if>
-		<!-- 검색어 -->
-		<if test='srchText != null and srchText != "" and srchText != null and srchText != ""'>
-			<if test='"M".equals(srchGbn)'>
+				</if>
+				<!-- 검색어 -->
+				<if test='srchText != null and srchText != "" and srchText != null and srchText != ""'>
+					<if test='"M".equals(srchGbn)'>
 		  and mt.title like concat('%',#{srchText},'%')
-			</if>
-			<if test='"H".equals(srchGbn)'>
+					</if>
+					<if test='"H".equals(srchGbn)'>
 		  and mt.nick_nm like concat('%',#{srchText},'%')
-			</if>
-			<if test='"P".equals(srchGbn)'>
+					</if>
+					<if test='"P".equals(srchGbn)'>
 		  and mt.place like concat("%",#{srchText},'%')
-			</if>
-		</if>
-		<!-- 검색 기간 -->
-		<if test='srchStartDt != null and srchStartDt != ""'>
+					</if>
+				</if>
+				<!-- 검색 기간 -->
+				<if test='srchStartDt != null and srchStartDt != ""'>
 		  and mt.dday between #{srchStartDt} and #{srchEndDt}
-		</if>
+				</if>
+	      	</otherwise>
+		</choose>
 	</sql>
 	
 	
@@ -245,7 +250,7 @@
 		 	 , mt.attend_cnt	as attendCnt
 		 	 , mt.comment
 		 	 , c.account
-		     , c.bank_cd 		as bankCd
+			 , c.bank_cd 		as bankCd
 		 	 , (select concat(mb.name,'(',mb.nick_nm,')') 
 		 	      from member mb 
 		 	     where mb.member_no = mt.frst_reg_no) 			as frstRegNm

@@ -79,40 +79,6 @@
 		 where book_no = #{data1}
 	</delete>
 	
-	
-	<!-- 공통 검색 목록 -->
-	<select id="selectSearchData" parameterType="project.books.club.cmmn.SrchVO" resultType="project.books.sys.util.CamelMap">
-		/*BookMapper.selectSearchData*/
-		select *
-		  from (select 'meeting' as gbn
-				     , m.title as data1
-				     , date_format(m.dday, '%Y-%m-%d') as data2
-				     , m.meeting_no as data_key 
-				  from meeting m
-				 where 1=1 
-				   and m.title like concat('%',#{srchCmmn},'%')
-				union all 		 
-				select 'member' as gbn
-				     , mm.nick_nm as data1
-				     , concat(mm.name, ifnull(concat('(',mm.email,')'), '')) as data2
-				     , mm.member_no  as data_key
-				  from member mm
-				       join club_member cm on mm.member_no = cm.member_no  
-				 where 1=1 
-				   and mm.nick_nm like concat('%',#{srchCmmn},'%') or mm.name like concat('%',#{srchCmmn},'%')
-				union all 
-				select 'books' as gbn
-				     , bk.book_title as data1
-				     , bk.book_writer as data2
-				     , bk.book_no as data_key
-				  from books bk
-				 where 1=1 
-				   and bk.book_title like concat('%',#{srchCmmn},'%') or bk.book_writer like concat('%',#{srchCmmn},'%')
-				) tb 
-		  where 1=1 
-		  order by gbn desc, data1 asc
-	</select>
-	
 	<!-- 도서 실시간 검색 -->
 	<select id="selectBookSrch" parameterType="project.books.club.cmmn.SrchVO" resultType="project.books.sys.util.CamelMap">
 		/*MemberMapper.selectBookSrch*/

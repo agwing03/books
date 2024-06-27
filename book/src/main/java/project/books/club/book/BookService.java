@@ -37,18 +37,6 @@ public class BookService {
 	}
 	
 	/**
-	 * 도서 목록 조회
-	 * @param BookVO
-	 * @return list
-	 * @throw Exception
-	 */
-	public SrchVO selectSearchData(SrchVO vo) throws Exception{
-		vo.setDataList(bookMapper.selectSearchData(vo));
-		vo.setTotCnt(vo.getDataList().size());
-		return vo;
-	}
-	
-	/**
 	 * 도서 실시간 검색
 	 * @param SrchVO
 	 * @return SrchVO

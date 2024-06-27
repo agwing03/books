@@ -1,5 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="project.books.club.main.MainMapper">
+
+	<!-- 검색(공통)-->
+	<select id="selectCmmnSearch" parameterType="project.books.club.cmmn.SrchVO" resultType="project.books.sys.util.CamelMap">
+		/*MainMapper.selectCmmnSearch*/
+		select *
+		  from (select 'meeting' as gbn
+				     , m.title as data1
+				     , date_format(m.dday, '%Y-%m-%d') as data2
+				     , m.meeting_no as data_key 
+				  from meeting m
+				 where 1=1 
+				   and m.title like concat('%',replace(#{srchWord}, ' ', ''),'%')
+				union all 		 
+				select 'member' as gbn
+				     , mm.nick_nm as data1
+				     , concat(
+				     		case when cm.leave_yn = 'Y' 
+				     			 then replace(mm.name, substr(mm.name , 2, 1), '*') 
+				     			 else mm.nick_nm end
+				     		, if(mm.email is not null and mm.email <![CDATA[ <> ]]> '', concat('(',mm.email,')'), '')) as data2
+				     , mm.member_no  as data_key
+				  from member mm
+				       join club_member cm on mm.member_no = cm.member_no  
+				 where 1=1 
+				   and mm.nick_nm like concat('%',replace(#{srchWord}, ' ', ''),'%') 
+				       or mm.name like concat('%',replace(#{srchWord}, ' ', ''),'%')
+				union all 
+				select 'books' as gbn
+				     , bk.book_title as data1
+				     , bk.book_writer as data2
+				     , bk.book_no as data_key
+				  from books bk
+				 where 1=1 
+				   and bk.book_title like concat('%',replace(#{srchWord}, ' ', ''),'%')
+				       or bk.book_writer like concat('%',replace(#{srchWord}, ' ', ''),'%')
+				        
+				) tb 
+		  where 1=1 
+		  order by gbn desc, data1 asc
+	</select>
 	
+	<!-- 알림(개인별) -->
+	<select id="selectCmmnAlarm" parameterType="project.books.club.cmmn.SrchVO" resultType="project.books.sys.util.CamelMap">
+		select msg_no
+			 , send_member_no
+			 , (select concat(m.name,'(',m.nick_nm,')') as member_nm
+			      from member m
+			     where m.member_no = send_member_no) as send_member_nm
+			 , rcpt_member_no
+			 , (select concat(m.name,'(',m.nick_nm,')') as member_nm
+			      from member m
+			     where m.member_no = rcpt_member_no) as rcpt_member_nm
+			 , msg_cn
+			 , date_format(mx.confirm_dt, '%Y.%m.%d %H:%i:%S') as confirm_dt
+			 , mx.reg_no
+			 , date_format(mx.reg_dt, '%Y.%m.%d %H:%i:%S') as reg_dt
+		  from msg_box mx
+		 where mx.rcpt_member_no = #{memberNo}
+	</select>
 </mapper>

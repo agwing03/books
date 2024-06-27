@@ -31,15 +31,6 @@ public interface BookMapper {
 	int updateBook(CamelMap param);
 	void deleteBook(HashMap<String, String> param);
 	
-    /**
-	 * 도서 목록 조회
-	 * @param BookVO
-	 * @return list, integer
-	 * @throw Exception
-     */
-	int selectSearchDataCnt(SrchVO vo);
-	List<CamelMap> selectSearchData(SrchVO vo);
-	
 	
 	/**
 	 * 서평 등록

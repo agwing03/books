@@ -26,6 +26,8 @@ public class MeetingVO extends CommonVO{
     private String attendCnt;	//참석자수
     private String comment; 	//작성자 코멘트
     private String state;		//활성화상태
+    private String account;		//계좌번호
+    private String bankCd;		//은행코드
     private boolean reviewYn;	//후기작성여부
     
     //meeting_member

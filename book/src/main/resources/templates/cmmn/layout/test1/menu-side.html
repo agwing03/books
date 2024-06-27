@@ -1,0 +1,238 @@
+<script>
+jQuery(function(){
+	console.log(':::memu-side:::')
+	
+	//layout > nav
+	fetchMenuApi('/menu/getMenuList.do', 'POST', {clubNo:'1'}, 'nav')
+	
+	
+	$(".side-menu").on("click", function() {
+		console.log("1111111")
+      	if ($(this).parent().find("ul").length) {
+        	if ($(this).parent().find("ul").first()[0].offsetParent !== null) {
+          		$(this).find(".side-menu__sub-icon").removeClass("transform rotate-180");
+          		$(this).removeClass("side-menu--open");
+          		$(this).parent().find("ul").first().slideUp(300, function() {
+            		$(this).removeClass("side-menu__sub-open");
+          		})
+        	} else {
+          		$(this).find(".side-menu__sub-icon").addClass("transform rotate-180");
+          		$(this).addClass("side-menu--open");
+          		$(this).parent().find("ul").first().slideDown(300, function() {
+            		$(this).addClass("side-menu__sub-open");
+          		})
+        	}
+      	}
+	})
+    const initTooltips = function tooltips() {
+      	$(".side-menu").each(function() {
+        	if (this._tippy == void 0) {
+          		const content = $(this).find(".side-menu__title").html().replace(/<[^>]*>?/gm, "").trim()
+          		tippy(this, {
+            		content,
+            		arrow: roundArrow,
+            		animation: "shift-away",
+            		placement: "right"
+          		})
+        	}
+        	if ($(window).width() <= 1260 || $(this).closest(".side-nav").hasClass("side-nav--simple")) {
+          		this._tippy.enable()
+        	} else {
+          		this._tippy.disable()
+        	}
+      	})
+		return tooltips
+	}
+   	window.addEventListener("resize", () => {
+		initTooltips()
+    })
+})
+
+/** 
+ *  fetch 데이터 통신
+ *  URL
+ *  method  : POST, GET, PUT, DELETE
+ *  body	: json
+ *  gbn		: nav, aside, dataList, save
+ */
+async function fetchMenuApi(url, method, body, gbn, headers = {}) {
+	const options = {
+		method: method,
+		headers: {"Content-Type": "application/json", ...headers},
+    	body: JSON.stringify(body)
+    }
+	const res = await fetch(url, options)
+	const data = await res.json()
+	if (res.ok) {
+		//네비 생성
+		if (gbn === 'nav'){
+			sideMenu(data.menuList)
+		}
+	}
+}
+
+/**
+ * 메뉴 페이지 이동 
+ * 이벤트 디자인 적용
+ */
+function menuMove(menu, subMenu, menuUpperNm, menuNm, menuUrl){
+	//메뉴 CSS 추가
+	setTimeout(function(){
+		if(subMenu !== '' || subMenu === 'NOT'){
+			jQuery('#menu'+menu+' > .side-menu').addClass('side-menu--active')
+			//이동경로
+			jQuery('#breadcrumb1').text(menuUpperNm)
+			jQuery('#breadcrumb2').text(menuNm)		
+		}
+		jQuery('#menuUl'+menu).addClass('side-menu__sub-open').css('display','block')
+		jQuery('#menuSub'+subMenu).addClass('side-menu--active')
+	}, 500);
+	if(menuUrl){
+		movePage(menuUrl, '')
+	}
+}
+
+/** 
+ *  HTML 페이지 이동
+ */
+function movePage(url, params) {
+	let pageUrl = url
+	if(params){
+		pageUrl = pageUrl+'?'+params
+	}
+	location.href = pageUrl
+}
+
+
+/**
+ *  사이드 메뉴 생성
+ *  사이트 및 모바일 동시 생성 
+ */
+function sideMenu(data){
+	let menuUpperNo = ''
+	let menuUpperNm = ''
+		
+	/* 사이드 메뉴 */
+	menuUpperNo = ''
+	menuUpperNm = ''
+	html = `
+		<!-- 대메뉴 -->
+		<li>
+	        <a class="side-menu">
+	            <div class="side-menu__icon">
+	                <i data-tw-merge="" data-lucide="home" class="stroke-1.5 w-5 h-5"></i>
+	            </div>
+	            <div class="side-menu__title">HOME</div>
+	        </a>
+	    </li>`
+        
+	if(data.length > 0){
+		for(var i = 0; i < data.length; i++){
+			//4.대메뉴 닫기
+			if(i != 0 && menuUpperNo != data[i].menuUpperNo){
+				html += `</ul></li>`
+			}
+			//1.대메뉴 > 상위메뉴번호 담기
+			if(data[i].menuLv == 1){ 
+				menuUpperNo = data[i].menuNo
+				menuUpperNm = data[i].menuNm
+				menuUpperUrl = data[i].menuUrl
+				//5.주메뉴 구분선
+				if(data[i].menuLv == 1 && data[i].menuOrder == 6){
+					html += `<li class="side-nav__divider my-6"></li>`
+				}	
+			}  
+			//2.대메뉴 생성
+			if(data[i].menuLv == 1){
+				//하위 메뉴 존재여부			
+				if(data[i].subMenuCnt > 0){ 
+					html +=`
+						<!-- 대메뉴 --> 		
+						<li>
+				            <a class="side-menu">
+				                <div class="side-menu__icon">
+				                    <i data-tw-merge="" data-lucide="`+data[i].icon+`" class="stroke-1.5 w-5 h-5"></i>
+				                </div>
+				                <div class="side-menu__title">`+data[i].menuNm+`
+				                    <div class="side-menu__sub-icon transform rotate-180">
+				                        <i data-tw-merge="" data-lucide="chevron-down" class="stroke-1.5 w-5 h-5"></i>
+				                    </div>
+				                </div>
+				            </a>
+				            <ul class="" id="menuUl`+menuUpperNo+`">`
+				}else{
+					html += `
+						<!-- 대메뉴 -->
+						<li>
+				            <a class="side-menu">
+				                <div class="side-menu__icon">
+				                    <i data-tw-merge="" data-lucide="`+data[i].icon+`" class="stroke-1.5 w-5 h-5"></i>
+				                </div>
+				                <div class="side-menu__title">`+data[i].menuNm+`</div>
+				            </a>
+				        </li>`
+				}
+				
+			}
+			//3.상위메뉴번호 같을 경우 소메뉴 생성
+			if(data[i].menuLv == 2 && menuUpperNo == data[i].menuUpperNo){
+				html +=` 	
+					<!-- 서브메뉴 -->
+	                <li>
+	                    <a class="side-menu">  
+	                        <div class="side-menu__icon">
+	                            <i data-tw-merge="" data-lucide="`+data[i].icon+`" class="stroke-1.5 w-5 h-5"></i>
+	                        </div>
+	                        <div class="side-menu__title">`+data[i].menuNm+`</div>
+	                    </a>
+	                </li>`
+			}	
+		}	
+		//console.log(html)
+	    jQuery("#side-menu").append(html);
+	    
+	    /* 이동경로
+	    html =
+	    	'<i data-lucide="bookmark" class="mr-2"></i>'+ 
+			'<ol class="breadcrumb">'+
+			'	<li class="breadcrumb-item active" aria-current="page" id="breadcrumb1"></li>'+
+			'	<li class="breadcrumb-item" id="breadcrumb2"></li>'+
+			'</ol>'
+		jQuery('#breadcrumb').append(html) */	
+	}
+}
+
+/**
+ * 메뉴 페이지 이동 
+ * 이벤트 디자인 적용
+ */
+function menuMove(menu, subMenu, menuUpperNm, menuNm, menuUrl){
+	//메뉴 CSS 추가
+	setTimeout(function(){
+		if(subMenu !== '' || subMenu === 'NOT'){
+			jQuery('#menu'+menu+' > .side-menu').addClass('side-menu--active')
+			//이동경로
+			jQuery('#breadcrumb1').text(menuUpperNm)
+			jQuery('#breadcrumb2').text(menuNm)		
+		}
+		jQuery('#menuUl'+menu).addClass('side-menu__sub-open').css('display','block')
+		jQuery('#menuSub'+subMenu).addClass('side-menu--active')
+	}, 500);
+	
+	if(menuUrl){
+		movePage(menuUrl, '')
+	}
+}
+</script>
+<nav class="side-nav z-50 -mt-4 hidden w-[100px] overflow-x-hidden px-5 pb-16 pt-32 md:block xl:w-[260px]">
+    <ul id="side-menu">
+		<li>
+	        <a class="side-menu">
+	            <div class="side-menu__icon">
+	                <i data-tw-merge="" data-lucide="home" class="stroke-1.5 w-5 h-5"></i>
+	            </div>
+	            <div class="side-menu__title">HOME</div>
+	        </a>
+	    </li>
+    </ul>
+</nav>

@@ -1,0 +1,2627 @@
+<!DOCTYPE html><!--
+Template Name: Midone - Admin Dashboard Template
+Author: Left4code
+Website: http://www.left4code.com/
+Contact: muhammadrizki@left4code.com
+Purchase: https://themeforest.net/user/left4code/portfolio
+Renew Support: https://themeforest.net/user/left4code/portfolio
+License: You must have a valid license purchased only from themeforest(the above link) in order to legally use the theme for your project.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" class="opacity-0" lang="en"><!-- BEGIN: Head -->
+<head>
+    <meta charset="utf-8">
+    <meta name="csrf-token" content="ceKdwoQjZ4VuoGqoSQaSREwB7MD9sjwFnfhlp7MH">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Midone admin is super flexible, powerful, clean & modern responsive tailwind admin template with unlimited possibilities.">
+    <meta name="keywords" content="admin template, midone Admin Template, dashboard template, flat admin template, responsive admin template, web app">
+    <meta name="author" content="LEFT4CODE">
+    <title>Wizard - Midone - Tailwind Admin Dashboard Template</title>
+    <!-- BEGIN: CSS Assets-->
+    <link rel="stylesheet" href="dist/css/vendors/simplebar.css">
+    <link rel="stylesheet" href="dist/css/components/mobile-menu.css">
+    <link rel="stylesheet" href="dist/css/vendors/tippy.css">
+    <link rel="stylesheet" href="dist/css/themes/tinker/side-nav.css">
+    <link rel="stylesheet" href="dist/css/app.css"> <!-- END: CSS Assets-->
+</head>
+<!-- END: Head -->
+<body>
+    <div>
+        <div data-tw-backdrop="" aria-hidden="true" tabindex="-1" id="theme-switcher" class="modal group bg-black/60 transition-[visibility,opacity] w-screen h-screen fixed left-0 top-0 [&:not(.show)]:duration-[0s,0.2s] [&:not(.show)]:delay-[0.2s,0s] [&:not(.show)]:invisible [&:not(.show)]:opacity-0 [&.show]:visible [&.show]:opacity-100 [&.show]:duration-[0s,0.4s]">
+            <div data-tw-merge="" class="w-[90%] ml-auto h-screen flex flex-col bg-white relative shadow-md transition-[margin-right] duration-[0.6s] -mr-[100%] group-[.show]:mr-0 dark:bg-darkmode-600 sm:w-[460px]"><a class="absolute inset-y-0 left-0 right-auto my-auto -ml-[60px] flex h-8 w-8 items-center justify-center rounded-full border border-white/90 bg-white/5 text-white/90 transition-all hover:rotate-180 hover:scale-105 hover:bg-white/10 focus:outline-none sm:-ml-[105px] sm:h-14 sm:w-14" data-tw-dismiss="modal" href="javascript:;">
+                    <i data-tw-merge="" data-lucide="x" class="h-3 w-3 stroke-[1] sm:h-8 sm:w-8"></i>
+                </a>
+                <div data-tw-merge="" class="overflow-y-auto flex-1 p-0">
+                    <div class="flex flex-col">
+                        <div class="px-8 pb-8 pt-6">
+                            <div class="text-base font-medium">Themes</div>
+                            <div class="mt-0.5 text-slate-500">Choose your theme</div>
+                            <div class="mt-5 grid grid-cols-2 gap-x-5 gap-y-3.5">
+                                <div>
+                                    <a href="rubick-simple-menu-dashboard-overview-1-page.html" class="h-28 cursor-pointer bg-slate-50 box p-1 block">
+                                        <div class="image-fit h-full w-full overflow-hidden rounded-md">
+                                            <img class="h-full w-full" src="dist/images/themes/rubick.png" alt="Midone - Admin Dashboard Template">
+                                        </div>
+                                    </a>
+                                    <div class="mt-2.5 text-center text-xs capitalize">
+                                        rubick
+                                    </div>
+                                </div>
+                                <div>
+                                    <a href="icewall-simple-menu-dashboard-overview-1-page.html" class="h-28 cursor-pointer bg-slate-50 box p-1 block">
+                                        <div class="image-fit h-full w-full overflow-hidden rounded-md">
+                                            <img class="h-full w-full" src="dist/images/themes/icewall.png" alt="Midone - Admin Dashboard Template">
+                                        </div>
+                                    </a>
+                                    <div class="mt-2.5 text-center text-xs capitalize">
+                                        icewall
+                                    </div>
+                                </div>
+                                <div>
+                                    <a href="tinker-simple-menu-dashboard-overview-1-page.html" class="h-28 cursor-pointer bg-slate-50 box p-1 block border-2 border-theme-1/60">
+                                        <div class="image-fit h-full w-full overflow-hidden rounded-md">
+                                            <img class="h-full w-full" src="dist/images/themes/tinker.png" alt="Midone - Admin Dashboard Template">
+                                        </div>
+                                    </a>
+                                    <div class="mt-2.5 text-center text-xs capitalize">
+                                        tinker
+                                    </div>
+                                </div>
+                                <div>
+                                    <a href="enigma-simple-menu-dashboard-overview-1-page.html" class="h-28 cursor-pointer bg-slate-50 box p-1 block">
+                                        <div class="image-fit h-full w-full overflow-hidden rounded-md">
+                                            <img class="h-full w-full" src="dist/images/themes/enigma.png" alt="Midone - Admin Dashboard Template">
+                                        </div>
+                                    </a>
+                                    <div class="mt-2.5 text-center text-xs capitalize">
+                                        enigma
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border-b border-dashed"></div>
+                        <div class="px-8 pb-8 pt-6">
+                            <div class="text-base font-medium">Layouts</div>
+                            <div class="mt-0.5 text-slate-500">Choose your layout</div>
+                            <div class="mt-5 grid grid-cols-3 gap-x-5 gap-y-3.5">
+                                <div>
+                                    <a href="tinker-side-menu-dashboard-overview-1-page.html" class="h-24 cursor-pointer bg-slate-50 box p-1 block">
+                                        <div class="h-full w-full overflow-hidden rounded-md">
+                                            <img class="h-full w-full" src="dist/images/layouts/side-menu.png" alt="Midone - Admin Dashboard Template">
+                                        </div>
+                                    </a>
+                                    <div class="mt-2.5 text-center text-xs capitalize">
+                                        side menu
+                                    </div>
+                                </div>
+                                <div>
+                                    <a href="tinker-simple-menu-dashboard-overview-1-page.html" class="h-24 cursor-pointer bg-slate-50 box p-1 block border-2 border-theme-1/60">
+                                        <div class="h-full w-full overflow-hidden rounded-md">
+                                            <img class="h-full w-full" src="dist/images/layouts/simple-menu.png" alt="Midone - Admin Dashboard Template">
+                                        </div>
+                                    </a>
+                                    <div class="mt-2.5 text-center text-xs capitalize">
+                                        simple menu
+                                    </div>
+                                </div>
+                                <div>
+                                    <a href="tinker-top-menu-dashboard-overview-1-page.html" class="h-24 cursor-pointer bg-slate-50 box p-1 block">
+                                        <div class="h-full w-full overflow-hidden rounded-md">
+                                            <img class="h-full w-full" src="dist/images/layouts/top-menu.png" alt="Midone - Admin Dashboard Template">
+                                        </div>
+                                    </a>
+                                    <div class="mt-2.5 text-center text-xs capitalize">
+                                        top menu
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border-b border-dashed"></div>
+                        <div class="px-8 pb-8 pt-6">
+                            <div class="text-base font-medium">Accent Colors</div>
+                            <div class="mt-0.5 text-slate-500">
+                                Choose your accent color
+                            </div>
+                            <div class="mt-5 grid grid-cols-2 gap-3.5">
+                                <div>
+                                    <a data-theme-color="default" class="h-14 cursor-pointer bg-slate-50 box p-1 border-slate-300/80 block [&.active]:border-2 [&.active]:border-theme-1/60">
+                                        <div class="h-full overflow-hidden rounded-md">
+                                            <div class="-mx-2 flex h-full items-center gap-1">
+                                                <div class="w-1/2 h-[200%] bg-theme-1 rotate-12 default"></div>
+                                                <div class="w-1/2 h-[200%] bg-theme-2 rotate-12 default"></div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div>
+                                    <a data-theme-color="theme-1" class="h-14 cursor-pointer bg-slate-50 box p-1 border-slate-300/80 block [&.active]:border-2 [&.active]:border-theme-1/60">
+                                        <div class="h-full overflow-hidden rounded-md">
+                                            <div class="-mx-2 flex h-full items-center gap-1">
+                                                <div class="w-1/2 h-[200%] bg-theme-1 rotate-12 theme-1"></div>
+                                                <div class="w-1/2 h-[200%] bg-theme-2 rotate-12 theme-1"></div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div>
+                                    <a data-theme-color="theme-2" class="h-14 cursor-pointer bg-slate-50 box p-1 border-slate-300/80 block [&.active]:border-2 [&.active]:border-theme-1/60">
+                                        <div class="h-full overflow-hidden rounded-md">
+                                            <div class="-mx-2 flex h-full items-center gap-1">
+                                                <div class="w-1/2 h-[200%] bg-theme-1 rotate-12 theme-2"></div>
+                                                <div class="w-1/2 h-[200%] bg-theme-2 rotate-12 theme-2"></div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div>
+                                    <a data-theme-color="theme-3" class="h-14 cursor-pointer bg-slate-50 box p-1 border-slate-300/80 block [&.active]:border-2 [&.active]:border-theme-1/60">
+                                        <div class="h-full overflow-hidden rounded-md">
+                                            <div class="-mx-2 flex h-full items-center gap-1">
+                                                <div class="w-1/2 h-[200%] bg-theme-1 rotate-12 theme-3"></div>
+                                                <div class="w-1/2 h-[200%] bg-theme-2 rotate-12 theme-3"></div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div>
+                                    <a data-theme-color="theme-4" class="h-14 cursor-pointer bg-slate-50 box p-1 border-slate-300/80 block [&.active]:border-2 [&.active]:border-theme-1/60">
+                                        <div class="h-full overflow-hidden rounded-md">
+                                            <div class="-mx-2 flex h-full items-center gap-1">
+                                                <div class="w-1/2 h-[200%] bg-theme-1 rotate-12 theme-4"></div>
+                                                <div class="w-1/2 h-[200%] bg-theme-2 rotate-12 theme-4"></div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border-b border-dashed"></div>
+                        <div class="px-8 pb-8 pt-6">
+                            <div class="text-base font-medium">Appearance</div>
+                            <div class="mt-0.5 text-slate-500">
+                                Choose your appearance
+                            </div>
+                            <div class="mt-5 grid grid-cols-2 gap-3.5">
+                                <div>
+                                    <a data-appearance-mode="light" class="h-12 cursor-pointer bg-slate-50 box p-1 border-slate-300/80 block [&.active]:border-2 [&.active]:border-theme-1/60">
+                                        <div class="h-full overflow-hidden rounded-md bg-slate-200"></div>
+                                    </a>
+                                    <div class="mt-2.5 text-center text-xs capitalize">
+                                        Light
+                                    </div>
+                                </div>
+                                <div>
+                                    <a data-appearance-mode="dark" class="h-12 cursor-pointer bg-slate-50 box p-1 border-slate-300/80 block [&.active]:border-2 [&.active]:border-theme-1/60">
+                                        <div class="h-full overflow-hidden rounded-md bg-slate-900"></div>
+                                    </a>
+                                    <div class="mt-2.5 text-center text-xs capitalize">
+                                        Dark
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="fixed bottom-0 right-0 z-50 mb-5 mr-5 flex h-14 w-14 cursor-pointer items-center justify-center rounded-full bg-theme-1 text-white shadow-lg" data-tw-toggle="modal" data-tw-target="#theme-switcher">
+            <i data-tw-merge="" data-lucide="settings" class="stroke-1.5 w-5 h-5 animate-spin"></i>
+        </div>
+    </div>
+    <div class="tinker md:bg-black/[0.15] dark:bg-transparent relative py-5 px-5 md:py-0 sm:px-8 md:px-0 after:content-[''] after:bg-gradient-to-b after:from-theme-1 after:to-theme-2 dark:after:from-darkmode-800 dark:after:to-darkmode-800 after:fixed after:inset-0 after:z-[-2]">
+        <!-- BEGIN: Mobile Menu -->
+        <div class="mobile-menu group top-0 inset-x-0 fixed bg-theme-1/90 z-[60] border-b border-white/[0.08] dark:bg-darkmode-800/90 md:hidden before:content-[''] before:w-full before:h-screen before:z-10 before:fixed before:inset-x-0 before:bg-black/90 before:transition-opacity before:duration-200 before:ease-in-out before:invisible before:opacity-0 [&.mobile-menu--active]:before:visible [&.mobile-menu--active]:before:opacity-100">
+            <div class="flex h-[70px] items-center px-3 sm:px-8">
+                <a class="mr-auto flex" href="">
+                    <img class="w-6" src="dist/images/logo.svg" alt="Midone - Tailwind Admin Dashboard Template">
+                </a>
+                <a class="mobile-menu-toggler" href="#">
+                    <i data-tw-merge="" data-lucide="bar-chart2" class="stroke-1.5 h-8 w-8 -rotate-90 transform text-white"></i>
+                </a>
+            </div>
+            <div class="scrollable h-screen z-20 top-0 left-0 w-[270px] -ml-[100%] bg-primary transition-all duration-300 ease-in-out dark:bg-darkmode-800 [&[data-simplebar]]:fixed [&_.simplebar-scrollbar]:before:bg-black/50 group-[.mobile-menu--active]:ml-0">
+                <a href="#" class="fixed top-0 right-0 mt-4 mr-4 transition-opacity duration-200 ease-in-out invisible opacity-0 group-[.mobile-menu--active]:visible group-[.mobile-menu--active]:opacity-100">
+                    <i data-tw-merge="" data-lucide="x-circle" class="stroke-1.5 mobile-menu-toggler h-8 w-8 -rotate-90 transform text-white"></i>
+                </a>
+                <ul class="py-2">
+                    <!-- BEGIN: First Child -->
+                    <li>
+                        <a class="menu" href="javascript:;">
+                            <div class="menu__icon">
+                                <i data-tw-merge="" data-lucide="home" class="stroke-1.5 w-5 h-5"></i>
+                            </div>
+                            <div class="menu__title">
+                                Dashboard
+                                <div class="menu__sub-icon ">
+                                    <i data-tw-merge="" data-lucide="chevron-down" class="stroke-1.5 w-5 h-5"></i>
+                                </div>
+                            </div>
+                        </a>
+                        <ul class="">
+                            <li>
+                                <a class="menu" href="tinker-simple-menu-dashboard-overview-1-page.html">
+                                    <div class="menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="menu__title">
+                                        Overview 1
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="menu" href="tinker-simple-menu-dashboard-overview-2-page.html">
+                                    <div class="menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="menu__title">
+                                        Overview 2
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="menu" href="tinker-simple-menu-dashboard-overview-3-page.html">
+                                    <div class="menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="menu__title">
+                                        Overview 3
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="menu" href="tinker-simple-menu-dashboard-overview-4-page.html">
+                                    <div class="menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="menu__title">
+                                        Overview 4
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="menu" href="javascript:;">
+                            <div class="menu__icon">
+                                <i data-tw-merge="" data-lucide="shopping-bag" class="stroke-1.5 w-5 h-5"></i>
+                            </div>
+                            <div class="menu__title">
+                                E-Commerce
+                                <div class="menu__sub-icon ">
+                                    <i data-tw-merge="" data-lucide="chevron-down" class="stroke-1.5 w-5 h-5"></i>
+                                </div>
+                            </div>
+                        </a>
+                        <ul class="">
+                            <li>
+                                <a class="menu" href="tinker-simple-menu-categories-page.html">
+                                    <div class="menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="menu__title">
+                                        Categories
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="menu" href="tinker-simple-menu-add-product-page.html">
+                                    <div class="menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="menu__title">
+                                        Add Product
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="menu" href="javascript:;">
+                                    <div class="menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="menu__title">
+                                        Products
+                                        <div class="menu__sub-icon ">
+                                            <i data-tw-merge="" data-lucide="chevron-down" class="stroke-1.5 w-5 h-5"></i>
+                                        </div>
+                                    </div>
+                                </a>
+                                <ul class="">
+                                    <li>
+                                        <a class="menu" href="tinker-simple-menu-product-list-page.html">
+                                            <div class="menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="menu__title">Product List</div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="menu" href="tinker-simple-menu-product-grid-page.html">
+                                            <div class="menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="menu__title">Product Grid</div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a class="menu" href="javascript:;">
+                                    <div class="menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="menu__title">
+                                        Transactions
+                                        <div class="menu__sub-icon ">
+                                            <i data-tw-merge="" data-lucide="chevron-down" class="stroke-1.5 w-5 h-5"></i>
+                                        </div>
+                                    </div>
+                                </a>
+                                <ul class="">
+                                    <li>
+                                        <a class="menu" href="tinker-simple-menu-transaction-list-page.html">
+                                            <div class="menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="menu__title">Transaction List</div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="menu" href="tinker-simple-menu-transaction-detail-page.html">
+                                            <div class="menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="menu__title">Transaction Detail</div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a class="menu" href="javascript:;">
+                                    <div class="menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="menu__title">
+                                        Sellers
+                                        <div class="menu__sub-icon ">
+                                            <i data-tw-merge="" data-lucide="chevron-down" class="stroke-1.5 w-5 h-5"></i>
+                                        </div>
+                                    </div>
+                                </a>
+                                <ul class="">
+                                    <li>
+                                        <a class="menu" href="tinker-simple-menu-seller-list-page.html">
+                                            <div class="menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="menu__title">Seller List</div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="menu" href="tinker-simple-menu-seller-detail-page.html">
+                                            <div class="menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="menu__title">Seller Detail</div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a class="menu" href="tinker-simple-menu-reviews-page.html">
+                                    <div class="menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="menu__title">
+                                        Reviews
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="menu" href="tinker-simple-menu-inbox-page.html">
+                            <div class="menu__icon">
+                                <i data-tw-merge="" data-lucide="inbox" class="stroke-1.5 w-5 h-5"></i>
+                            </div>
+                            <div class="menu__title">
+                                Inbox
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="menu" href="tinker-simple-menu-file-manager-page.html">
+                            <div class="menu__icon">
+                                <i data-tw-merge="" data-lucide="hard-drive" class="stroke-1.5 w-5 h-5"></i>
+                            </div>
+                            <div class="menu__title">
+                                File Manager
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="menu" href="tinker-simple-menu-point-of-sale-page.html">
+                            <div class="menu__icon">
+                                <i data-tw-merge="" data-lucide="credit-card" class="stroke-1.5 w-5 h-5"></i>
+                            </div>
+                            <div class="menu__title">
+                                Point of Sale
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="menu" href="tinker-simple-menu-chat-page.html">
+                            <div class="menu__icon">
+                                <i data-tw-merge="" data-lucide="message-square" class="stroke-1.5 w-5 h-5"></i>
+                            </div>
+                            <div class="menu__title">
+                                Chat
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="menu" href="tinker-simple-menu-post-page.html">
+                            <div class="menu__icon">
+                                <i data-tw-merge="" data-lucide="file-text" class="stroke-1.5 w-5 h-5"></i>
+                            </div>
+                            <div class="menu__title">
+                                Post
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="menu" href="tinker-simple-menu-calendar-page.html">
+                            <div class="menu__icon">
+                                <i data-tw-merge="" data-lucide="calendar" class="stroke-1.5 w-5 h-5"></i>
+                            </div>
+                            <div class="menu__title">
+                                Calendar
+                            </div>
+                        </a>
+                    </li>
+                    <li class="menu__divider my-6"></li>
+                    <li>
+                        <a class="menu" href="javascript:;">
+                            <div class="menu__icon">
+                                <i data-tw-merge="" data-lucide="edit" class="stroke-1.5 w-5 h-5"></i>
+                            </div>
+                            <div class="menu__title">
+                                Crud
+                                <div class="menu__sub-icon ">
+                                    <i data-tw-merge="" data-lucide="chevron-down" class="stroke-1.5 w-5 h-5"></i>
+                                </div>
+                            </div>
+                        </a>
+                        <ul class="">
+                            <li>
+                                <a class="menu" href="tinker-simple-menu-crud-data-list-page.html">
+                                    <div class="menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="menu__title">
+                                        Data List
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="menu" href="tinker-simple-menu-crud-form-page.html">
+                                    <div class="menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="menu__title">
+                                        Form
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="menu" href="javascript:;">
+                            <div class="menu__icon">
+                                <i data-tw-merge="" data-lucide="users" class="stroke-1.5 w-5 h-5"></i>
+                            </div>
+                            <div class="menu__title">
+                                Users
+                                <div class="menu__sub-icon ">
+                                    <i data-tw-merge="" data-lucide="chevron-down" class="stroke-1.5 w-5 h-5"></i>
+                                </div>
+                            </div>
+                        </a>
+                        <ul class="">
+                            <li>
+                                <a class="menu" href="tinker-simple-menu-users-layout-1-page.html">
+                                    <div class="menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="menu__title">
+                                        Layout 1
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="menu" href="tinker-simple-menu-users-layout-2-page.html">
+                                    <div class="menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="menu__title">
+                                        Layout 2
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="menu" href="tinker-simple-menu-users-layout-3-page.html">
+                                    <div class="menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="menu__title">
+                                        Layout 3
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="menu" href="javascript:;">
+                            <div class="menu__icon">
+                                <i data-tw-merge="" data-lucide="trello" class="stroke-1.5 w-5 h-5"></i>
+                            </div>
+                            <div class="menu__title">
+                                Profile
+                                <div class="menu__sub-icon ">
+                                    <i data-tw-merge="" data-lucide="chevron-down" class="stroke-1.5 w-5 h-5"></i>
+                                </div>
+                            </div>
+                        </a>
+                        <ul class="">
+                            <li>
+                                <a class="menu" href="tinker-simple-menu-profile-overview-1-page.html">
+                                    <div class="menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="menu__title">
+                                        Overview 1
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="menu" href="tinker-simple-menu-profile-overview-2-page.html">
+                                    <div class="menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="menu__title">
+                                        Overview 2
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="menu" href="tinker-simple-menu-profile-overview-3-page.html">
+                                    <div class="menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="menu__title">
+                                        Overview 3
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="menu menu--active" href="javascript:;">
+                            <div class="menu__icon">
+                                <i data-tw-merge="" data-lucide="layout" class="stroke-1.5 w-5 h-5"></i>
+                            </div>
+                            <div class="menu__title">
+                                Pages
+                                <div class="menu__sub-icon transform rotate-180">
+                                    <i data-tw-merge="" data-lucide="chevron-down" class="stroke-1.5 w-5 h-5"></i>
+                                </div>
+                            </div>
+                        </a>
+                        <ul class="menu__sub-open">
+                            <li>
+                                <a class="menu menu--active" href="javascript:;">
+                                    <div class="menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="menu__title">
+                                        Wizards
+                                        <div class="menu__sub-icon transform rotate-180">
+                                            <i data-tw-merge="" data-lucide="chevron-down" class="stroke-1.5 w-5 h-5"></i>
+                                        </div>
+                                    </div>
+                                </a>
+                                <ul class="menu__sub-open">
+                                    <li>
+                                        <a class="menu" href="tinker-simple-menu-wizard-layout-1-page.html">
+                                            <div class="menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="menu__title">Layout 1</div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="menu menu--active" href="tinker-simple-menu-wizard-layout-2-page.html">
+                                            <div class="menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="menu__title">Layout 2</div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="menu" href="tinker-simple-menu-wizard-layout-3-page.html">
+                                            <div class="menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="menu__title">Layout 3</div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a class="menu" href="javascript:;">
+                                    <div class="menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="menu__title">
+                                        Blog
+                                        <div class="menu__sub-icon ">
+                                            <i data-tw-merge="" data-lucide="chevron-down" class="stroke-1.5 w-5 h-5"></i>
+                                        </div>
+                                    </div>
+                                </a>
+                                <ul class="">
+                                    <li>
+                                        <a class="menu" href="tinker-simple-menu-blog-layout-1-page.html">
+                                            <div class="menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="menu__title">Layout 1</div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="menu" href="tinker-simple-menu-blog-layout-2-page.html">
+                                            <div class="menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="menu__title">Layout 2</div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="menu" href="tinker-simple-menu-blog-layout-3-page.html">
+                                            <div class="menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="menu__title">Layout 3</div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a class="menu" href="javascript:;">
+                                    <div class="menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="menu__title">
+                                        Pricing
+                                        <div class="menu__sub-icon ">
+                                            <i data-tw-merge="" data-lucide="chevron-down" class="stroke-1.5 w-5 h-5"></i>
+                                        </div>
+                                    </div>
+                                </a>
+                                <ul class="">
+                                    <li>
+                                        <a class="menu" href="tinker-simple-menu-pricing-layout-1-page.html">
+                                            <div class="menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="menu__title">Layout 1</div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="menu" href="tinker-simple-menu-pricing-layout-2-page.html">
+                                            <div class="menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="menu__title">Layout 2</div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a class="menu" href="javascript:;">
+                                    <div class="menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="menu__title">
+                                        Invoice
+                                        <div class="menu__sub-icon ">
+                                            <i data-tw-merge="" data-lucide="chevron-down" class="stroke-1.5 w-5 h-5"></i>
+                                        </div>
+                                    </div>
+                                </a>
+                                <ul class="">
+                                    <li>
+                                        <a class="menu" href="tinker-simple-menu-invoice-layout-1-page.html">
+                                            <div class="menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="menu__title">Layout 1</div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="menu" href="tinker-simple-menu-invoice-layout-2-page.html">
+                                            <div class="menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="menu__title">Layout 2</div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a class="menu" href="javascript:;">
+                                    <div class="menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="menu__title">
+                                        FAQ
+                                        <div class="menu__sub-icon ">
+                                            <i data-tw-merge="" data-lucide="chevron-down" class="stroke-1.5 w-5 h-5"></i>
+                                        </div>
+                                    </div>
+                                </a>
+                                <ul class="">
+                                    <li>
+                                        <a class="menu" href="tinker-simple-menu-faq-layout-1-page.html">
+                                            <div class="menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="menu__title">Layout 1</div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="menu" href="tinker-simple-menu-faq-layout-2-page.html">
+                                            <div class="menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="menu__title">Layout 2</div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="menu" href="tinker-simple-menu-faq-layout-3-page.html">
+                                            <div class="menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="menu__title">Layout 3</div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a class="menu" href="tinker-simple-menu-login-page.html">
+                                    <div class="menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="menu__title">
+                                        Login
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="menu" href="tinker-simple-menu-register-page.html">
+                                    <div class="menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="menu__title">
+                                        Register
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="menu" href="tinker-simple-menu-error-page-page.html">
+                                    <div class="menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="menu__title">
+                                        Error Page
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="menu" href="tinker-simple-menu-update-profile-page.html">
+                                    <div class="menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="menu__title">
+                                        Update profile
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="menu" href="tinker-simple-menu-change-password-page.html">
+                                    <div class="menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="menu__title">
+                                        Change Password
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu__divider my-6"></li>
+                    <li>
+                        <a class="menu" href="javascript:;">
+                            <div class="menu__icon">
+                                <i data-tw-merge="" data-lucide="inbox" class="stroke-1.5 w-5 h-5"></i>
+                            </div>
+                            <div class="menu__title">
+                                Components
+                                <div class="menu__sub-icon ">
+                                    <i data-tw-merge="" data-lucide="chevron-down" class="stroke-1.5 w-5 h-5"></i>
+                                </div>
+                            </div>
+                        </a>
+                        <ul class="">
+                            <li>
+                                <a class="menu" href="javascript:;">
+                                    <div class="menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="menu__title">
+                                        Grid
+                                        <div class="menu__sub-icon ">
+                                            <i data-tw-merge="" data-lucide="chevron-down" class="stroke-1.5 w-5 h-5"></i>
+                                        </div>
+                                    </div>
+                                </a>
+                                <ul class="">
+                                    <li>
+                                        <a class="menu" href="tinker-simple-menu-regular-table-page.html">
+                                            <div class="menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="menu__title">Regular Table</div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="menu" href="tinker-simple-menu-tabulator-page.html">
+                                            <div class="menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="menu__title">Tabulator</div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a class="menu" href="javascript:;">
+                                    <div class="menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="menu__title">
+                                        Overlay
+                                        <div class="menu__sub-icon ">
+                                            <i data-tw-merge="" data-lucide="chevron-down" class="stroke-1.5 w-5 h-5"></i>
+                                        </div>
+                                    </div>
+                                </a>
+                                <ul class="">
+                                    <li>
+                                        <a class="menu" href="tinker-simple-menu-modal-page.html">
+                                            <div class="menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="menu__title">Modal</div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="menu" href="tinker-simple-menu-slide-over-page.html">
+                                            <div class="menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="menu__title">Slide Over</div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="menu" href="tinker-simple-menu-notification-page.html">
+                                            <div class="menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="menu__title">Notification</div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a class="menu" href="tinker-simple-menu-tab-page.html">
+                                    <div class="menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="menu__title">
+                                        Tab
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="menu" href="tinker-simple-menu-accordion-page.html">
+                                    <div class="menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="menu__title">
+                                        Accordion
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="menu" href="tinker-simple-menu-button-page.html">
+                                    <div class="menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="menu__title">
+                                        Button
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="menu" href="tinker-simple-menu-alert-page.html">
+                                    <div class="menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="menu__title">
+                                        Alert
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="menu" href="tinker-simple-menu-progress-bar-page.html">
+                                    <div class="menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="menu__title">
+                                        Progress Bar
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="menu" href="tinker-simple-menu-tooltip-page.html">
+                                    <div class="menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="menu__title">
+                                        Tooltip
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="menu" href="tinker-simple-menu-dropdown-page.html">
+                                    <div class="menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="menu__title">
+                                        Dropdown
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="menu" href="tinker-simple-menu-typography-page.html">
+                                    <div class="menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="menu__title">
+                                        Typography
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="menu" href="tinker-simple-menu-icon-page.html">
+                                    <div class="menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="menu__title">
+                                        Icon
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="menu" href="tinker-simple-menu-loading-icon-page.html">
+                                    <div class="menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="menu__title">
+                                        Loading Icon
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="menu" href="javascript:;">
+                            <div class="menu__icon">
+                                <i data-tw-merge="" data-lucide="sidebar" class="stroke-1.5 w-5 h-5"></i>
+                            </div>
+                            <div class="menu__title">
+                                Forms
+                                <div class="menu__sub-icon ">
+                                    <i data-tw-merge="" data-lucide="chevron-down" class="stroke-1.5 w-5 h-5"></i>
+                                </div>
+                            </div>
+                        </a>
+                        <ul class="">
+                            <li>
+                                <a class="menu" href="tinker-simple-menu-regular-form-page.html">
+                                    <div class="menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="menu__title">
+                                        Regular Form
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="menu" href="tinker-simple-menu-datepicker-page.html">
+                                    <div class="menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="menu__title">
+                                        Datepicker
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="menu" href="tinker-simple-menu-tom-select-page.html">
+                                    <div class="menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="menu__title">
+                                        Tom Select
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="menu" href="tinker-simple-menu-file-upload-page.html">
+                                    <div class="menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="menu__title">
+                                        File Upload
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="menu" href="javascript:;">
+                                    <div class="menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="menu__title">
+                                        Wysiwyg Editor
+                                        <div class="menu__sub-icon ">
+                                            <i data-tw-merge="" data-lucide="chevron-down" class="stroke-1.5 w-5 h-5"></i>
+                                        </div>
+                                    </div>
+                                </a>
+                                <ul class="">
+                                    <li>
+                                        <a class="menu" href="tinker-simple-menu-wysiwyg-editor-classic-page.html">
+                                            <div class="menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="menu__title">Classic</div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="menu" href="tinker-simple-menu-wysiwyg-editor-inline-page.html">
+                                            <div class="menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="menu__title">Inline</div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="menu" href="tinker-simple-menu-wysiwyg-editor-balloon-page.html">
+                                            <div class="menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="menu__title">Balloon</div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="menu" href="tinker-simple-menu-wysiwyg-editor-balloon-block-page.html">
+                                            <div class="menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="menu__title">Balloon Block</div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="menu" href="tinker-simple-menu-wysiwyg-editor-document-page.html">
+                                            <div class="menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="menu__title">Document</div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a class="menu" href="tinker-simple-menu-validation-page.html">
+                                    <div class="menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="menu__title">
+                                        Validation
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="menu" href="javascript:;">
+                            <div class="menu__icon">
+                                <i data-tw-merge="" data-lucide="hard-drive" class="stroke-1.5 w-5 h-5"></i>
+                            </div>
+                            <div class="menu__title">
+                                Widgets
+                                <div class="menu__sub-icon ">
+                                    <i data-tw-merge="" data-lucide="chevron-down" class="stroke-1.5 w-5 h-5"></i>
+                                </div>
+                            </div>
+                        </a>
+                        <ul class="">
+                            <li>
+                                <a class="menu" href="tinker-simple-menu-chart-page.html">
+                                    <div class="menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="menu__title">
+                                        Chart
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="menu" href="tinker-simple-menu-slider-page.html">
+                                    <div class="menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="menu__title">
+                                        Slider
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="menu" href="tinker-simple-menu-image-zoom-page.html">
+                                    <div class="menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="menu__title">
+                                        Image Zoom
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- END: First Child -->
+                </ul>
+            </div>
+        </div>
+        <!-- END: Mobile Menu -->
+        <div class="mt-[4.7rem] flex overflow-hidden md:mt-0">
+            <!-- BEGIN: Simple Menu -->
+            <nav class="side-nav side-nav--simple z-10 hidden overflow-x-hidden px-5 pb-16 md:block md:w-[100px] xl:w-[100px]">
+                <a class="intro-x mt-3 flex items-center pl-5 pt-4" href="">
+                    <img class="w-6" src="dist/images/logo.svg" alt="Tinker Tailwind HTML Admin Template">
+                </a>
+                <div class="side-nav__divider my-6"></div>
+                <ul>
+                    <li>
+                        <a href="javascript:;" class="side-menu">
+                            <div class="side-menu__icon">
+                                <i data-tw-merge="" data-lucide="home" class="stroke-1.5 w-5 h-5"></i>
+                            </div>
+                            <div class="side-menu__title">
+                                Dashboard
+                                <div class="side-menu__sub-icon ">
+                                    <i data-tw-merge="" data-lucide="chevron-down" class="stroke-1.5 w-5 h-5"></i>
+                                </div>
+                            </div>
+                        </a>
+                        <ul class="">
+                            <li>
+                                <a href="tinker-simple-menu-dashboard-overview-1-page.html" class="side-menu">
+                                    <div class="side-menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="side-menu__title">
+                                        Overview 1
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="tinker-simple-menu-dashboard-overview-2-page.html" class="side-menu">
+                                    <div class="side-menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="side-menu__title">
+                                        Overview 2
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="tinker-simple-menu-dashboard-overview-3-page.html" class="side-menu">
+                                    <div class="side-menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="side-menu__title">
+                                        Overview 3
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="tinker-simple-menu-dashboard-overview-4-page.html" class="side-menu">
+                                    <div class="side-menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="side-menu__title">
+                                        Overview 4
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="javascript:;" class="side-menu">
+                            <div class="side-menu__icon">
+                                <i data-tw-merge="" data-lucide="shopping-bag" class="stroke-1.5 w-5 h-5"></i>
+                            </div>
+                            <div class="side-menu__title">
+                                E-Commerce
+                                <div class="side-menu__sub-icon ">
+                                    <i data-tw-merge="" data-lucide="chevron-down" class="stroke-1.5 w-5 h-5"></i>
+                                </div>
+                            </div>
+                        </a>
+                        <ul class="">
+                            <li>
+                                <a href="tinker-simple-menu-categories-page.html" class="side-menu">
+                                    <div class="side-menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="side-menu__title">
+                                        Categories
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="tinker-simple-menu-add-product-page.html" class="side-menu">
+                                    <div class="side-menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="side-menu__title">
+                                        Add Product
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:;" class="side-menu">
+                                    <div class="side-menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="side-menu__title">
+                                        Products
+                                        <div class="side-menu__sub-icon ">
+                                            <i data-tw-merge="" data-lucide="chevron-down" class="stroke-1.5 w-5 h-5"></i>
+                                        </div>
+                                    </div>
+                                </a>
+                                <ul class="">
+                                    <li>
+                                        <a href="tinker-simple-menu-product-list-page.html" class="side-menu">
+                                            <div class="side-menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="side-menu__title">
+                                                Product List
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="tinker-simple-menu-product-grid-page.html" class="side-menu">
+                                            <div class="side-menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="side-menu__title">
+                                                Product Grid
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="javascript:;" class="side-menu">
+                                    <div class="side-menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="side-menu__title">
+                                        Transactions
+                                        <div class="side-menu__sub-icon ">
+                                            <i data-tw-merge="" data-lucide="chevron-down" class="stroke-1.5 w-5 h-5"></i>
+                                        </div>
+                                    </div>
+                                </a>
+                                <ul class="">
+                                    <li>
+                                        <a href="tinker-simple-menu-transaction-list-page.html" class="side-menu">
+                                            <div class="side-menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="side-menu__title">
+                                                Transaction List
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="tinker-simple-menu-transaction-detail-page.html" class="side-menu">
+                                            <div class="side-menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="side-menu__title">
+                                                Transaction Detail
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="javascript:;" class="side-menu">
+                                    <div class="side-menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="side-menu__title">
+                                        Sellers
+                                        <div class="side-menu__sub-icon ">
+                                            <i data-tw-merge="" data-lucide="chevron-down" class="stroke-1.5 w-5 h-5"></i>
+                                        </div>
+                                    </div>
+                                </a>
+                                <ul class="">
+                                    <li>
+                                        <a href="tinker-simple-menu-seller-list-page.html" class="side-menu">
+                                            <div class="side-menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="side-menu__title">
+                                                Seller List
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="tinker-simple-menu-seller-detail-page.html" class="side-menu">
+                                            <div class="side-menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="side-menu__title">
+                                                Seller Detail
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="tinker-simple-menu-reviews-page.html" class="side-menu">
+                                    <div class="side-menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="side-menu__title">
+                                        Reviews
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="tinker-simple-menu-inbox-page.html" class="side-menu">
+                            <div class="side-menu__icon">
+                                <i data-tw-merge="" data-lucide="inbox" class="stroke-1.5 w-5 h-5"></i>
+                            </div>
+                            <div class="side-menu__title">
+                                Inbox
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="tinker-simple-menu-file-manager-page.html" class="side-menu">
+                            <div class="side-menu__icon">
+                                <i data-tw-merge="" data-lucide="hard-drive" class="stroke-1.5 w-5 h-5"></i>
+                            </div>
+                            <div class="side-menu__title">
+                                File Manager
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="tinker-simple-menu-point-of-sale-page.html" class="side-menu">
+                            <div class="side-menu__icon">
+                                <i data-tw-merge="" data-lucide="credit-card" class="stroke-1.5 w-5 h-5"></i>
+                            </div>
+                            <div class="side-menu__title">
+                                Point of Sale
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="tinker-simple-menu-chat-page.html" class="side-menu">
+                            <div class="side-menu__icon">
+                                <i data-tw-merge="" data-lucide="message-square" class="stroke-1.5 w-5 h-5"></i>
+                            </div>
+                            <div class="side-menu__title">
+                                Chat
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="tinker-simple-menu-post-page.html" class="side-menu">
+                            <div class="side-menu__icon">
+                                <i data-tw-merge="" data-lucide="file-text" class="stroke-1.5 w-5 h-5"></i>
+                            </div>
+                            <div class="side-menu__title">
+                                Post
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="tinker-simple-menu-calendar-page.html" class="side-menu">
+                            <div class="side-menu__icon">
+                                <i data-tw-merge="" data-lucide="calendar" class="stroke-1.5 w-5 h-5"></i>
+                            </div>
+                            <div class="side-menu__title">
+                                Calendar
+                            </div>
+                        </a>
+                    </li>
+                    <li class="side-nav__divider my-6"></li>
+                    <li>
+                        <a href="javascript:;" class="side-menu">
+                            <div class="side-menu__icon">
+                                <i data-tw-merge="" data-lucide="edit" class="stroke-1.5 w-5 h-5"></i>
+                            </div>
+                            <div class="side-menu__title">
+                                Crud
+                                <div class="side-menu__sub-icon ">
+                                    <i data-tw-merge="" data-lucide="chevron-down" class="stroke-1.5 w-5 h-5"></i>
+                                </div>
+                            </div>
+                        </a>
+                        <ul class="">
+                            <li>
+                                <a href="tinker-simple-menu-crud-data-list-page.html" class="side-menu">
+                                    <div class="side-menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="side-menu__title">
+                                        Data List
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="tinker-simple-menu-crud-form-page.html" class="side-menu">
+                                    <div class="side-menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="side-menu__title">
+                                        Form
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="javascript:;" class="side-menu">
+                            <div class="side-menu__icon">
+                                <i data-tw-merge="" data-lucide="users" class="stroke-1.5 w-5 h-5"></i>
+                            </div>
+                            <div class="side-menu__title">
+                                Users
+                                <div class="side-menu__sub-icon ">
+                                    <i data-tw-merge="" data-lucide="chevron-down" class="stroke-1.5 w-5 h-5"></i>
+                                </div>
+                            </div>
+                        </a>
+                        <ul class="">
+                            <li>
+                                <a href="tinker-simple-menu-users-layout-1-page.html" class="side-menu">
+                                    <div class="side-menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="side-menu__title">
+                                        Layout 1
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="tinker-simple-menu-users-layout-2-page.html" class="side-menu">
+                                    <div class="side-menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="side-menu__title">
+                                        Layout 2
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="tinker-simple-menu-users-layout-3-page.html" class="side-menu">
+                                    <div class="side-menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="side-menu__title">
+                                        Layout 3
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="javascript:;" class="side-menu">
+                            <div class="side-menu__icon">
+                                <i data-tw-merge="" data-lucide="trello" class="stroke-1.5 w-5 h-5"></i>
+                            </div>
+                            <div class="side-menu__title">
+                                Profile
+                                <div class="side-menu__sub-icon ">
+                                    <i data-tw-merge="" data-lucide="chevron-down" class="stroke-1.5 w-5 h-5"></i>
+                                </div>
+                            </div>
+                        </a>
+                        <ul class="">
+                            <li>
+                                <a href="tinker-simple-menu-profile-overview-1-page.html" class="side-menu">
+                                    <div class="side-menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="side-menu__title">
+                                        Overview 1
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="tinker-simple-menu-profile-overview-2-page.html" class="side-menu">
+                                    <div class="side-menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="side-menu__title">
+                                        Overview 2
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="tinker-simple-menu-profile-overview-3-page.html" class="side-menu">
+                                    <div class="side-menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="side-menu__title">
+                                        Overview 3
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="javascript:;" class="side-menu side-menu--active">
+                            <div class="side-menu__icon">
+                                <i data-tw-merge="" data-lucide="layout" class="stroke-1.5 w-5 h-5"></i>
+                            </div>
+                            <div class="side-menu__title">
+                                Pages
+                                <div class="side-menu__sub-icon transform rotate-180">
+                                    <i data-tw-merge="" data-lucide="chevron-down" class="stroke-1.5 w-5 h-5"></i>
+                                </div>
+                            </div>
+                        </a>
+                        <ul class="side-menu__sub-open">
+                            <li>
+                                <a href="javascript:;" class="side-menu side-menu--active">
+                                    <div class="side-menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="side-menu__title">
+                                        Wizards
+                                        <div class="side-menu__sub-icon transform rotate-180">
+                                            <i data-tw-merge="" data-lucide="chevron-down" class="stroke-1.5 w-5 h-5"></i>
+                                        </div>
+                                    </div>
+                                </a>
+                                <ul class="side-menu__sub-open">
+                                    <li>
+                                        <a href="tinker-simple-menu-wizard-layout-1-page.html" class="side-menu">
+                                            <div class="side-menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="side-menu__title">
+                                                Layout 1
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="tinker-simple-menu-wizard-layout-2-page.html" class="side-menu side-menu--active">
+                                            <div class="side-menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="side-menu__title">
+                                                Layout 2
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="tinker-simple-menu-wizard-layout-3-page.html" class="side-menu">
+                                            <div class="side-menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="side-menu__title">
+                                                Layout 3
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="javascript:;" class="side-menu">
+                                    <div class="side-menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="side-menu__title">
+                                        Blog
+                                        <div class="side-menu__sub-icon ">
+                                            <i data-tw-merge="" data-lucide="chevron-down" class="stroke-1.5 w-5 h-5"></i>
+                                        </div>
+                                    </div>
+                                </a>
+                                <ul class="">
+                                    <li>
+                                        <a href="tinker-simple-menu-blog-layout-1-page.html" class="side-menu">
+                                            <div class="side-menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="side-menu__title">
+                                                Layout 1
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="tinker-simple-menu-blog-layout-2-page.html" class="side-menu">
+                                            <div class="side-menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="side-menu__title">
+                                                Layout 2
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="tinker-simple-menu-blog-layout-3-page.html" class="side-menu">
+                                            <div class="side-menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="side-menu__title">
+                                                Layout 3
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="javascript:;" class="side-menu">
+                                    <div class="side-menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="side-menu__title">
+                                        Pricing
+                                        <div class="side-menu__sub-icon ">
+                                            <i data-tw-merge="" data-lucide="chevron-down" class="stroke-1.5 w-5 h-5"></i>
+                                        </div>
+                                    </div>
+                                </a>
+                                <ul class="">
+                                    <li>
+                                        <a href="tinker-simple-menu-pricing-layout-1-page.html" class="side-menu">
+                                            <div class="side-menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="side-menu__title">
+                                                Layout 1
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="tinker-simple-menu-pricing-layout-2-page.html" class="side-menu">
+                                            <div class="side-menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="side-menu__title">
+                                                Layout 2
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="javascript:;" class="side-menu">
+                                    <div class="side-menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="side-menu__title">
+                                        Invoice
+                                        <div class="side-menu__sub-icon ">
+                                            <i data-tw-merge="" data-lucide="chevron-down" class="stroke-1.5 w-5 h-5"></i>
+                                        </div>
+                                    </div>
+                                </a>
+                                <ul class="">
+                                    <li>
+                                        <a href="tinker-simple-menu-invoice-layout-1-page.html" class="side-menu">
+                                            <div class="side-menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="side-menu__title">
+                                                Layout 1
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="tinker-simple-menu-invoice-layout-2-page.html" class="side-menu">
+                                            <div class="side-menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="side-menu__title">
+                                                Layout 2
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="javascript:;" class="side-menu">
+                                    <div class="side-menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="side-menu__title">
+                                        FAQ
+                                        <div class="side-menu__sub-icon ">
+                                            <i data-tw-merge="" data-lucide="chevron-down" class="stroke-1.5 w-5 h-5"></i>
+                                        </div>
+                                    </div>
+                                </a>
+                                <ul class="">
+                                    <li>
+                                        <a href="tinker-simple-menu-faq-layout-1-page.html" class="side-menu">
+                                            <div class="side-menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="side-menu__title">
+                                                Layout 1
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="tinker-simple-menu-faq-layout-2-page.html" class="side-menu">
+                                            <div class="side-menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="side-menu__title">
+                                                Layout 2
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="tinker-simple-menu-faq-layout-3-page.html" class="side-menu">
+                                            <div class="side-menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="side-menu__title">
+                                                Layout 3
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="tinker-simple-menu-login-page.html" class="side-menu">
+                                    <div class="side-menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="side-menu__title">
+                                        Login
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="tinker-simple-menu-register-page.html" class="side-menu">
+                                    <div class="side-menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="side-menu__title">
+                                        Register
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="tinker-simple-menu-error-page-page.html" class="side-menu">
+                                    <div class="side-menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="side-menu__title">
+                                        Error Page
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="tinker-simple-menu-update-profile-page.html" class="side-menu">
+                                    <div class="side-menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="side-menu__title">
+                                        Update profile
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="tinker-simple-menu-change-password-page.html" class="side-menu">
+                                    <div class="side-menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="side-menu__title">
+                                        Change Password
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="side-nav__divider my-6"></li>
+                    <li>
+                        <a href="javascript:;" class="side-menu">
+                            <div class="side-menu__icon">
+                                <i data-tw-merge="" data-lucide="inbox" class="stroke-1.5 w-5 h-5"></i>
+                            </div>
+                            <div class="side-menu__title">
+                                Components
+                                <div class="side-menu__sub-icon ">
+                                    <i data-tw-merge="" data-lucide="chevron-down" class="stroke-1.5 w-5 h-5"></i>
+                                </div>
+                            </div>
+                        </a>
+                        <ul class="">
+                            <li>
+                                <a href="javascript:;" class="side-menu">
+                                    <div class="side-menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="side-menu__title">
+                                        Grid
+                                        <div class="side-menu__sub-icon ">
+                                            <i data-tw-merge="" data-lucide="chevron-down" class="stroke-1.5 w-5 h-5"></i>
+                                        </div>
+                                    </div>
+                                </a>
+                                <ul class="">
+                                    <li>
+                                        <a href="tinker-simple-menu-regular-table-page.html" class="side-menu">
+                                            <div class="side-menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="side-menu__title">
+                                                Regular Table
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="tinker-simple-menu-tabulator-page.html" class="side-menu">
+                                            <div class="side-menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="side-menu__title">
+                                                Tabulator
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="javascript:;" class="side-menu">
+                                    <div class="side-menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="side-menu__title">
+                                        Overlay
+                                        <div class="side-menu__sub-icon ">
+                                            <i data-tw-merge="" data-lucide="chevron-down" class="stroke-1.5 w-5 h-5"></i>
+                                        </div>
+                                    </div>
+                                </a>
+                                <ul class="">
+                                    <li>
+                                        <a href="tinker-simple-menu-modal-page.html" class="side-menu">
+                                            <div class="side-menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="side-menu__title">
+                                                Modal
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="tinker-simple-menu-slide-over-page.html" class="side-menu">
+                                            <div class="side-menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="side-menu__title">
+                                                Slide Over
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="tinker-simple-menu-notification-page.html" class="side-menu">
+                                            <div class="side-menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="side-menu__title">
+                                                Notification
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="tinker-simple-menu-tab-page.html" class="side-menu">
+                                    <div class="side-menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="side-menu__title">
+                                        Tab
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="tinker-simple-menu-accordion-page.html" class="side-menu">
+                                    <div class="side-menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="side-menu__title">
+                                        Accordion
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="tinker-simple-menu-button-page.html" class="side-menu">
+                                    <div class="side-menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="side-menu__title">
+                                        Button
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="tinker-simple-menu-alert-page.html" class="side-menu">
+                                    <div class="side-menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="side-menu__title">
+                                        Alert
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="tinker-simple-menu-progress-bar-page.html" class="side-menu">
+                                    <div class="side-menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="side-menu__title">
+                                        Progress Bar
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="tinker-simple-menu-tooltip-page.html" class="side-menu">
+                                    <div class="side-menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="side-menu__title">
+                                        Tooltip
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="tinker-simple-menu-dropdown-page.html" class="side-menu">
+                                    <div class="side-menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="side-menu__title">
+                                        Dropdown
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="tinker-simple-menu-typography-page.html" class="side-menu">
+                                    <div class="side-menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="side-menu__title">
+                                        Typography
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="tinker-simple-menu-icon-page.html" class="side-menu">
+                                    <div class="side-menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="side-menu__title">
+                                        Icon
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="tinker-simple-menu-loading-icon-page.html" class="side-menu">
+                                    <div class="side-menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="side-menu__title">
+                                        Loading Icon
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="javascript:;" class="side-menu">
+                            <div class="side-menu__icon">
+                                <i data-tw-merge="" data-lucide="sidebar" class="stroke-1.5 w-5 h-5"></i>
+                            </div>
+                            <div class="side-menu__title">
+                                Forms
+                                <div class="side-menu__sub-icon ">
+                                    <i data-tw-merge="" data-lucide="chevron-down" class="stroke-1.5 w-5 h-5"></i>
+                                </div>
+                            </div>
+                        </a>
+                        <ul class="">
+                            <li>
+                                <a href="tinker-simple-menu-regular-form-page.html" class="side-menu">
+                                    <div class="side-menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="side-menu__title">
+                                        Regular Form
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="tinker-simple-menu-datepicker-page.html" class="side-menu">
+                                    <div class="side-menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="side-menu__title">
+                                        Datepicker
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="tinker-simple-menu-tom-select-page.html" class="side-menu">
+                                    <div class="side-menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="side-menu__title">
+                                        Tom Select
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="tinker-simple-menu-file-upload-page.html" class="side-menu">
+                                    <div class="side-menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="side-menu__title">
+                                        File Upload
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:;" class="side-menu">
+                                    <div class="side-menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="side-menu__title">
+                                        Wysiwyg Editor
+                                        <div class="side-menu__sub-icon ">
+                                            <i data-tw-merge="" data-lucide="chevron-down" class="stroke-1.5 w-5 h-5"></i>
+                                        </div>
+                                    </div>
+                                </a>
+                                <ul class="">
+                                    <li>
+                                        <a href="tinker-simple-menu-wysiwyg-editor-classic-page.html" class="side-menu">
+                                            <div class="side-menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="side-menu__title">
+                                                Classic
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="tinker-simple-menu-wysiwyg-editor-inline-page.html" class="side-menu">
+                                            <div class="side-menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="side-menu__title">
+                                                Inline
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="tinker-simple-menu-wysiwyg-editor-balloon-page.html" class="side-menu">
+                                            <div class="side-menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="side-menu__title">
+                                                Balloon
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="tinker-simple-menu-wysiwyg-editor-balloon-block-page.html" class="side-menu">
+                                            <div class="side-menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="side-menu__title">
+                                                Balloon Block
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="tinker-simple-menu-wysiwyg-editor-document-page.html" class="side-menu">
+                                            <div class="side-menu__icon">
+                                                <i data-tw-merge="" data-lucide="zap" class="stroke-1.5 w-5 h-5"></i>
+                                            </div>
+                                            <div class="side-menu__title">
+                                                Document
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="tinker-simple-menu-validation-page.html" class="side-menu">
+                                    <div class="side-menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="side-menu__title">
+                                        Validation
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="javascript:;" class="side-menu">
+                            <div class="side-menu__icon">
+                                <i data-tw-merge="" data-lucide="hard-drive" class="stroke-1.5 w-5 h-5"></i>
+                            </div>
+                            <div class="side-menu__title">
+                                Widgets
+                                <div class="side-menu__sub-icon ">
+                                    <i data-tw-merge="" data-lucide="chevron-down" class="stroke-1.5 w-5 h-5"></i>
+                                </div>
+                            </div>
+                        </a>
+                        <ul class="">
+                            <li>
+                                <a href="tinker-simple-menu-chart-page.html" class="side-menu">
+                                    <div class="side-menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="side-menu__title">
+                                        Chart
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="tinker-simple-menu-slider-page.html" class="side-menu">
+                                    <div class="side-menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="side-menu__title">
+                                        Slider
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="tinker-simple-menu-image-zoom-page.html" class="side-menu">
+                                    <div class="side-menu__icon">
+                                        <i data-tw-merge="" data-lucide="activity" class="stroke-1.5 w-5 h-5"></i>
+                                    </div>
+                                    <div class="side-menu__title">
+                                        Image Zoom
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+            <!-- END: Simple Menu -->
+            <!-- BEGIN: Content -->
+            <div class="rounded-[30px] md:rounded-[35px/50px_0px_0px_0px] min-w-0 min-h-screen max-w-full md:max-w-none bg-slate-100 flex-1 pb-10 px-4 md:px-6 relative md:ml-4 dark:bg-darkmode-700 before:content-[''] before:w-full before:h-px before:block after:content-[''] after:z-[-1] after:rounded-[40px_0px_0px_0px] after:w-full after:inset-y-0 after:absolute after:left-0 after:bg-white/10 after:mt-8 after:-ml-4 after:dark:bg-darkmode-400/50 after:hidden md:after:block">
+                <!-- BEGIN: Top Bar -->
+                <div class="relative z-[51] flex h-[67px] items-center border-b border-slate-200">
+                    <!-- BEGIN: Breadcrumb -->
+                    <nav aria-label="breadcrumb" class="flex -intro-x mr-auto hidden sm:flex">
+                        <ol class="flex items-center text-theme-1 dark:text-slate-300">
+                            <li class="">
+                                <a href="">Application</a>
+                            </li>
+                            <li class="relative ml-5 pl-0.5 before:content-[''] before:w-[14px] before:h-[14px] before:bg-chevron-black before:transform before:rotate-[-90deg] before:bg-[length:100%] before:-ml-[1.125rem] before:absolute before:my-auto before:inset-y-0 dark:before:bg-chevron-white text-slate-800 cursor-text dark:text-slate-400">
+                                <a href="">Dashboard</a>
+                            </li>
+                        </ol>
+                    </nav>
+                    <!-- END: Breadcrumb -->
+                    <!-- BEGIN: Search -->
+                    <div class="search intro-x relative mr-3 sm:mr-6">
+                        <div class="relative hidden sm:block">
+                            <input data-tw-merge="" type="text" placeholder="Search..." class="disabled:bg-slate-100 disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent [&[readonly]]:bg-slate-100 [&[readonly]]:cursor-not-allowed [&[readonly]]:dark:bg-darkmode-800/50 [&[readonly]]:dark:border-transparent ease-in-out text-sm placeholder:text-slate-400/90 focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus:border-opacity-40 dark:border-transparent dark:focus:ring-slate-700 dark:focus:ring-opacity-50 dark:placeholder:text-slate-500/80 group-[.form-inline]:flex-1 group-[.input-group]:rounded-none group-[.input-group]:[&:not(:first-child)]:border-l-transparent group-[.input-group]:first:rounded-l group-[.input-group]:last:rounded-r group-[.input-group]:z-10 w-56 rounded-full border-transparent bg-slate-300/50 pr-8 shadow-none transition-[width] duration-300 focus:w-72 focus:border-transparent dark:bg-darkmode-400/70">
+                            <i data-tw-merge="" data-lucide="search" class="stroke-1.5 w-5 h-5 absolute inset-y-0 right-0 my-auto mr-3 text-slate-600 dark:text-slate-500"></i>
+                        </div>
+                        <a class="relative text-slate-600 sm:hidden" href="">
+                            <i data-tw-merge="" data-lucide="search" class="stroke-1.5 w-5 h-5 dark:text-slate-500"></i>
+                        </a>
+                        <div data-transition="" data-selector=".show" data-enter="transition-all ease-linear duration-150" data-enter-from="mt-5 invisible opacity-0 translate-y-1" data-enter-to="mt-[3px] visible opacity-100 translate-y-0" data-leave="transition-all ease-linear duration-150" data-leave-from="mt-[3px] visible opacity-100 translate-y-0" data-leave-to="mt-5 invisible opacity-0 translate-y-1" class="search-result absolute right-0 z-10 mt-[3px] hidden">
+                            <div class="box w-[450px] p-5">
+                                <div class="mb-2 font-medium">Pages</div>
+                                <div class="mb-5">
+                                    <a class="flex items-center" href="">
+                                        <div class="flex h-8 w-8 items-center justify-center rounded-full bg-success/20 text-success dark:bg-success/10">
+                                            <i data-tw-merge="" data-lucide="inbox" class="stroke-1.5 h-4 w-4"></i>
+                                        </div>
+                                        <div class="ml-3">Mail Settings</div>
+                                    </a>
+                                    <a class="mt-2 flex items-center" href="">
+                                        <div class="flex h-8 w-8 items-center justify-center rounded-full bg-pending/10 text-pending">
+                                            <i data-tw-merge="" data-lucide="users" class="stroke-1.5 h-4 w-4"></i>
+                                        </div>
+                                        <div class="ml-3">Users & Permissions</div>
+                                    </a>
+                                    <a class="mt-2 flex items-center" href="">
+                                        <div class="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary/80 dark:bg-primary/20">
+                                            <i data-tw-merge="" data-lucide="credit-card" class="stroke-1.5 h-4 w-4"></i>
+                                        </div>
+                                        <div class="ml-3">Transactions Report</div>
+                                    </a>
+                                </div>
+                                <div class="mb-2 font-medium">Users</div>
+                                <div class="mb-5">
+                                    <a class="mt-2 flex items-center" href="">
+                                        <div class="image-fit h-8 w-8">
+                                            <img class="rounded-full" src="dist/images/fakers/profile-14.jpg" alt="Midone Tailwind HTML Admin Template">
+                                        </div>
+                                        <div class="ml-3">Al Pacino</div>
+                                        <div class="ml-auto w-48 truncate text-right text-xs text-slate-500">
+                                            alpacino@left4code.com
+                                        </div>
+                                    </a>
+                                    <a class="mt-2 flex items-center" href="">
+                                        <div class="image-fit h-8 w-8">
+                                            <img class="rounded-full" src="dist/images/fakers/profile-10.jpg" alt="Midone Tailwind HTML Admin Template">
+                                        </div>
+                                        <div class="ml-3">Brad Pitt</div>
+                                        <div class="ml-auto w-48 truncate text-right text-xs text-slate-500">
+                                            bradpitt@left4code.com
+                                        </div>
+                                    </a>
+                                    <a class="mt-2 flex items-center" href="">
+                                        <div class="image-fit h-8 w-8">
+                                            <img class="rounded-full" src="dist/images/fakers/profile-6.jpg" alt="Midone Tailwind HTML Admin Template">
+                                        </div>
+                                        <div class="ml-3">Arnold Schwarzenegger</div>
+                                        <div class="ml-auto w-48 truncate text-right text-xs text-slate-500">
+                                            arnoldschwarzenegger@left4code.com
+                                        </div>
+                                    </a>
+                                    <a class="mt-2 flex items-center" href="">
+                                        <div class="image-fit h-8 w-8">
+                                            <img class="rounded-full" src="dist/images/fakers/profile-5.jpg" alt="Midone Tailwind HTML Admin Template">
+                                        </div>
+                                        <div class="ml-3">Sylvester Stallone</div>
+                                        <div class="ml-auto w-48 truncate text-right text-xs text-slate-500">
+                                            sylvesterstallone@left4code.com
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="mb-2 font-medium">Products</div>
+                                <a class="mt-2 flex items-center" href="">
+                                    <div class="image-fit h-8 w-8">
+                                        <img class="rounded-full" src="dist/images/fakers/preview-7.jpg" alt="Midone Tailwind HTML Admin Template">
+                                    </div>
+                                    <div class="ml-3">Nike Tanjun</div>
+                                    <div class="ml-auto w-48 truncate text-right text-xs text-slate-500">
+                                        Sport & Outdoor
+                                    </div>
+                                </a>
+                                <a class="mt-2 flex items-center" href="">
+                                    <div class="image-fit h-8 w-8">
+                                        <img class="rounded-full" src="dist/images/fakers/preview-15.jpg" alt="Midone Tailwind HTML Admin Template">
+                                    </div>
+                                    <div class="ml-3">Nikon Z6</div>
+                                    <div class="ml-auto w-48 truncate text-right text-xs text-slate-500">
+                                        Photography
+                                    </div>
+                                </a>
+                                <a class="mt-2 flex items-center" href="">
+                                    <div class="image-fit h-8 w-8">
+                                        <img class="rounded-full" src="dist/images/fakers/preview-15.jpg" alt="Midone Tailwind HTML Admin Template">
+                                    </div>
+                                    <div class="ml-3">Sony A7 III</div>
+                                    <div class="ml-auto w-48 truncate text-right text-xs text-slate-500">
+                                        Photography
+                                    </div>
+                                </a>
+                                <a class="mt-2 flex items-center" href="">
+                                    <div class="image-fit h-8 w-8">
+                                        <img class="rounded-full" src="dist/images/fakers/preview-7.jpg" alt="Midone Tailwind HTML Admin Template">
+                                    </div>
+                                    <div class="ml-3">Sony A7 III</div>
+                                    <div class="ml-auto w-48 truncate text-right text-xs text-slate-500">
+                                        Photography
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END: Search  -->
+                    <!-- BEGIN: Notifications -->
+                    <div data-tw-merge="" data-tw-placement="bottom-end" class="dropdown relative intro-x mr-auto sm:mr-6">
+                        <div data-tw-toggle="dropdown" aria-expanded="false" class="cursor-pointer relative block text-slate-600 outline-none before:absolute before:right-0 before:top-[-2px] before:h-[8px] before:w-[8px] before:rounded-full before:bg-danger before:content-['']"><i data-tw-merge="" data-lucide="bell" class="stroke-1.5 w-5 h-5 dark:text-slate-500"></i></div>
+                        <div data-transition="" data-selector=".show" data-enter="transition-all ease-linear duration-150" data-enter-from="absolute !mt-5 invisible opacity-0 translate-y-1" data-enter-to="!mt-1 visible opacity-100 translate-y-0" data-leave="transition-all ease-linear duration-150" data-leave-from="!mt-1 visible opacity-100 translate-y-0" data-leave-to="absolute !mt-5 invisible opacity-0 translate-y-1" class="dropdown-menu absolute z-[9999] hidden">
+                            <div data-tw-merge="" class="dropdown-content rounded-md border-transparent bg-white shadow-[0px_3px_10px_#00000017] dark:border-transparent dark:bg-darkmode-600 mt-2 w-[280px] p-5 sm:w-[350px]">
+                                <div class="mb-5 font-medium">Notifications</div>
+                                <div class="cursor-pointer relative flex items-center">
+                                    <div class="image-fit relative mr-1 h-12 w-12 flex-none">
+                                        <img class="rounded-full" src="dist/images/fakers/profile-14.jpg" alt="Midone Tailwind HTML Admin Template">
+                                        <div class="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-white bg-success dark:border-darkmode-600">
+                                        </div>
+                                    </div>
+                                    <div class="ml-2 overflow-hidden">
+                                        <div class="flex items-center">
+                                            <a class="mr-5 truncate font-medium" href="">
+                                                Al Pacino
+                                            </a>
+                                            <div class="ml-auto whitespace-nowrap text-xs text-slate-400">
+                                                06:05 AM
+                                            </div>
+                                        </div>
+                                        <div class="mt-0.5 w-full truncate text-slate-500">
+                                            It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cursor-pointer relative flex items-center mt-5">
+                                    <div class="image-fit relative mr-1 h-12 w-12 flex-none">
+                                        <img class="rounded-full" src="dist/images/fakers/profile-10.jpg" alt="Midone Tailwind HTML Admin Template">
+                                        <div class="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-white bg-success dark:border-darkmode-600">
+                                        </div>
+                                    </div>
+                                    <div class="ml-2 overflow-hidden">
+                                        <div class="flex items-center">
+                                            <a class="mr-5 truncate font-medium" href="">
+                                                Brad Pitt
+                                            </a>
+                                            <div class="ml-auto whitespace-nowrap text-xs text-slate-400">
+                                                01:10 PM
+                                            </div>
+                                        </div>
+                                        <div class="mt-0.5 w-full truncate text-slate-500">
+                                            There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomi
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cursor-pointer relative flex items-center mt-5">
+                                    <div class="image-fit relative mr-1 h-12 w-12 flex-none">
+                                        <img class="rounded-full" src="dist/images/fakers/profile-6.jpg" alt="Midone Tailwind HTML Admin Template">
+                                        <div class="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-white bg-success dark:border-darkmode-600">
+                                        </div>
+                                    </div>
+                                    <div class="ml-2 overflow-hidden">
+                                        <div class="flex items-center">
+                                            <a class="mr-5 truncate font-medium" href="">
+                                                Arnold Schwarzenegger
+                                            </a>
+                                            <div class="ml-auto whitespace-nowrap text-xs text-slate-400">
+                                                01:10 PM
+                                            </div>
+                                        </div>
+                                        <div class="mt-0.5 w-full truncate text-slate-500">
+                                            There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomi
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cursor-pointer relative flex items-center mt-5">
+                                    <div class="image-fit relative mr-1 h-12 w-12 flex-none">
+                                        <img class="rounded-full" src="dist/images/fakers/profile-5.jpg" alt="Midone Tailwind HTML Admin Template">
+                                        <div class="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-white bg-success dark:border-darkmode-600">
+                                        </div>
+                                    </div>
+                                    <div class="ml-2 overflow-hidden">
+                                        <div class="flex items-center">
+                                            <a class="mr-5 truncate font-medium" href="">
+                                                Sylvester Stallone
+                                            </a>
+                                            <div class="ml-auto whitespace-nowrap text-xs text-slate-400">
+                                                01:10 PM
+                                            </div>
+                                        </div>
+                                        <div class="mt-0.5 w-full truncate text-slate-500">
+                                            Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 20
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cursor-pointer relative flex items-center mt-5">
+                                    <div class="image-fit relative mr-1 h-12 w-12 flex-none">
+                                        <img class="rounded-full" src="dist/images/fakers/profile-12.jpg" alt="Midone Tailwind HTML Admin Template">
+                                        <div class="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-white bg-success dark:border-darkmode-600">
+                                        </div>
+                                    </div>
+                                    <div class="ml-2 overflow-hidden">
+                                        <div class="flex items-center">
+                                            <a class="mr-5 truncate font-medium" href="">
+                                                Robert De Niro
+                                            </a>
+                                            <div class="ml-auto whitespace-nowrap text-xs text-slate-400">
+                                                01:10 PM
+                                            </div>
+                                        </div>
+                                        <div class="mt-0.5 w-full truncate text-slate-500">
+                                            Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 20
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END: Notifications  -->
+                    <!-- BEGIN: Account Menu -->
+                    <div data-tw-merge="" data-tw-placement="bottom-end" class="dropdown relative"><button data-tw-toggle="dropdown" aria-expanded="false" class="cursor-pointer image-fit zoom-in intro-x block h-8 w-8 overflow-hidden rounded-full shadow-lg"><img src="dist/images/fakers/profile-12.jpg" alt="Midone Tailwind HTML Admin Template">
+                        </button>
+                        <div data-transition="" data-selector=".show" data-enter="transition-all ease-linear duration-150" data-enter-from="absolute !mt-5 invisible opacity-0 translate-y-1" data-enter-to="!mt-1 visible opacity-100 translate-y-0" data-leave="transition-all ease-linear duration-150" data-leave-from="!mt-1 visible opacity-100 translate-y-0" data-leave-to="absolute !mt-5 invisible opacity-0 translate-y-1" class="dropdown-menu absolute z-[9999] hidden">
+                            <div data-tw-merge="" class="dropdown-content rounded-md border-transparent p-2 shadow-[0px_3px_10px_#00000017] dark:border-transparent dark:bg-darkmode-600 mt-px w-56 bg-theme-1 text-white">
+                                <div class="p-2 font-medium font-normal">
+                                    <div class="font-medium">Al Pacino</div>
+                                    <div class="mt-0.5 text-xs text-white/70 dark:text-slate-500">
+                                        Software Engineer
+                                    </div>
+                                </div>
+                                <div class="h-px my-2 -mx-2 bg-slate-200/60 dark:bg-darkmode-400 bg-white/[0.08]">
+                                </div>
+                                <a class="cursor-pointer flex items-center p-2 transition duration-300 ease-in-out rounded-md hover:bg-slate-200/60 dark:bg-darkmode-600 dark:hover:bg-darkmode-400 dropdown-item hover:bg-white/5"><i data-tw-merge="" data-lucide="user" class="stroke-1.5 mr-2 h-4 w-4"></i>
+                                    Profile</a>
+                                <a class="cursor-pointer flex items-center p-2 transition duration-300 ease-in-out rounded-md hover:bg-slate-200/60 dark:bg-darkmode-600 dark:hover:bg-darkmode-400 dropdown-item hover:bg-white/5"><i data-tw-merge="" data-lucide="edit" class="stroke-1.5 mr-2 h-4 w-4"></i>
+                                    Add Account</a>
+                                <a class="cursor-pointer flex items-center p-2 transition duration-300 ease-in-out rounded-md hover:bg-slate-200/60 dark:bg-darkmode-600 dark:hover:bg-darkmode-400 dropdown-item hover:bg-white/5"><i data-tw-merge="" data-lucide="lock" class="stroke-1.5 mr-2 h-4 w-4"></i>
+                                    Reset Password</a>
+                                <a class="cursor-pointer flex items-center p-2 transition duration-300 ease-in-out rounded-md hover:bg-slate-200/60 dark:bg-darkmode-600 dark:hover:bg-darkmode-400 dropdown-item hover:bg-white/5"><i data-tw-merge="" data-lucide="help-circle" class="stroke-1.5 mr-2 h-4 w-4"></i>
+                                    Help</a>
+                                <div class="h-px my-2 -mx-2 bg-slate-200/60 dark:bg-darkmode-400 bg-white/[0.08]">
+                                </div>
+                                <a class="cursor-pointer flex items-center p-2 transition duration-300 ease-in-out rounded-md hover:bg-slate-200/60 dark:bg-darkmode-600 dark:hover:bg-darkmode-400 dropdown-item hover:bg-white/5"><i data-tw-merge="" data-lucide="toggle-right" class="stroke-1.5 mr-2 h-4 w-4"></i>
+                                    Logout</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END: Account Menu -->
+                </div>
+                <!-- END: Top Bar -->
+                <div class="intro-y mt-8 flex items-center">
+                    <h2 class="mr-auto text-lg font-medium">Wizard Layout</h2>
+                </div>
+                <!-- BEGIN: Wizard Layout -->
+                <div class="intro-y box mt-5 py-10 sm:py-20">
+                    <div class="px-5 sm:px-20">
+                        <div class="intro-x flex items-center">
+                            <button data-tw-merge="" class="transition duration-200 border shadow-sm inline-flex items-center justify-center py-2 px-3 font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed bg-primary border-primary text-white dark:border-primary h-10 w-10 rounded-full">1</button>
+                            <div class="ml-3 text-base font-medium">Create New Account</div>
+                        </div>
+                        <div class="intro-x mt-5 flex items-center">
+                            <button data-tw-merge="" class="transition duration-200 border shadow-sm inline-flex items-center justify-center py-2 px-3 font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed h-10 w-10 rounded-full bg-slate-100 text-slate-500 dark:border-darkmode-400 dark:bg-darkmode-400">2</button>
+                            <div class="ml-3 text-base text-slate-600 dark:text-slate-500">
+                                Setup Your Profile
+                            </div>
+                        </div>
+                        <div class="intro-x mt-5 flex items-center">
+                            <button data-tw-merge="" class="transition duration-200 border shadow-sm inline-flex items-center justify-center py-2 px-3 font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed h-10 w-10 rounded-full bg-slate-100 text-slate-500 dark:border-darkmode-400 dark:bg-darkmode-400">3</button>
+                            <div class="ml-3 text-base text-slate-600 dark:text-slate-500">
+                                Setup Your Business Details
+                            </div>
+                        </div>
+                        <div class="intro-x mt-5 flex items-center">
+                            <button data-tw-merge="" class="transition duration-200 border shadow-sm inline-flex items-center justify-center py-2 px-3 font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed h-10 w-10 rounded-full bg-slate-100 text-slate-500 dark:border-darkmode-400 dark:bg-darkmode-400">4</button>
+                            <div class="ml-3 text-base text-slate-600 dark:text-slate-500">
+                                Setup Billing Account
+                            </div>
+                        </div>
+                        <div class="intro-x mt-5 flex items-center">
+                            <button data-tw-merge="" class="transition duration-200 border shadow-sm inline-flex items-center justify-center py-2 px-3 font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed h-10 w-10 rounded-full bg-slate-100 text-slate-500 dark:border-darkmode-400 dark:bg-darkmode-400">5</button>
+                            <div class="ml-3 text-base text-slate-600 dark:text-slate-500">
+                                Finalize your purchase
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-10 border-t border-slate-200/60 px-5 pt-10 dark:border-darkmode-400 sm:px-20">
+                        <div class="text-base font-medium">Profile Settings</div>
+                        <div class="mt-5 grid grid-cols-12 gap-4 gap-y-5">
+                            <div class="intro-y col-span-12 sm:col-span-6">
+                                <label data-tw-merge="" for="input-wizard-1" class="inline-block mb-2 group-[.form-inline]:mb-2 group-[.form-inline]:sm:mb-0 group-[.form-inline]:sm:mr-5 group-[.form-inline]:sm:text-right">
+                                    From
+                                </label>
+                                <input data-tw-merge="" id="input-wizard-1" type="text" placeholder="example@gmail.com" class="disabled:bg-slate-100 disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent [&[readonly]]:bg-slate-100 [&[readonly]]:cursor-not-allowed [&[readonly]]:dark:bg-darkmode-800/50 [&[readonly]]:dark:border-transparent transition duration-200 ease-in-out w-full text-sm border-slate-200 shadow-sm rounded-md placeholder:text-slate-400/90 focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus:border-primary focus:border-opacity-40 dark:bg-darkmode-800 dark:border-transparent dark:focus:ring-slate-700 dark:focus:ring-opacity-50 dark:placeholder:text-slate-500/80 group-[.form-inline]:flex-1 group-[.input-group]:rounded-none group-[.input-group]:[&:not(:first-child)]:border-l-transparent group-[.input-group]:first:rounded-l group-[.input-group]:last:rounded-r group-[.input-group]:z-10">
+                            </div>
+                            <div class="intro-y col-span-12 sm:col-span-6">
+                                <label data-tw-merge="" for="input-wizard-2" class="inline-block mb-2 group-[.form-inline]:mb-2 group-[.form-inline]:sm:mb-0 group-[.form-inline]:sm:mr-5 group-[.form-inline]:sm:text-right">
+                                    To
+                                </label>
+                                <input data-tw-merge="" id="input-wizard-2" type="text" placeholder="example@gmail.com" class="disabled:bg-slate-100 disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent [&[readonly]]:bg-slate-100 [&[readonly]]:cursor-not-allowed [&[readonly]]:dark:bg-darkmode-800/50 [&[readonly]]:dark:border-transparent transition duration-200 ease-in-out w-full text-sm border-slate-200 shadow-sm rounded-md placeholder:text-slate-400/90 focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus:border-primary focus:border-opacity-40 dark:bg-darkmode-800 dark:border-transparent dark:focus:ring-slate-700 dark:focus:ring-opacity-50 dark:placeholder:text-slate-500/80 group-[.form-inline]:flex-1 group-[.input-group]:rounded-none group-[.input-group]:[&:not(:first-child)]:border-l-transparent group-[.input-group]:first:rounded-l group-[.input-group]:last:rounded-r group-[.input-group]:z-10">
+                            </div>
+                            <div class="intro-y col-span-12 sm:col-span-6">
+                                <label data-tw-merge="" for="input-wizard-3" class="inline-block mb-2 group-[.form-inline]:mb-2 group-[.form-inline]:sm:mb-0 group-[.form-inline]:sm:mr-5 group-[.form-inline]:sm:text-right">
+                                    Subject
+                                </label>
+                                <input data-tw-merge="" id="input-wizard-3" type="text" placeholder="Important Meeting" class="disabled:bg-slate-100 disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent [&[readonly]]:bg-slate-100 [&[readonly]]:cursor-not-allowed [&[readonly]]:dark:bg-darkmode-800/50 [&[readonly]]:dark:border-transparent transition duration-200 ease-in-out w-full text-sm border-slate-200 shadow-sm rounded-md placeholder:text-slate-400/90 focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus:border-primary focus:border-opacity-40 dark:bg-darkmode-800 dark:border-transparent dark:focus:ring-slate-700 dark:focus:ring-opacity-50 dark:placeholder:text-slate-500/80 group-[.form-inline]:flex-1 group-[.input-group]:rounded-none group-[.input-group]:[&:not(:first-child)]:border-l-transparent group-[.input-group]:first:rounded-l group-[.input-group]:last:rounded-r group-[.input-group]:z-10">
+                            </div>
+                            <div class="intro-y col-span-12 sm:col-span-6">
+                                <label data-tw-merge="" for="input-wizard-4" class="inline-block mb-2 group-[.form-inline]:mb-2 group-[.form-inline]:sm:mb-0 group-[.form-inline]:sm:mr-5 group-[.form-inline]:sm:text-right">
+                                    Has the Words
+                                </label>
+                                <input data-tw-merge="" id="input-wizard-4" type="text" placeholder="Job, Work, Documentation" class="disabled:bg-slate-100 disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent [&[readonly]]:bg-slate-100 [&[readonly]]:cursor-not-allowed [&[readonly]]:dark:bg-darkmode-800/50 [&[readonly]]:dark:border-transparent transition duration-200 ease-in-out w-full text-sm border-slate-200 shadow-sm rounded-md placeholder:text-slate-400/90 focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus:border-primary focus:border-opacity-40 dark:bg-darkmode-800 dark:border-transparent dark:focus:ring-slate-700 dark:focus:ring-opacity-50 dark:placeholder:text-slate-500/80 group-[.form-inline]:flex-1 group-[.input-group]:rounded-none group-[.input-group]:[&:not(:first-child)]:border-l-transparent group-[.input-group]:first:rounded-l group-[.input-group]:last:rounded-r group-[.input-group]:z-10">
+                            </div>
+                            <div class="intro-y col-span-12 sm:col-span-6">
+                                <label data-tw-merge="" for="input-wizard-5" class="inline-block mb-2 group-[.form-inline]:mb-2 group-[.form-inline]:sm:mb-0 group-[.form-inline]:sm:mr-5 group-[.form-inline]:sm:text-right">
+                                    Doesn't Have
+                                </label>
+                                <input data-tw-merge="" id="input-wizard-5" type="text" placeholder="Job, Work, Documentation" class="disabled:bg-slate-100 disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent [&[readonly]]:bg-slate-100 [&[readonly]]:cursor-not-allowed [&[readonly]]:dark:bg-darkmode-800/50 [&[readonly]]:dark:border-transparent transition duration-200 ease-in-out w-full text-sm border-slate-200 shadow-sm rounded-md placeholder:text-slate-400/90 focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus:border-primary focus:border-opacity-40 dark:bg-darkmode-800 dark:border-transparent dark:focus:ring-slate-700 dark:focus:ring-opacity-50 dark:placeholder:text-slate-500/80 group-[.form-inline]:flex-1 group-[.input-group]:rounded-none group-[.input-group]:[&:not(:first-child)]:border-l-transparent group-[.input-group]:first:rounded-l group-[.input-group]:last:rounded-r group-[.input-group]:z-10">
+                            </div>
+                            <div class="intro-y col-span-12 sm:col-span-6">
+                                <label data-tw-merge="" for="input-wizard-6" class="inline-block mb-2 group-[.form-inline]:mb-2 group-[.form-inline]:sm:mb-0 group-[.form-inline]:sm:mr-5 group-[.form-inline]:sm:text-right">
+                                    Size
+                                </label>
+                                <select data-tw-merge="" id="input-wizard-6" class="disabled:bg-slate-100 disabled:cursor-not-allowed disabled:dark:bg-darkmode-800/50 [&[readonly]]:bg-slate-100 [&[readonly]]:cursor-not-allowed [&[readonly]]:dark:bg-darkmode-800/50 transition duration-200 ease-in-out w-full text-sm border-slate-200 shadow-sm rounded-md py-2 px-3 pr-8 focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus:border-primary focus:border-opacity-40 dark:bg-darkmode-800 dark:border-transparent dark:focus:ring-slate-700 dark:focus:ring-opacity-50 group-[.form-inline]:flex-1">
+                                    <option>10</option>
+                                    <option>25</option>
+                                    <option>35</option>
+                                    <option>50</option>
+                                </select>
+                            </div>
+                            <div class="intro-y col-span-12 mt-5 flex items-center justify-center sm:justify-end">
+                                <button data-tw-merge="" class="transition duration-200 border shadow-sm inline-flex items-center justify-center py-2 px-3 rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed bg-secondary/70 border-secondary/70 text-slate-500 dark:border-darkmode-400 dark:bg-darkmode-400 dark:text-slate-300 [&:hover:not(:disabled)]:bg-slate-100 [&:hover:not(:disabled)]:border-slate-100 [&:hover:not(:disabled)]:dark:border-darkmode-300/80 [&:hover:not(:disabled)]:dark:bg-darkmode-300/80 w-24">Previous</button>
+                                <button data-tw-merge="" class="transition duration-200 border shadow-sm inline-flex items-center justify-center py-2 px-3 rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed bg-primary border-primary text-white dark:border-primary ml-2 w-24">Next</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END: Wizard Layout -->
+            </div>
+            <!-- END: Content -->
+        </div>
+    </div>
+    <!-- BEGIN: Vendor JS Assets-->
+    <script src="dist/js/vendors/dom.js"></script>
+    <script src="dist/js/vendors/tailwind-merge.js"></script>
+    <script src="dist/js/vendors/lucide.js"></script>
+    <script src="dist/js/vendors/transition.js"></script>
+    <script src="dist/js/vendors/dropdown.js"></script>
+    <script src="dist/js/vendors/popper.js"></script>
+    <script src="dist/js/vendors/simplebar.js"></script>
+    <script src="dist/js/vendors/tippy.js"></script>
+    <script src="dist/js/vendors/modal.js"></script>
+    <script src="dist/js/components/base/theme-color.js"></script>
+    <script src="dist/js/components/base/lucide.js"></script>
+    <script src="dist/js/components/mobile-menu.js"></script>
+    <script src="dist/js/components/themes/tinker/top-bar.js"></script>
+    <script src="dist/js/themes/tinker.js"></script> <!-- END: Vendor JS Assets-->
+    <!-- BEGIN: Pages, layouts, components JS Assets-->
+    <!-- END: Pages, layouts, components JS Assets-->
+</body>
+</html>

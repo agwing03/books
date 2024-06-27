@@ -37,17 +37,6 @@ public class BookController {
 	}
 	
 	/**
-	 * 도서 목록 조회
-	 * @param clubNo
-	 */
-	@RequestMapping("/search.do")
-	public SrchVO getSearch(
-			@RequestBody SrchVO vo
-		) throws Exception {
-		return bookService.selectSearchData(vo);
-	}
-	
-	/**
 	 * 도서 실시간 검색
 	 * @param srchText
 	 */

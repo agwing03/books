@@ -78,16 +78,16 @@
 	}
 	
 	// 모임 생성시 맴버 등록
-	function setMeberList(){
-		fetchApi('/member/getMemberSrch.do', 'POST', {clubNo:'1'}, 'dataList')
+	async function setMeberList(){
+		await fetchApi('/member/getMemberSrch.do', 'POST', {clubNo:'1'}, 'dataList')
 			.then((data) => {
 				if(data != null){
 					let html = ''
-					jQuery("#multiple-select").empty()
+					jQuery("#meeting-form-memberNo").empty()
 					for (const idx in data){
 						html += '<option value="'+data[idx].memberNo+'">'+data[idx].memberNm+'</option>'
 					}
-					jQuery("#multiple-select").append(html)
+					jQuery("#meeting-form-memberNo").append(html)
 				}
 			}).catch((error) => console.log(error))
 	}
@@ -158,9 +158,10 @@
 			params.meetingNo = key 	
 		}
 		//모임 정보 조회
-		fetchApi('/meeting/getMeetingReview.do', 'POST', params, 'dataMap')
+		fetchApi('/meeting/getMeetingReview.do', 'POST', params, 'data')
 			.then((data) => {
 				console.log(data)
+				console.log(data.reviewList)
 				if(data != null){
 					jQuery('#meeting-form-meetingNo').val(data.meetingNo)
 					jQuery('#meeting-form-meetingGbn').val(data.meetingGbn)
@@ -245,8 +246,8 @@
                 </div>
                 <!-- 참석 맴버등록 -->
                 <div class="col-span-12 sm:col-span-6 mt-2">
-                	<label for="meeting-form-memberNo" class="form-label">참석맴버</label></br> 
-					<select data-placeholder="참석 맴버 검색" class="tom-select w-full" multiple id="multiple-select">
+                	<label for="meeting-form-memberNo" class="form-label">참석맴버</label></br>
+					<select data-placeholder="참석 맴버 검색" class="tom-select w-full" multiple id="meeting-form-memberNo">
 						<option value="2">박지열 • 박지열</option>
 					</select>
                 </div>
