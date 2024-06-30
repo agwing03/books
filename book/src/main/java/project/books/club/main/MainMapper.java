@@ -12,9 +12,17 @@ import project.books.sys.util.CamelMap;
 public interface MainMapper {
 	
     /**
+	 * 화면 프로필
+	 * @param SrchVO
+	 * @return CamelMap
+	 * @throw Exception
+     */
+	CamelMap selectCmmnMemberProfile(SrchVO vo);
+	
+    /**
 	 * 검색
 	 * @param SrchVO
-	 * @return list
+	 * @return List
 	 * @throw Exception
      */
 	List<CamelMap> selectCmmnSearch(SrchVO vo);
@@ -22,7 +30,7 @@ public interface MainMapper {
     /**
 	 * 알람
 	 * @param SrchVO
-	 * @return list
+	 * @return List
 	 * @throw Exception
      */
 	List<CamelMap> selectCmmnAlarm(SrchVO vo);

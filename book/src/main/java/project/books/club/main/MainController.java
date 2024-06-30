@@ -14,6 +14,17 @@ public class MainController {
 	private final MainService mainService;
 	
 	/**
+	 * 화면 프로필
+	 * @param SrchVO
+	 */
+	@RequestMapping("/getMemberProfile.do")
+	public SrchVO getMemberProfile(
+			@RequestBody SrchVO vo
+		) throws Exception {
+		return mainService.selectCmmnMemberProfile(vo);
+	}
+	
+	/**
 	 * 검색
 	 * @param SrchVO
 	 */

@@ -2,6 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="project.books.club.main.MainMapper">
 
+	<!-- 화면 프로필(공통)-->
+	<select id="selectCmmnMemberProfile" parameterType="project.books.club.cmmn.SrchVO" resultType="project.books.sys.util.CamelMap">
+		/*MainMapper.selectCmmnMemberProfile*/
+		select cm.member_no
+		     , concat(m.name,'(',m.nick_nm,')') as member_nm 
+		     , m.intro 
+		     , (select concat(fm.file_path,fd.file_nm) 
+				  from file_dtl fd 
+				       join file_mstr fm on fm.file_no = fd.file_no
+				 where fd.file_dtl_no = m.profile_img_no) as profile_img
+		  from `member` m 
+		       join club_member cm on m.member_no = cm.member_no 
+		 where 1=1
+		   and m.member_no = #{memberNo}
+	</select>
+	
 	<!-- 검색(공통)-->
 	<select id="selectCmmnSearch" parameterType="project.books.club.cmmn.SrchVO" resultType="project.books.sys.util.CamelMap">
 		/*MainMapper.selectCmmnSearch*/
@@ -54,10 +70,17 @@
 			      from member m
 			     where m.member_no = rcpt_member_no) as rcpt_member_nm
 			 , msg_cn
-			 , date_format(mx.confirm_dt, '%Y.%m.%d %H:%i:%S') as confirm_dt
+			 , date_format(mx.confirm_dt, '%y.%m.%d %H:%i:%S') as confirm_dt
 			 , mx.reg_no
-			 , date_format(mx.reg_dt, '%Y.%m.%d %H:%i:%S') as reg_dt
+			 , date_format(mx.reg_dt, '%y.%m.%d %H:%i:%S') as reg_dt
+			 , (select concat(fm.file_path,fd.file_nm) 
+				  from file_dtl fd join file_mstr fm on fm.file_no = fd.file_no
+				 where fd.file_dtl_no = (
+				 		select m.profile_img_no from member m
+					     where m.member_no = mx.send_member_no)) as send_member_img
 		  from msg_box mx
 		 where mx.rcpt_member_no = #{memberNo}
+		       or mx.msg_gbn = 'NOTICE'
+		 order by mx.reg_dt desc
 	</select>
 </mapper>
