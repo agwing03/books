@@ -5,25 +5,101 @@
 	<!-- 클럽 목록 -->
 	<select id="selectClubList" parameterType="project.books.club.cmmn.SrchVO" resultType="project.books.sys.util.CamelMap">
 		/* ClubMapper.selectClubList */
+		select cb.club_no
+		     , cb.club_nm
+			 , cb.club_total_cnt
+			 , cb.club_Intro
+			 , cb.club_img_no
+			 , cb.club_join_tp
+			 , DATE_FORMAT(cb.frst_reg_dt, '%Y.%m.%d %H:%i:%S') as frst_reg_dt
+		  from club.club cb
+		       join club.club_member cm 
+		         on cb.club_no = cm.club_no 
+		 where 1=1
+		<if test='member_no != null and member_no != ""'>
+	       and cb.member_no = #{memberNo}
+		</if> 
 	</select>
 	
 	<!-- 클럽 상세  -->
 	<select id="selectClubDtl" parameterType="project.books.club.cmmn.SrchVO" resultType="project.books.sys.util.CamelMap">
 		/* ClubMapper.selectClubDtl */
+		select cb.club_no
+		  	 , cb.club_nm
+		  	 , cb.club_total_cnt
+		  	 , cb.club_Intro
+		   	 , cb.club_img_no
+			 , cb.club_join_tp
+			 , DATE_FORMAT(cb.frst_reg_dt, '%Y.%m.%d %H:%i:%S') as frst_reg_dt
+		  from club.club cb
+		 where 1=1
+		<if test='club_no != null and club_no != ""'>
+		   and cb.club_no = #{clubNo}
+		</if> 
 	</select>
 	
 	<!-- 클럽 등록  -->
 	<insert id="insertClub" parameterType="project.books.club.club.ClubVO">
 		/* ClubMapper.insertClub */
+		insert into club.club (
+			  club_nm
+			, club_total_cnt
+			, club_Intro
+			, club_img_no
+			, club_join_tp
+			, action_area_lv1
+			, action_area_lv2
+			, club_category
+			, account
+			, bank_cd
+			, frst_reg_no
+			, frst_reg_dt
+			, last_upd_no
+			, last_upd_dt
+		) values {
+			  #{clubNm}
+			, #{clubTotalCnt}
+			, #{clubIntro}
+			, #{clubImgNo}
+			, #{clubJoinTp}
+			, #{actionAreaLv1}
+			, #{actionAreaLv2}
+			, #{clubCategory}
+			, #{account}
+			, #{bankCd}
+			, #{memberNo}
+			, now()
+			, #{memberNo}
+			, now()
+		}
 	</insert>
 	
 	<!-- 클럽 수정  -->
 	<update id="updateClub" parameterType="project.books.club.club.ClubVO">
 		/* ClubMapper.updateClub */
+		update club.club
+		   set club_nm			= #{clubNm}
+		     , club_total_cnt	= #{clubTotalCnt} 
+		     , club_Intro		= #{clubIntro}
+		     , club_img_no		= #{clubImgNo}
+		     , club_join_tp		= #{clubJoinTp}
+		     , use_yn			= #{useYn}
+		     , open_yn			= #{openYn}
+		     , action_area_lv1	= #{actionAreaLv1}
+		     , action_area_lv2	= #{actionAreaLv2}
+		     , club_category 	= #{clubCategory}
+		     , del_yn			= #{delYn}
+			 , account			= #{account}
+			 , bank_cd			= #{bankCd}
+			 , last_upd_no 		= #{memberNo}
+			 , last_upd_dt 		= now()
+		 where club_no = #{clubNo}
 	</update>
 	
 	<!-- 클럽 삭제  -->
 	<delete id="deleteClub" parameterType="project.books.club.cmmn.SrchVO">
 		/* ClubMapper.deleteClub */
+		delete from club.club
+ 		 where club_no = #{clubNo}
 	</delete>
 </mapper>
