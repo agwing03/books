@@ -9,7 +9,8 @@ import project.books.sys.util.CamelMap;
 
 @Getter
 @Setter
-public class ClubVO extends CommonVO{
+public class ClubVO extends SrchVO{
+	private String flag = '' 	//I,U,D
     private int meetingNo = 0;	//모임번호
     private int hostNo = 0;		//맴버번호(club_member)
     private String title;		//모임명

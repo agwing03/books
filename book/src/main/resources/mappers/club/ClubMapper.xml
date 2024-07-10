@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="project.books.club.club.ClubMapper">
+
+	<!-- 클럽 목록 -->
+	<select id="selectClubList" parameterType="project.books.club.cmmn.SrchVO" resultType="project.books.sys.util.CamelMap">
+		/* ClubMapper.selectClubList */
+	</select>
+	
+	<!-- 클럽 상세  -->
+	<select id="selectClubDtl" parameterType="project.books.club.cmmn.SrchVO" resultType="project.books.sys.util.CamelMap">
+		/* ClubMapper.selectClubDtl */
+	</select>
+	
+	<!-- 클럽 등록  -->
+	<insert id="insertClub" parameterType="project.books.club.club.ClubVO">
+		/* ClubMapper.insertClub */
+	</insert>
+	
+	<!-- 클럽 수정  -->
+	<update id="updateClub" parameterType="project.books.club.club.ClubVO">
+		/* ClubMapper.updateClub */
+	</update>
+	
+	<!-- 클럽 삭제  -->
+	<delete id="deleteClub" parameterType="project.books.club.cmmn.SrchVO">
+		/* ClubMapper.deleteClub */
+	</delete>
+</mapper>

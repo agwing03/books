@@ -30,6 +30,7 @@ public class SrchVO {
     
     //반환 메세지 
     private String msg;
+    private int procCnt = 0;
     
     //공통
     private List<CamelMap> dataList;
