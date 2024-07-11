@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="project.books.club.cmmn.log.LogMapper">
+	
+	<!-- 맴버 조인, 탈퇴 이력 -->
+	<insert id="insertMemberHistLog" parameterType="project.books.club.cmmn.log.LogVO">
+		/* LogMapper.insertMemberHistLog */
+		insert into club.member_hist_log (
+			  member_no
+			, club_no
+			, target_gbn
+			, join_gbn
+			, reg_no
+			, reg_dtm
+		) values (
+			  #{memberNo}
+			, #{clubNo}
+			, #{targetGbn}
+			, #{joinGbn}
+			, #{connUser}
+			, now()
+		)
+	</insert>
+	
+	<!-- 시스템 에러 이력 -->
+	<insert id="insertSystemErrorLog" parameterType="project.books.club.cmmn.log.LogVO">
+		/* LogMapper.insertSystemErrorLog */
+		insert into club.sys_error_log (
+			  method_nm
+			, param_data
+			, err_msg
+			, reg_no
+			, reg_dt
+		) values (
+			  #{methodNm}
+			, #{paramData}
+			, #{errMsg}
+			, #{connUser}
+			, now()
+		)
+	</insert>
+	
+	<!-- 시스템 로그인/아웃 이력 -->
+	<insert id="insertSystemLoginLog" parameterType="project.books.club.cmmn.log.LogVO">
+		/* LogMapper.insertSystemLoginLog */
+		insert into club.sys_login_log (
+			  login_gbn
+			, login_ip
+			, rtn_msg
+			, fail_cnt
+			, reg_no
+			, reg_dt
+		) values (
+			  #{loginGbn}
+			, #{loginIp}
+			, #{rtnMsg}
+			, #{failCnt}
+			, #{connUser}
+			, now()
+		)
+	</insert>
+</mapper>

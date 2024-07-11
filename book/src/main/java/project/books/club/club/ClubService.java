@@ -7,8 +7,10 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class ClubService {
+	private static final Logger log = (Logger) LoggerFactory.getLogger(MeetingService.class);
 	
 	private final ClubMapper clubMapper;
+	private final LogService sysLog;
 	
 	/**
 	 * 클럽 목록
@@ -18,6 +20,7 @@ public class ClubService {
 	 */
 	public SrchVO selectClubList(SrchVO vo) throws Exception{
 		vo.setDataList(clubMapper.selectClubList(vo));
+		vo.setTotCnt(vo.getDataList().size())
 		return vo;
 	}
 	
@@ -35,15 +38,24 @@ public class ClubService {
 	/**
 	 * 클럽 등록
 	 * @param ClubVO
-	 * @return SrchVO
+	 * @return ClubVO
 	 * @throw Exception
 	 */
 	public ClubVO insertClub(ClubVO vo) throws Exception{
-		vo.setProcCnt(clubMapper.insertClub(vo));
-		if(vo.getProcCnt() > 0) {
-			vo.setMsg("완료");
-		} else {
-			vo.setMsg("미처리");
+		try {
+			//처리 건수
+			vo.setProcCnt(clubMapper.insertClub(vo));
+			//메세지
+			if(vo.getProcCnt() > 0) {
+				vo.setMsg(MsgCodes.CLUB_INSERT_MSG);
+			} else {
+				vo.setMsg(MsgCodes.SYSTEM_PROCESS_FAILED);
+			}
+		} catch (Exception e) {
+			log.info("::: ClubService > updateClub > Exception : {}", e);
+			vo.setMsg(MsgCodes.SYSTEM_ERROR_MSG + e.toString());
+			//시스템 로그 등록
+			sysLog.systemErrorLog
 		}
 		return vo;
 	}
@@ -51,15 +63,22 @@ public class ClubService {
 	/**
 	 * 클럽 수정
 	 * @param ClubVO
-	 * @return SrchVO
+	 * @return ClubVO
 	 * @throw Exception
 	 */
 	public ClubVO updateClub(ClubVO vo) throws Exception{
-		vo.setProcCnt(clubMapper.updateClub(vo));
-		if(vo.getProcCnt() > 0) {
-			vo.setMsg("완료");
-		} else {
-			vo.setMsg("미처리");
+		try {
+			//수행 건수
+			vo.setProcCnt(clubMapper.updateClub(vo));
+			//메세지
+			if(vo.getProcCnt() > 0) {
+				vo.setMsg(MsgCodes.CLUB_UPDATE_MSG);
+			} else {
+				vo.setMsg(MsgCodes.SYSTEM_PROCESS_FAILED);
+			}
+		} catch (Exception e) {
+			log.info("::: ClubService > updateClub > Exception : {}", e);
+			vo.setMsg(MsgCodes.SYSTEM_ERROR_MSG + e.toString());
 		}
 		return vo;
 	}
@@ -71,11 +90,41 @@ public class ClubService {
 	 * @throw Exception
 	 */
 	public SrchVO deleteClub(SrchVO vo) throws Exception{
-		vo.setProcCnt(clubMapper.deleteClub(vo));
-		if(vo.getProcCnt() > 0) {
-			vo.setMsg("완료");
-		} else {
-			vo.setMsg("미처리");
+		try {
+			//수행 건수
+			vo.setProcCnt(clubMapper.deleteClub(vo));
+			if(vo.getProcCnt() > 0) {
+				vo.setMsg(MsgCodes.CLUB_DELETE_MSG);
+			} else {
+				vo.setMsg(MsgCodes.SYSTEM_PROCESS_FAILED);
+			}
+		} catch (Exception e) {
+			log.info("::: ClubService > deleteClub > Exception : {}", e);
+			vo.setMsg(MsgCodes.SYSTEM_ERROR_MSG + e.toString());
+		}
+		return vo;
+	}
+	
+	/**
+	 * 클럽 탈퇴
+	 * @param SrchVO
+	 * @return SrchVO
+	 * @throw Exception
+	 */
+	public SrchVO updateClubOut(SrchVO vo) throws Exception{
+		try {
+			//탈퇴 처리
+			vo.setProcCnt(clubMapper.updateClubOut(vo));
+			if(vo.getProcCnt() > 0) {
+				//맴버 이력 LOG 
+				
+				vo.setMsg(MsgCodes.CLUB_DELETE_MSG);
+			} else {
+				vo.setMsg(MsgCodes.SYSTEM_PROCESS_FAILED);
+			}
+		} catch (Exception e) {
+			log.info("::: ClubService > deleteClub > Exception : {}", e);
+			vo.setMsg(MsgCodes.SYSTEM_ERROR_MSG + e.toString());
 		}
 		return vo;
 	}

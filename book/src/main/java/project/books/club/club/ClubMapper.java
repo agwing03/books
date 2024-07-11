@@ -46,4 +46,12 @@ public interface ClubMapper {
 	 */
 	int deleteClub(SrchVO vo);
 	
+	/**
+	 * 클럽 탈퇴
+	 * @param SrchVO
+	 * @return Integer
+	 * @throw Exception
+	 */
+	int updateClubOut(SrchVO vo);
+	
 }

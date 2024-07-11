@@ -15,8 +15,8 @@ public class ClubController {
 	 * @param SrchVO
 	 * @return SrchVO
 	 */
-	@RequestMapping("/getClubList.do")
-	public SrchVO getClubList(
+	@RequestMapping("/selectClubList.do")
+	public SrchVO selectClubList(
 			@RequestBody SrchVO vo
 		) throws Exception {
 		return clubService.selectClubList(vo);
@@ -27,31 +27,77 @@ public class ClubController {
 	 * @param SrchVO
 	 * @return SrchVO
 	 */
-	@RequestMapping("/getClubDtl.do")
-	public SrchVO getClubDtl(
+	@RequestMapping("/selectClubDtl.do")
+	public SrchVO selectClubDtl(
 			@RequestBody SrchVO vo
 		) throws Exception {
 		return clubService.selectClubDtl(vo);
 	}
 	
 	/**
-	 * 클럽 등록, 수정, 삭제
+	 * 클럽 등록
 	 * @param ClubVO
 	 * @return SrchVO
 	 */
-	@RequestMapping("/setClub.do")
-	public SrchVO setClub(
+	@RequestMapping("/insertClub.do")
+	public SrchVO insertClub(
 			@RequestBody ClubVO vo,
 			SrchVO rtnVo
 		) throws Exception {
-		if(vo.getFlag().eqauls("I")) {
-			rtnVo = clubService.insertClub(vo);
-		}else if(vo.getFlag().eqauls("U")) {
-			rtnVo = clubService.updateClub(vo);
-		}else if(vo.getFlag().eqauls("D")) {
-			rtnVo = clubService.deleteClub(vo);
-		}
+		vo = clubService.insertClub(vo);
+		
+		//리턴 데이터 셋 
+		rtnVo.setProcCnt(vo.getProcCnt())
+		rtnVo.setMsg(vo.getMsg())
 		return rtnVo;
+	}
+	
+	/**
+	 * 클럽 수정
+	 * @param ClubVO
+	 * @return SrchVO
+	 */
+	@RequestMapping("/updateClub.do")
+	public SrchVO updateClub(
+			@RequestBody ClubVO vo,
+			SrchVO rtnVo
+		) throws Exception {
+		vo = clubService.updateClub(vo);
+
+		//리턴 데이터 셋 
+		rtnVo.setProcCnt(vo.getProcCnt())
+		rtnVo.setMsg(vo.getMsg())
+		return rtnVo;
+	}
+	
+	/**
+	 * 클럽 삭제
+	 * @param ClubVO
+	 * @return SrchVO
+	 */
+	@RequestMapping("/deleteClub.do")
+	public SrchVO deleteClub(
+			@RequestBody ClubVO vo,
+			SrchVO rtnVo
+		) throws Exception {
+		vo = clubService.deleteClub(vo);
+		
+		//리턴 데이터 셋 
+		rtnVo.setProcCnt(vo.getProcCnt())
+		rtnVo.setMsg(vo.getMsg())
+		return rtnVo;
+	}
+	
+	/**
+	 * 클럽 탈퇴
+	 * @param SrchVO
+	 * @return SrchVO
+	 */
+	@RequestMapping("/updateClubOut.do")
+	public SrchVO updateClubOut(
+			@RequestBody SrchVO vo
+		) throws Exception {
+		return clubService.updateClubOut(vo);;
 	}
 }
  

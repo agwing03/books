@@ -102,4 +102,14 @@
 		delete from club.club
  		 where club_no = #{clubNo}
 	</delete>
+	
+	<!-- 클럽 탈퇴  -->
+	<update id="updateClubOut" parameterType="project.books.club.cmmn.SrchVO">
+		/* ClubMapper.updateClubOut */
+		update club.club_member 
+		   set leave_dt = now()
+		     , leave_yn = 'Y'
+		 where member_no = #{memberNo}
+	</update>
+	
 </mapper>
