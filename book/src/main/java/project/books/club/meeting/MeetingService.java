@@ -9,6 +9,7 @@ import ch.qos.logback.classic.Logger;
 import lombok.RequiredArgsConstructor;
 import project.books.club.book.BookMapper;
 import project.books.club.book.BookVO;
+import project.books.club.cmmn.MsgCodes;
 import project.books.club.cmmn.SrchVO;
 import project.books.sys.util.CamelMap;
 
@@ -19,112 +20,129 @@ public class MeetingService {
 	private final MeetingMapper meetingMapper;
 	private final BookMapper bookMapper; 
 	
-	int mtCnt = 0;
-	
-	/**
+	/**	
 	 * 모임 및 모임후기 목록 조회
 	 * @param SrchVO
-	 * @return List, Integer
+	 * @return SrchVO
 	 * @throw Exception
 	 */
 	public SrchVO selectMeetingList(SrchVO vo) throws Exception{
-		int cnt = meetingMapper.selectMeetingListCnt(vo);
-		if(cnt > 0) {
-			vo.setDataList(meetingMapper.selectMeetingList(vo));
-		}
+		vo.setDataList(meetingMapper.selectMeetingList(vo));
+		vo.setTotCnt(vo.getDataList().size());
 		return vo;
 	}
 	
 	/**
-	 * 모임 정보 조회
-	 * @param SrchVO
-	 * @return SrchVO.CamelMap
-	 * @throw Exception
-	 */
-	public SrchVO selectMeeting(SrchVO vo) throws Exception{
-		//모임 정보
-		vo.setDataMap(meetingMapper.selectMeeting(vo));
-		//참석자 목록
-		vo.setIntList(meetingMapper.selectMeetingMemberList(vo));
-		return vo;
-	}
-	
-	
-	/**
-	 * 모임후기 상세 조회
-	 * @param SrchVO
-	 * @return SrchVO.CamelMap
-	 * @throw Exception
-	 */
-	public MeetingVO getMeetingReview(MeetingVO vo) throws Exception{
-		int meetingNo = vo.getMeetingNo();
-		// 모임 정보
-		vo = meetingMapper.selectMeetingInfo(meetingNo);
-		// 맴버별 한줄평
-		vo.setReviewList(meetingMapper.selectMeetingReviewList(meetingNo));
-		return vo;
-	}
-	
-	/**
-	 * 모임 저장
-	 * @target meetingFormPopup
+	 * 모임 및 모임후기 상세 조회
 	 * @param MeetingVO
 	 * @return MeetingVO
 	 * @throw Exception
 	 */
-	public MeetingVO saveMeeting(MeetingVO vo) throws Exception{
-		//모임 참석자 추가된 경우
-		List<Integer> memberList = vo.getMemberNoArr();
-				
-		//모임 key check
-		if(vo.getSaveFlag().equals("I")) {//등록
-			//모임 등록
-			mtCnt = meetingMapper.insertMeeting(vo);
-		} else { //수정
-			//모임 등록
-			mtCnt = meetingMapper.updateMeeting(vo);
-		}
+	public MeetingVO selectMeetingDtl(MeetingVO vo) throws Exception{
+		int meetingNo = vo.getMeetingNo();
+		// 모임 정보
+		vo = meetingMapper.selectMeetingDtl(meetingNo);
+		//참석자 및 한줄평 목록
+		vo.setReviewList(meetingMapper.selectMeetingMemberReviewList(meetingNo));
+		return vo;
+	}
+	
+	/**
+	 * 모임 정보 조회(변경 팝업)
+	 * @param MeetingVO
+	 * @return MeetingVO
+	 * @throw Exception
+	 */
+	public MeetingVO selectMeetingInfo(MeetingVO vo) throws Exception{
+		vo = meetingMapper.selectMeetingInfo(vo.getMeetingNo());
+		return vo;
+	}
+	
+	/**
+	 * 모임 등록
+	 * @param MeetingVO
+	 * @return MeetingVO
+	 * @throw Exception
+	 */
+	public MeetingVO insertMeeting(MeetingVO vo) throws Exception{
+		//뱐수 선언
+		int mtCnt = 0, mbCnt = 0;
+		List<Integer> memberNoList = vo.getMemberNoArr();
 		
-		//참석자 존재 여부
-		if(!memberList.isEmpty() && memberList.size() > 0) {
-			if(vo.getSaveFlag().equals("U")) {
-				mtCnt = meetingMapper.deleteMeetingMember(vo);
+		//모임 등록(VO 등록된 모임번호 담김)
+		mtCnt = meetingMapper.insertMeeting(vo);
+		
+		if(mtCnt > 0) {
+			//참석자 존재 여부
+			if(!memberNoList.isEmpty() && memberNoList.size() > 0) {
+				//참석자 등록
+				for (int i = 0; i < memberNoList.size(); i++) {
+					vo.setMemberNo(memberNoList.get(i));
+					mbCnt += meetingMapper.insertMeetingMember(vo);
+				}
 			}
-			//맴버 등록
-			for (int i = 0; i < memberList.size(); i++) {
-				vo.setMemberNo(memberList.get(i));
-				mtCnt = meetingMapper.insertMeetingMember(vo);
-			}
+			log.debug("##### 모임 생성 insertMeeting / 모임생성:"+mtCnt+"건 / 맴버등록:"+mbCnt+"건 #####");
+			
+			//모임 등록 메세지
+			vo.setMsg(MsgCodes.MEETING_INSERT);
+		} else {
+			vo.setMsg(MsgCodes.SYSTEM_PROCESS_FAILED);
 		}
-		vo.setSaveCnt(mtCnt);
-		log.debug("##### 모임 생성 saveMeeting > FLAG:"+vo.getSaveFlag()+" / 모임생성:"+mtCnt+"건 #####");
+		return vo;
+	}
+	
+	/**
+	 * 모임 수정
+	 * @param MeetingVO
+	 * @return MeetingVO
+	 * @throw Exception
+	 */
+	public MeetingVO updateMeeting(MeetingVO vo) throws Exception{
+		//뱐수 선언
+		int mtCnt = 0, mbCnt = 0;
+		List<Integer> memberNoList = vo.getMemberNoArr();
+		
+		//모임 등록(VO 등록된 모임번호 담김)
+		mtCnt = meetingMapper.updateMeeting(vo);
+		
+		if(mtCnt > 0) {
+			//참석자 존재 여부
+			if(!memberNoList.isEmpty() && memberNoList.size() > 0) {
+				//참석자 삭제 후 재등록
+				mtCnt = meetingMapper.deleteMeetingMember(vo);
+				
+				//참석자 재등록
+				for (int i = 0; i < memberNoList.size(); i++) {
+					vo.setMemberNo(memberNoList.get(i));
+					mbCnt += meetingMapper.insertMeetingMember(vo);
+				}
+			}
+			log.debug("##### 모임 수정 updateMeeting / 모임수정:"+mtCnt+"건 / 맴버재등록:"+mbCnt+"건 #####");
+			
+			//모임 등록 메세지
+			vo.setMsg(MsgCodes.MEETING_UPDATE);
+		} else {
+			vo.setMsg(MsgCodes.SYSTEM_PROCESS_FAILED);
+		}
 		return vo;
 	}
 	
 	/**
 	 * 모임 삭제
-	 * @target meetingFormPopup
 	 * @param MeetingVO
 	 * @return MeetingVO
 	 * @throw Exception
 	 */
 	public MeetingVO deleteMeeting(MeetingVO vo) throws Exception{
-		vo.setSaveCnt(meetingMapper.deleteMeeting(vo));
+		//수행 건수
+		vo.setProcCnt(meetingMapper.deleteMeeting(vo));
+		if(vo.getProcCnt() > 0) {
+			vo.setMsg(MsgCodes.MEETING_DELETE);
+		} else {
+			vo.setMsg(MsgCodes.SYSTEM_PROCESS_FAILED);
+		}
 		return vo;
 	}
-	
-	
-	/**
-	 * 모임후기 대상 목록 조회 
-	 * @target meetingReviewFormPopup
-	 * @param SrchVO
-	 * @return SrchVO.List<CamelMap>
-	 */
-	public SrchVO selectMeetingPopupList(SrchVO vo) throws Exception{
-		vo.setDataList(meetingMapper.selectMeetingPopupList());
-		return vo;
-	}
-	
 	
 	/**
 	 * 모임후기 저장
@@ -188,7 +206,7 @@ public class MeetingService {
 				bkVO.setUserNo(userNo); //접속자
 				mtReviewICnt += bookMapper.insertBookEval(bkVO);
 			}
-			vo.setSaveCnt(mtMeetingUCnt+mtReviewICnt+mtReviewDCnt);
+			vo.setProcCnt(mtMeetingUCnt+mtReviewICnt+mtReviewDCnt);
 		}
 		log.debug("##### 모임 및 후기 등록 saveMeetingReview > 모임U:"+mtMeetingUCnt+"건 / 도서I:"+mtBookICnt+"건 / 리뷰D:"+mtReviewDCnt+"건 / 리뷰I:"+mtReviewICnt+"건 #####");
 		return vo;

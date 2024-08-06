@@ -2,11 +2,11 @@ package project.books.club.book;
 
 import lombok.Getter;
 import lombok.Setter;
-import project.books.club.cmmn.CommonVO;
+import project.books.club.cmmn.CmmnVO;
 
 @Getter
 @Setter
-public class BookVO extends CommonVO{
+public class BookVO extends CmmnVO{
 	
 	private int bookNo;			//도서번호
 	private int memberNo;		//참석자번호

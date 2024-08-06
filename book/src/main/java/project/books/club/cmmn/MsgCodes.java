@@ -1,14 +1,11 @@
 package project.books.club.cmmn;
 
-import java.util.List;
-
 import lombok.Getter;
 import lombok.Setter;
-import project.books.sys.util.CamelMap;
 
 @Getter
 @Setter
-public class MsgCode {
+public class MsgCodes {
 	//시스템 에러 
 	public static final String SYSTEM_ERROR = "시스템 오류가 발생하였습니다. 시스템관리자에게 문의해주시기 바랍니다. Exception : ";
 	public static final String SYSTEM_PROCESS_FAILED = "요청이 처리되지 못했습니다. 다시 시도하시거나 시스템관리자에게 문의해주시기 바랍니다.";

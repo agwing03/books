@@ -2,11 +2,11 @@ package project.books.club.member;
 
 import lombok.Getter;
 import lombok.Setter;
-import project.books.club.cmmn.CommonVO;
+import project.books.club.cmmn.CmmnVO;
 
 @Getter
 @Setter
-public class MemberVO extends CommonVO{
+public class MemberVO extends CmmnVO{
 	private String saveFlag;	//I,U
 	//member 
     private int memberNo = 0;	//사용자번호

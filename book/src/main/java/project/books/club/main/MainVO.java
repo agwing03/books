@@ -2,11 +2,11 @@ package project.books.club.main;
 
 import lombok.Getter;
 import lombok.Setter;
-import project.books.club.cmmn.CommonVO;
+import project.books.club.cmmn.CmmnVO;
 
 @Getter
 @Setter
-public class MainVO extends CommonVO{
+public class MainVO extends CmmnVO{
 	
 	private String comCd;				// 회사코드
 

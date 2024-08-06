@@ -4,12 +4,12 @@ import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
-import project.books.club.cmmn.CommonVO;
+import project.books.club.cmmn.CmmnVO;
 import project.books.sys.util.CamelMap;
 
 @Getter
 @Setter
-public class CodeVO extends CommonVO{
+public class CodeVO extends CmmnVO{
     private String codeId;		//그룹코드
     private String codeDtlId;	//상세코드
     private String codeDtlNm;	//상세코드명

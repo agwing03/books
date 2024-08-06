@@ -1,11 +1,17 @@
 package project.books.club.meeting;
 
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import project.books.club.club.ClubVO;
 import project.books.club.cmmn.SrchVO;
+import project.books.sys.util.CamelMap;
 
 @RestController
 @RequiredArgsConstructor
@@ -14,97 +20,109 @@ public class MeetingController {
 	private final MeetingService meetingService;
 	 
 	/**
-	 * 모임 및 모임후기 목록 조회
+	 * 모임 목록 조회
 	 * @param SrchVO
-	 * @return SrchVO.List<CamelMap>
+	 * @return ResponseEntity
 	 */
-	@RequestMapping("/meeting/getMeetingList.do")
-	public SrchVO getMeetingList(
+	@RequestMapping("/selectMeetingList.do")
+	public ResponseEntity<List<CamelMap>> selectMeetingList(
 			@RequestBody SrchVO vo
 		) throws Exception {
 		vo = meetingService.selectMeetingList(vo);
-		return vo;
+		return ResponseEntity.ok(vo.getDataList());
 	}
 	
 	/**
-	 * 모임 정보 조회
-	 * @param SrchVO
-	 * @return SrchVO.CamelMap
-	 */
-	@RequestMapping("/meeting/getMeeting.do")
-	public SrchVO getMeeting(
-			@RequestBody SrchVO vo
-		) throws Exception {
-		vo = meetingService.selectMeeting(vo);
-		return vo;
-	}
-	
-	/**
-	 * 모임 저장
-	 * @target meetingFormPopup
+	 * 모임 상세 조회
 	 * @param MeetingVO
-	 * @return MeetingVO
+	 * @return ResponseEntity
 	 */
-	@RequestMapping("/meeting/saveMeeting.do")
-	public MeetingVO saveMeeting(
+	@RequestMapping("/selectMeetingDtl.do")
+	public ResponseEntity<?> selectMeetingDtl(
 			@RequestBody MeetingVO vo
 		) throws Exception {
-		vo = meetingService.saveMeeting(vo);
-		return vo;
+		vo = meetingService.selectMeetingDtl(vo);
+		return ResponseEntity.ok(vo);
 	}
 	
 	/**
-	 * 모임 삭제
-	 * @target meetingFormPopup
+	 * 모임 정보 조회(변경 팝업)
 	 * @param MeetingVO
-	 * @return MeetingVO
+	 * @return ResponseEntity
 	 */
-	@RequestMapping("/meeting/delMeeting.do")
-	public MeetingVO delMeeting(
+	@RequestMapping("/selectMeetingInfo.do")
+	public ResponseEntity<?> selectMeetingInfo(
+			@RequestBody MeetingVO vo
+		) throws Exception {
+		vo = meetingService.selectMeetingInfo(vo);
+		return ResponseEntity.ok(vo);
+	}
+	
+	/**
+	 * 모임 등록
+	 * @param MeetingVO
+	 * @return ResponseEntity
+	 */
+	@RequestMapping("/insertMeeting.do")
+	public ResponseEntity<?> insertMeeting(
+			@RequestBody MeetingVO vo
+		) throws Exception {
+		vo = meetingService.insertMeeting(vo);
+		return new ResponseEntity<>(vo.getMsg(), HttpStatus.OK);
+	}
+
+	/**
+	 * 모임 수정
+	 * @param MeetingVO
+	 * @return ResponseEntity
+	 */
+	@RequestMapping("/updateMeeting.do")
+	public ResponseEntity<?> updateMeeting(
+			@RequestBody MeetingVO vo
+		) throws Exception {
+		vo = meetingService.updateMeeting(vo);
+		return new ResponseEntity<>(vo.getMsg(), HttpStatus.OK);
+	}
+
+	/**
+	 * 모임 삭제
+	 * @param MeetingVO
+	 * @return ResponseEntity
+	 */
+	@RequestMapping("/deleteMeeting.do")
+	public ResponseEntity<?> deleteMeeting(
 			@RequestBody MeetingVO vo
 		) throws Exception {
 		vo = meetingService.deleteMeeting(vo);
-		return vo;
+		return new ResponseEntity<>(vo.getMsg(), HttpStatus.OK);
 	}
 	
+	
+	
 	/**
-	 * 모임후기 상세 조회
+	 * 모임후기 등록
 	 * @param MeetingVO
-	 * @return MeetingVO.CamelMap
+	 * @return ResponseEntity
 	 */
-	@RequestMapping("/meeting/getMeetingReview.do")
-	public MeetingVO getMeetingReview(
+	@RequestMapping("/insertMeetingReview.do")
+	public ResponseEntity<?> insertMeetingReview(
 			@RequestBody MeetingVO vo
 		) throws Exception {
-		vo = meetingService.getMeetingReview(vo);
-		return vo;
+		vo = meetingService.insertMeetingReview(vo);
+		return new ResponseEntity<>(vo.getMsg(), HttpStatus.OK);
 	}
-	
+
 	/**
-	 * 모임후기 저장
-	 * @param ClubVO
+	 * 모임후기 수정
+	 * @param MeetingVO
+	 * @return ResponseEntity
 	 */
-	@RequestMapping("/meeting/saveMeetingReview.do")
-	public void saveMeetingReview(
+	@RequestMapping("/updateMeeting.do")
+	public ResponseEntity<?> updateMeetingReview(
 			@RequestBody MeetingVO vo
 		) throws Exception {
-		meetingService.saveMeetingReview(vo);
-	}
-	
-	
-	
-	/**
-	 * 모임후기 대상 목록 조회 
-	 * @target meetingReviewFormPopup
-	 * @param SrchVO
-	 * @return SrchVO.List<CamelMap>
-	 */
-	@RequestMapping("/meeting/getMeetingPopupList.do")
-	public SrchVO getMeetingPopupList(
-			@RequestBody SrchVO vo
-		) throws Exception {
-		vo = meetingService.selectMeetingPopupList(vo);
-		return vo;
+		vo = meetingService.updateMeetingReview(vo);
+		return new ResponseEntity<>(vo.getMsg(), HttpStatus.OK);
 	}
 }
  

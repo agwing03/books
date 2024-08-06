@@ -1,14 +1,10 @@
-package project.books.club.cmmn.menu;
-
-import java.util.List;
+package project.books.club.cmmn.log;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import project.books.sys.util.CamelMap;
-
 
 @Mapper
-public interface MenuMapper {
+public interface LogMapper {
 	
     /**
 	 * 맴버 조인, 탈퇴 이력

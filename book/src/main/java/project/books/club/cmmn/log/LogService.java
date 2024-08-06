@@ -27,24 +27,18 @@ public class LogService {
 			int clubNo
 		) throws Exception{
 		
-		try {
-			//데이터셋
-			LogVO vo = new LogVO();
-			vo.setMemberNo(memberNo);
-			vo.setTargetGbn(targetGbn);
-			vo.setJoinGbn(joinGbn);
-			vo.setConnUser(connUser);
-			if(StringUtils.isNotEmpty(clubNo) && targetGbn.equals("CLUB")) {
-				vo.setClubNo(clubNo);
-			}
-			
-			//로그 저장
-			logMapper.insertMemberHistLog(vo);
-			
-		} catch (Exception e) {
-			log.info("::: LogService > memberHistLog > Exception : {}", e);
-			
+		//데이터셋
+		LogVO vo = new LogVO();
+		vo.setMemberNo(memberNo);
+		vo.setTargetGbn(targetGbn);
+		vo.setJoinGbn(joinGbn);
+		vo.setConnUser(connUser);
+		if(clubNo > 0 && targetGbn.equals("CLUB")) {
+			vo.setClubNo(clubNo);
 		}
+		
+		//로그 저장
+		logMapper.insertClubMemberHist(vo);
 	}
 	
 	/**
@@ -62,19 +56,15 @@ public class LogService {
 			int connUser
 		) throws Exception {
 		
-		try {
-			//데이터셋
-			LogVO vo = new LogVO();
-			vo.setMethodNm(methodNm);
-			vo.setParamData(paramData);
-			vo.setErrMsg(errMsg);
-			vo.setConnUser(connUser);
-			
-			//로그 저장
-			logMapper.insertSystemErrorLog(vo);
-		} catch (Exception e) {
-			log.info("::: LogService > systemErrorLog > Exception : {}", e);
-		}
+		//데이터셋
+		LogVO vo = new LogVO();
+		vo.setMethodNm(methodNm);
+		vo.setParamData(paramData);
+		vo.setErrMsg(errMsg);
+		vo.setConnUser(connUser);
+		
+		//로그 저장
+		logMapper.insertSystemErrorLog(vo);
 	}
 	
 	/**
@@ -94,19 +84,15 @@ public class LogService {
 			int connUser
 		) throws Exception {
 		
-		try {
-			//데이터셋
-			LogVO vo = new LogVO();
-			vo.setLoginGbn(loginGbn);
-			vo.setLoginIp(loginIp);
-			vo.setRtnMsg(rtnMsg);
-			vo.setFailCnt(failCnt);
-			vo.setConnUser(connUser);
-			
-			//로그 저장
-			logMapper.insertSystemLoginLog(vo);
-		} catch (Exception e) {
-			log.info("::: LogService > systemErrorLog > Exception : {}", e);
-		}
+		//데이터셋
+		LogVO vo = new LogVO();
+		vo.setLoginGbn(loginGbn);
+		vo.setLoginIp(loginIp);
+		vo.setRtnMsg(rtnMsg);
+		vo.setFailCnt(failCnt);
+		vo.setConnUser(connUser);
+		
+		//로그 저장
+		logMapper.insertSystemLoginLog(vo);
 	}
 }

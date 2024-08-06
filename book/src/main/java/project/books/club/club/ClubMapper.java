@@ -1,6 +1,11 @@
 package project.books.club.club;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
+
+import project.books.club.cmmn.SrchVO;
+import project.books.sys.util.CamelMap;
 
 
 @Mapper
@@ -12,7 +17,7 @@ public interface ClubMapper {
 	 * @return CamelMap
 	 * @throw Exception
 	 */
-	CamelMap selectClubList(SrchVO vo);
+	List<CamelMap> selectClubList(SrchVO vo);
 	
 	/**
 	 * 클럽 상세
@@ -44,14 +49,14 @@ public interface ClubMapper {
 	 * @return Integer
 	 * @throw Exception
 	 */
-	int deleteClub(SrchVO vo);
+	int deleteClub(ClubVO vo);
 	
 	/**
 	 * 클럽 탈퇴
-	 * @param SrchVO
+	 * @param ClubVO
 	 * @return Integer
 	 * @throw Exception
 	 */
-	int updateClubOut(SrchVO vo);
+	int updateClubOut(ClubVO vo);
 	
 }

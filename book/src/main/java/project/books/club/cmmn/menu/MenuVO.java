@@ -4,12 +4,12 @@ import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
-import project.books.club.cmmn.CommonVO;
+import project.books.club.cmmn.CmmnVO;
 import project.books.sys.util.CamelMap;
 
 @Getter
 @Setter
-public class MenuVO extends CommonVO{
+public class MenuVO extends CmmnVO{
     private int menuNo;			//메뉴번호
     private String menuNm;		//메뉴명
     private int menuLv;			//메뉴레벨

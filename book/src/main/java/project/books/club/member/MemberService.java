@@ -41,7 +41,7 @@ public class MemberService {
 		}else {
 			setCnt += memberMapper.updateMember(vo);
 		}
-		vo.setSaveCnt(setCnt);
+		vo.setProcCnt(setCnt);
 		return vo;
 	}
 	

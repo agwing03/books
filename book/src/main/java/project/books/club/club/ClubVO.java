@@ -4,13 +4,12 @@ import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
-import project.books.club.cmmn.CommonVO;
+import project.books.club.cmmn.CmmnVO;
 import project.books.sys.util.CamelMap;
 
 @Getter
 @Setter
-public class ClubVO extends SrchVO{
-	private String flag = '' 	//I,U,D
+public class ClubVO extends CmmnVO{
     private int meetingNo = 0;	//모임번호
     private int hostNo = 0;		//맴버번호(club_member)
     private String title;		//모임명

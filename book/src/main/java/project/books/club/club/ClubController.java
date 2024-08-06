@@ -1,8 +1,16 @@
 package project.books.club.club;
 
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import project.books.club.cmmn.SrchVO;
+import project.books.sys.util.CamelMap;
 
 @RestController
 @RequiredArgsConstructor
@@ -13,91 +21,79 @@ public class ClubController {
 	/**
 	 * 클럽 목록
 	 * @param SrchVO
-	 * @return SrchVO
+	 * @return ResponseEntity
 	 */
 	@RequestMapping("/selectClubList.do")
-	public SrchVO selectClubList(
+	public ResponseEntity<List<CamelMap>> selectClubList(
 			@RequestBody SrchVO vo
 		) throws Exception {
-		return clubService.selectClubList(vo);
+		vo = clubService.selectClubList(vo);
+		return ResponseEntity.ok(vo.getDataList());
 	}
 
 	/**
 	 * 클럽 상세
 	 * @param SrchVO
-	 * @return SrchVO
+	 * @return ResponseEntity
 	 */
 	@RequestMapping("/selectClubDtl.do")
-	public SrchVO selectClubDtl(
+	public ResponseEntity<CamelMap> selectClubDtl(
 			@RequestBody SrchVO vo
 		) throws Exception {
-		return clubService.selectClubDtl(vo);
+		vo = clubService.selectClubDtl(vo);
+		return ResponseEntity.ok(vo.getDataMap());
 	}
 	
 	/**
 	 * 클럽 등록
 	 * @param ClubVO
-	 * @return SrchVO
+	 * @return ResponseEntity
 	 */
 	@RequestMapping("/insertClub.do")
-	public SrchVO insertClub(
-			@RequestBody ClubVO vo,
-			SrchVO rtnVo
+	public ResponseEntity<?> insertClub(
+			@RequestBody ClubVO vo
 		) throws Exception {
 		vo = clubService.insertClub(vo);
-		
-		//리턴 데이터 셋 
-		rtnVo.setProcCnt(vo.getProcCnt())
-		rtnVo.setMsg(vo.getMsg())
-		return rtnVo;
+		return new ResponseEntity<>(vo.getMsg(), HttpStatus.OK);
 	}
 	
 	/**
 	 * 클럽 수정
 	 * @param ClubVO
-	 * @return SrchVO
+	 * @return ResponseEntity
 	 */
 	@RequestMapping("/updateClub.do")
-	public SrchVO updateClub(
-			@RequestBody ClubVO vo,
-			SrchVO rtnVo
+	public ResponseEntity<?> updateClub(
+			@RequestBody ClubVO vo
 		) throws Exception {
 		vo = clubService.updateClub(vo);
-
-		//리턴 데이터 셋 
-		rtnVo.setProcCnt(vo.getProcCnt())
-		rtnVo.setMsg(vo.getMsg())
-		return rtnVo;
+		return new ResponseEntity<>(vo.getMsg(), HttpStatus.OK);
 	}
 	
 	/**
 	 * 클럽 삭제
 	 * @param ClubVO
-	 * @return SrchVO
+	 * @return ResponseEntity
 	 */
 	@RequestMapping("/deleteClub.do")
-	public SrchVO deleteClub(
-			@RequestBody ClubVO vo,
-			SrchVO rtnVo
+	public ResponseEntity<?> deleteClub(
+			@RequestBody ClubVO vo
 		) throws Exception {
 		vo = clubService.deleteClub(vo);
-		
-		//리턴 데이터 셋 
-		rtnVo.setProcCnt(vo.getProcCnt())
-		rtnVo.setMsg(vo.getMsg())
-		return rtnVo;
+		return new ResponseEntity<>(vo.getMsg(), HttpStatus.OK);
 	}
 	
 	/**
 	 * 클럽 탈퇴
 	 * @param SrchVO
-	 * @return SrchVO
+	 * @return ResponseEntity
 	 */
 	@RequestMapping("/updateClubOut.do")
-	public SrchVO updateClubOut(
-			@RequestBody SrchVO vo
+	public ResponseEntity<?> updateClubOut(
+			@RequestBody ClubVO vo
 		) throws Exception {
-		return clubService.updateClubOut(vo);;
+		vo = clubService.updateClubOut(vo);
+		return new ResponseEntity<>(vo.getMsg(), HttpStatus.OK);
 	}
 }
  
