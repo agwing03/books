@@ -24,9 +24,7 @@ public class MsgCodes {
 	public static final String MEETING_ATTEND_CANCEL = "모임에 참석이 취소되었습니다.";
 	public static final String MEETING_ATTEND_CONFIRMED = "님이 모임에 참석이 확정되었습니다.";
 	public static final String MEETING_ATTEND_REFUSAL = "님이 모임에 참석이 거부되었습니다.";
-	public static final String MEETING_REVIEW_INSERT = "모임 후기가 등록되었습니다.";
-	public static final String MEETING_REVIEW_UPDATE = "모임 후기가 수정되었습니다.";
-	public static final String MEETING_REVIEW_DELETE = "모임 후기가 삭제되었습니다.";
+	public static final String MEETING_REVIEW_SAVE = "모임 후기가 저장되었습니다.";
 	public static final String MEETING_REVIEW_MEMBER_INSERT = "참석 맴버를 추가하였습니다.";
 	public static final String MEETING_REVIEW_MEMBER_DELETE = "참석 맴버를 삭제하였습니다.";
 					

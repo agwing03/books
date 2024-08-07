@@ -4,6 +4,7 @@ import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
+import project.books.club.book.BookVO;
 import project.books.club.cmmn.CmmnVO;
 import project.books.sys.util.CamelMap;
 
@@ -11,7 +12,6 @@ import project.books.sys.util.CamelMap;
 @Setter
 public class MeetingVO extends CmmnVO{
 	//meeting
-    private int meetingNo = 0;	//모임번호
     private int hostNo = 0;		//맴버번호(club_member)
     private String hostNm;		//맴버이름
     private String title;		//모임명
@@ -32,7 +32,6 @@ public class MeetingVO extends CmmnVO{
     
     //meeting_member
     private int attendNo;		//모임 참석 번호
-    private int memberNo; 		//참석자 번호
     private String attendYn;	//참석여부
     private String afterPartyYn;//뒤풀이참석여부
     private String divAmount;	//분할금액
@@ -42,5 +41,5 @@ public class MeetingVO extends CmmnVO{
     
     
     // 모임 후기 한줄평 
-	private List<CamelMap> reviewList;
+	private List<BookVO> reviewList;
 }

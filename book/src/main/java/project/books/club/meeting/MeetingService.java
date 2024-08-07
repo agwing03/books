@@ -48,7 +48,7 @@ public class MeetingService {
 	}
 	
 	/**
-	 * 모임 정보 조회(변경 팝업)
+	 * 모임 정보 조회(등록, 수정 팝업)
 	 * @param MeetingVO
 	 * @return MeetingVO
 	 * @throw Exception
@@ -145,70 +145,67 @@ public class MeetingService {
 	}
 	
 	/**
-	 * 모임후기 저장
+	 * 모임후기 저장(등록, 수정)
 	 * @param MeetingVO
 	 * @return MeetingVO
 	 * @throw Exception
 	 */
 	public MeetingVO saveMeetingReview(MeetingVO vo) throws Exception{
-		int mtMeetingUCnt = 0;
-		int mtReviewICnt = 0;
-		int mtReviewDCnt = 0;
-		int mtBookICnt = 0;
+		//변수
+		int mtMtUCnt = 0;
+		int mtRvICnt = 0;
+		int mtRvDCnt = 0;
+		int mtBkICnt = 0;
+		BookVO bkVO = new BookVO();
 		
 		//필수 데이터
-		BookVO bkVO = new BookVO();
-		int clubNo = vo.getClubNo();//모임번호
-		int userNo = vo.getUserNo();//접속자
-		int meetingNo = vo.getMeetingNo();
+		int clubNo = vo.getClubNo();		//클럽번호
+		int meetingNo = vo.getMeetingNo();	//모임번호
+		int userNo = vo.getUserNo();		//접속자
 		String comment = vo.getComment();
 		
 		//리뷰 리스트
-		List<CamelMap> reviewList = vo.getReviewList();
+		List<BookVO> reviewList = vo.getReviewList();
 		
 		//모임 코멘트 저장
 		vo.setComment(comment);
-		mtMeetingUCnt = meetingMapper.updateMeeting(vo);
+		vo.setReviewYn(true);
+		vo.setUserNo(userNo);
+		mtMtUCnt = meetingMapper.updateMeeting(vo);
 		
 		//리스트 목록
 		if(reviewList.size() > 0) {
-			//리뷰 삭제 및 재등록
+			//리뷰 삭제 
 			bkVO.setMeetingNo(meetingNo);
-			mtReviewDCnt = bookMapper.deleteBookEval(bkVO);
+			mtRvDCnt = bookMapper.deleteBookEval(bkVO);
 			
-			int bookNo;
-			for (CamelMap review : reviewList) {
-				//data set
-				String bookNew = review.get("bookNew").toString();
-				int memberNo = Integer.parseInt(review.get("memberNo").toString());
-				String progressYn = review.get("progressYn").toString();
+			//리뷰 등록
+			for (BookVO review : reviewList) {
+				int bookNo; //도서번호
 				
 				//신규 도서 등록
-				if(bookNew.equals("Y")) {
-					bkVO.setBookTitle(review.get("bookTitle").toString());
-					bkVO.setBookWriter(review.get("bookWriter").toString());
-					mtBookICnt = bookMapper.insertBook(bkVO);
-					//신규 도서번호
-					bookNo = bkVO.getBookNo();
-				} else {
-					bookNo = Integer.parseInt(review.get("bookNo").toString());
+				if(review.getNewBook()) {
+					mtBkICnt += bookMapper.insertBook(review);
 				}
 				
 				//서평 등록
-				bkVO.setClubNo(clubNo);
-				bkVO.setBookNo(bookNo);
-				bkVO.setMeetingNo(meetingNo);
-				bkVO.setMemberNo(memberNo);
-				if(progressYn.equals("N")) { //모임 진행자 제외
-					bkVO.setBookScore(review.get("bookScore").toString());
-					bkVO.setBookEval(review.get("bookEval").toString());
+				review.setClubNo(clubNo);
+				review.setMeetingNo(meetingNo);
+				review.setUserNo(userNo); //접속자
+				if(!review.getProgressYn()) { //모임 진행자 제외
+					mtRvICnt += bookMapper.insertBookEval(review);
 				}
-				bkVO.setUserNo(userNo); //접속자
-				mtReviewICnt += bookMapper.insertBookEval(bkVO);
 			}
-			vo.setProcCnt(mtMeetingUCnt+mtReviewICnt+mtReviewDCnt);
+			vo.setProcCnt(mtMtUCnt+mtBkICnt+mtRvDCnt+mtRvICnt);
 		}
-		log.debug("##### 모임 및 후기 등록 saveMeetingReview > 모임U:"+mtMeetingUCnt+"건 / 도서I:"+mtBookICnt+"건 / 리뷰D:"+mtReviewDCnt+"건 / 리뷰I:"+mtReviewICnt+"건 #####");
+		
+		log.debug("##### 모임 및 후기 등록 saveMeetingReview > 모임코멘트:"+mtMtUCnt+"건 / 도서등록:"+mtBkICnt+"건 / 이전리뷰삭제:"+mtRvDCnt+"건 / 리뷰등록:"+mtRvICnt+"건 #####");
+		
+		if(vo.getProcCnt() > 0) {
+			vo.setMsg(MsgCodes.MEETING_REVIEW_SAVE);
+		} else {
+			vo.setMsg(MsgCodes.SYSTEM_PROCESS_FAILED);
+		}
 		return vo;
 	}
 }

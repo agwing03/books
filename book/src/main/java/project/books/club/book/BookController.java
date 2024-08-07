@@ -1,49 +1,91 @@
 package project.books.club.book;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import project.books.club.club.ClubVO;
+import project.books.club.club.ResponseEntity;
 import project.books.club.cmmn.SrchVO;
+import project.books.sys.util.CamelMap;
 
 @RestController
 @RequiredArgsConstructor
 public class BookController {
 	
 	private final BookService bookService;
-	 
+	
 	/**
 	 * 도서 목록 조회
-	 * @param clubNo
+	 * @param SrchVO
+	 * @return ResponseEntity
 	 */
-	@RequestMapping("/book/getBookList.do")
-	public SrchVO getBookList(
+	@RequestMapping("/selectBookList.do")
+	public ResponseEntity<List<CamelMap>> selectBookList(
 			@RequestBody SrchVO vo
 		) throws Exception {
-		return bookService.selectBookList(vo);
+		vo = bookService.selectBookList(vo);
+		return ResponseEntity.ok(vo.getDataList());
 	}
+	
+	/**
+	 * 도서 상세 조회
+	 * @param SrchVO
+	 * @return ResponseEntity
+	 */
 	
 	/**
 	 * 도서 등록
 	 * @param BookVO
+	 * @return ResponseEntity
 	 */
-	@RequestMapping("/book/saveBook.do")
-	public int saveBook(
+	@RequestMapping("/insertBook.do")
+	public ResponseEntity<?> insertBook(
 			@RequestBody BookVO vo
 		) throws Exception {
-		int cnt = bookService.saveBook(vo);
-		return cnt;
+		vo = bookService.insertBook(vo);
+		return new ResponseEntity<>(vo.getMsg(), HttpStatus.OK);
 	}
 	
 	/**
-	 * 도서 실시간 검색
-	 * @param srchText
+	 * 도서 수정
+	 * @param BookVO
+	 * @return ResponseEntity
 	 */
-	@RequestMapping("/book/selectBookSrch.do")
-	public SrchVO selectBookSrch(
+	@RequestMapping("/updateBook.do")
+	public ResponseEntity<?> updateBook(
+			@RequestBody BookVO vo
+		) throws Exception {
+		vo = bookService.updateBook(vo);
+		return new ResponseEntity<>(vo.getMsg(), HttpStatus.OK);
+	}
+	
+	/**
+	 * 도서 삭제
+	 * @param BookVO
+	 * @return ResponseEntity
+	 */
+	@RequestMapping("/deleteBook.do")
+	public ResponseEntity<?> deleteBook(
+			@RequestBody BookVO vo
+		) throws Exception {
+		vo = bookService.deleteBook(vo);
+		return new ResponseEntity<>(vo.getMsg(), HttpStatus.OK);
+	}
+	
+	/**
+	 * 도서 실시간 검색(공통모듈)
+	 * @param SrchVO
+	 * @return ResponseEntity
+	 */
+	@RequestMapping("/selectBookRealTimeSrch.do")
+	public ResponseEntity<List<CamelMap>> selectBookRealTimeSrch(
 			@RequestBody SrchVO vo
 		) throws Exception {
-		return bookService.selectBookSrch(vo);
+		vo = memberService.selectBookRealTimeSrch(vo);
+		return ResponseEntity.ok(vo.getDataList());
 	}
 }

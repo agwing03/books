@@ -46,7 +46,7 @@ public class MeetingController {
 	}
 	
 	/**
-	 * 모임 정보 조회(변경 팝업)
+	 * 모임 정보 조회(등록, 수정 팝업)
 	 * @param MeetingVO
 	 * @return ResponseEntity
 	 */
@@ -97,31 +97,16 @@ public class MeetingController {
 		return new ResponseEntity<>(vo.getMsg(), HttpStatus.OK);
 	}
 	
-	
-	
 	/**
-	 * 모임후기 등록
+	 * 모임후기 저장(등록, 수정)
 	 * @param MeetingVO
 	 * @return ResponseEntity
 	 */
-	@RequestMapping("/insertMeetingReview.do")
-	public ResponseEntity<?> insertMeetingReview(
+	@RequestMapping("/saveMeetingReview.do")
+	public ResponseEntity<?> saveMeetingReview(
 			@RequestBody MeetingVO vo
 		) throws Exception {
-		vo = meetingService.insertMeetingReview(vo);
-		return new ResponseEntity<>(vo.getMsg(), HttpStatus.OK);
-	}
-
-	/**
-	 * 모임후기 수정
-	 * @param MeetingVO
-	 * @return ResponseEntity
-	 */
-	@RequestMapping("/updateMeeting.do")
-	public ResponseEntity<?> updateMeetingReview(
-			@RequestBody MeetingVO vo
-		) throws Exception {
-		vo = meetingService.updateMeetingReview(vo);
+		vo = meetingService.saveMeetingReview(vo);
 		return new ResponseEntity<>(vo.getMsg(), HttpStatus.OK);
 	}
 }

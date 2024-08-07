@@ -16,7 +16,6 @@ public interface MeetingMapper {
 	 * @param SrchVO
 	 * @return SrchVO
      */
-	int selectMeetingListCnt(SrchVO vo);
 	List<CamelMap> selectMeetingList(SrchVO vo);
 	
 	/**
@@ -27,7 +26,7 @@ public interface MeetingMapper {
 	MeetingVO selectMeetingDtl(int meetingNo);
 	
 	/**
-	 * 모임 정보 조회(변경 팝업)
+	 * 모임 정보 조회(등록, 수정 팝업)
 	 * @param int meetingNo
 	 * @return MeetingVO
 	 */
@@ -41,7 +40,7 @@ public interface MeetingMapper {
 	int insertMeeting(MeetingVO vo);
 	
 	/**
-	 * 모임 등록
+	 * 모임 수정
 	 * @param MeetingVO
 	 * @return integer
      */
@@ -74,20 +73,4 @@ public interface MeetingMapper {
 	 * @return integer
      */
 	int deleteMeetingMember(MeetingVO vo);
-	
-
-	
-	
-	
-	
-	/**
-	 * 모임후기 대상 목록 조회 
-	 * @target meetingReviewFormPopup
-	 * @param SrchVO
-	 * @return SrchVO.List<CamelMap>
-	 
-	List<CamelMap> selectMeetingPopupList();
-	*/
-	
-	
 }
