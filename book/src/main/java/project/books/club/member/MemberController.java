@@ -1,11 +1,16 @@
 package project.books.club.member;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import project.books.club.cmmn.SrchVO;
+import project.books.club.meeting.MeetingVO;
+import project.books.club.meeting.ResponseEntity;
+import project.books.sys.util.CamelMap;
 
 @RestController
 @RequiredArgsConstructor
@@ -16,38 +21,52 @@ public class MemberController {
 	/**
 	 * 맴버 목록 조회
 	 * @param SrchVO
-	 * @throw Exception
+	 * @return ResponseEntity
 	 */
-	@RequestMapping("/member/getMemberList.do")
-	public SrchVO getMemberList(
+	public ResponseEntity<List<CamelMap>> selectMemberList(
 			@RequestBody SrchVO vo
 		) throws Exception {
-		return memberService.selectMemberList(vo);
+		vo = memberService.selectMemberList(vo);
+		return ResponseEntity.ok(vo.getDataList());
 	}
 	
 	/**
 	 * 맴버 저장
-	 * @param MemberVO
-	 * @throw Exception
+	 * @param MeetingVO
+	 * @return ResponseEntity
 	 */
-	@RequestMapping("/member/saveMember.do")
-	public MemberVO saveMember(
+	@RequestMapping("/insertMember.do")
+	public ResponseEntity<?> insertMember(
 			@RequestBody MemberVO vo
 		) throws Exception {
-		vo = memberService.saveMember(vo);
-		return vo;
+		vo = memberService.insertMember(vo);
+		return new ResponseEntity<>(vo.getMsg(), HttpStatus.OK);
 	}
 	
 	/**
-	 * 맴버 실시간 검색
-	 * @param String
-	 * @throw Exception
+	 * 맴버 수정
+	 * @param MeetingVO
+	 * @return ResponseEntity
 	 */
-	@RequestMapping("/member/getMemberSrch.do")
-	public SrchVO getMemberSrch(
+	@RequestMapping("/updateMember.do")
+	public ResponseEntity<?> updateMember(
+			@RequestBody MemberVO vo
+		) throws Exception {
+		vo = memberService.updateMember(vo);
+		return new ResponseEntity<>(vo.getMsg(), HttpStatus.OK);
+	}
+	
+	/**
+	 * 맴버 실시간 검색(공통모듈)
+	 * @param SrchVO
+	 * @return ResponseEntity
+	 */
+	@RequestMapping("/selectMemberRealTimeSrch.do")
+	public ResponseEntity<List<CamelMap>> selectMemberRealTimeSrch(
 			@RequestBody SrchVO vo
 		) throws Exception {
-		return memberService.selectMemberSrch(vo);
+		vo = memberService.selectMemberRealTimeSrch(vo);
+		return ResponseEntity.ok(vo.getDataList());
 	}
 }
  

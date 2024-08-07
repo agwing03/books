@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="project.books.club.book.BookMapper">
 	
-	<!-- 도서 목록 -->
+	<!-- 도서 목록 조회 -->
 	<select id="selectBookList" parameterType="project.books.club.cmmn.SrchVO" resultType="project.books.sys.util.CamelMap">
 		/*BookMapper.selectBookList*/
 		select * from (
@@ -13,32 +13,19 @@
 			     , ifnull((select avg(be.book_score) from books_eval be where b.book_no = be.book_no), 0) as book_avg
 			     , date_format(b.frst_reg_dt, '%Y-%m-%d %H:%i:%S') as frst_reg_dt  
 			  from books b
-			<include refid="bookListWhere"></include>
-		       ) b
+			where 1=1
+			<!-- 텍스트 검색 -->
+			<if test='srchGbn != null and srchGbn != "" and srchText != null and srchText != ""'>
+				<if test='"B".equals(srchGbn)'>
+		  	  and b.book_title like concat('%',#{srchText},'%')
+				</if>
+				<if test='"W".equals(srchGbn)'>
+		  	  and b.book_writer like concat('%',#{srchText},'%')
+				</if>
+			</if>
+		 ) b
 		 order by b.book_app desc, b.book_avg desc, b.book_title asc
 	</select>
-	
-	<!-- 도서 목록 수 -->
-	<select id="selectBookListCnt" parameterType="project.books.club.cmmn.SrchVO" resultType="Integer">
-		/*BookMapper.selectBookListCnt*/
-		select count(*) 
-		  from books b
-		<include refid="bookListWhere"></include>
-	</select>
-	
-	<!-- 도서 목록 Where -->
-	<sql id="bookListWhere">
-		where 1=1
-		<!-- 텍스트 검색 -->
-		<if test='srchGbn != null and srchGbn != "" and srchText != null and srchText != ""'>
-			<if test='"B".equals(srchGbn)'>
-		  and b.book_title like concat('%',#{srchText},'%')
-			</if>
-			<if test='"W".equals(srchGbn)'>
-		  and b.book_writer like concat('%',#{srchText},'%')
-			</if>
-		</if>
-	</sql>
 	
 	<!-- 도서 등록 -->
 	<insert id="insertBook" useGeneratedKeys="true" keyProperty="bookNo" parameterType="project.books.club.book.BookVO">
@@ -79,9 +66,9 @@
 		 where book_no = #{data1}
 	</delete>
 	
-	<!-- 도서 실시간 검색 -->
-	<select id="selectBookSrch" parameterType="project.books.club.cmmn.SrchVO" resultType="project.books.sys.util.CamelMap">
-		/*MemberMapper.selectBookSrch*/
+	<!-- 맴버 실시간 검색(공통모듈) -->
+	<select id="selectBookRealTimeSrch" parameterType="project.books.club.cmmn.SrchVO" resultType="project.books.sys.util.CamelMap">
+		/*MemberMapper.selectBookRealTimeSrch*/
 		select b.book_no
 			 , b.book_title
 		     , b.book_writer 
@@ -93,7 +80,7 @@
 		 order by b.book_title asc 
 	</select>
 	
-	<!-- 도서 리뷰 등록 -->
+	<!-- 도서 서평 등록 -->
 	<insert id="insertBookEval" useGeneratedKeys="true" keyProperty="bookNo" parameterType="project.books.club.book.BookVO">
 		/*bookMapper.insertBookEval*/
 		insert into books_eval (
@@ -119,7 +106,7 @@
 		)
 	</insert>
 	
-	<!-- 도서 리뷰 삭제 -->
+	<!-- 도서 서평 삭제 -->
 	<delete id="deleteBookEval" parameterType="project.books.club.book.BookVO">
 		/*bookMapper.deleteBookEval*/
 		delete from books_eval

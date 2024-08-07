@@ -13,39 +13,36 @@ public interface MemberMapper {
 	
     /**
 	 * 맴버 목록 조회
-	 * @param clubNo
-	 * @return list, integer
-	 * @throw Exception
+	 * @param SrchVO
+	 * @return List<CamelMap>
      */
-	int selectMemberListCnt(SrchVO vo);
 	List<CamelMap> selectMemberList(SrchVO vo);
 	
     /**
 	 * 맴버 저장
-	 * @param model
-	 * @throw Exception
+	 * @param MemberVO
+	 * @return integer
      */
 	int insertMember(MemberVO vo);
 	
 	/**
 	 * 맴버 수정
-	 * @param model
-	 * @throw Exception
+	 * @param MemberVO
+	 * @return integer
      */
 	int updateMember(MemberVO vo);
 	
-	/**
-	 * 맴버 목록 조회
-	 * @param SrchVO
-	 * @return List<CamelMap>
-	 * @throw Exception
-     */
-	List<CamelMap> selectMemberSrch(SrchVO vo);
-	
     /**
-	 * 모임 맴버 저장
-	 * @param model
-	 * @throw Exception
+	 * 클럽 맴버 저장
+	 * @param MemberVO
+	 * @return integer
      */
 	int insertClubMember(MemberVO vo);
+	
+	/**
+	 * 맴버 실시간 검색(공통모듈)
+	 * @param SrchVO
+	 * @return List<CamelMap>
+     */
+	List<CamelMap> selectMemberRealTimeSrch(SrchVO vo);
 }

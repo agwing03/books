@@ -2,9 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="project.books.club.meeting.MeetingMapper">
 	
-	<!-- 모임 목록 -->
+	<!-- 모임 및 모임후기 목록 조회 -->
 	<select id="selectMeetingList" parameterType="project.books.club.cmmn.SrchVO" resultType="project.books.sys.util.CamelMap">
-		/*meetingMapper.selectMeetingList*/
+		/*MeetingMapper.selectMeetingList*/
 		select mt.meeting_no
 			 , mt.club_no 
 		     , mt.title
@@ -20,21 +20,62 @@
      				else 'complete' end as state
 		 	 , if(mt.review_yn = 'Y', 'true', 'false') as review_yn
 		  from meeting mt
-		<include refid="meeingListWhere"></include>
-		 order by mt.dday desc, mt.hour desc, mt.minute desc 
+		 where 1=1
+		  and mt.club_no = #{clubNo}
+		<if test='srchGbn != null and srchGbn != ""'>
+		  and mt.meeting_gbn = #{srchGbn} <!-- 모임 구분 -->
+		</if>
+		<if test='srchText != null and srchText != "" and srchText != null and srchText != ""'>
+		  and mt.title like concat('%',#{srchText},'%') <!-- 검색어 -->
+		</if>
+		<if test='srchStartDt != null and srchStartDt != ""'>
+		  and mt.dday between #{srchStartDt} and #{srchEndDt} <!-- 검색 기간 -->
+		</if>
+  	 	order by mt.dday desc, mt.hour desc, mt.minute desc 
 	</select>
 	
-	<!-- 모임 목록 수 -->
-	<select id="selectMeetingListCnt" parameterType="project.books.club.cmmn.SrchVO" resultType="Integer">
-		/*meetingMapper.selectMeetingListCnt*/
-		select count(*) 
+	<!-- 모임 및 모임후기 상세 조회 -->
+	<select id="selectMeetingDtl" parameterType="Integer" resultType="project.books.club.meeting.MeetingVO">
+		/*MeetingMapper.selectMeetingDtl*/
+		select mt.meeting_no 	as meetingNo
+			 , mt.club_no 		as clubNo
+			 , mt.meeting_gbn   as meetingGbn
+			 , (select code_dtl_nm 
+			      from cmmn_code_dtl ccd 
+			     where ccd.code_id = 'MEETING_GBN' 
+			       and ccd.code_dtl_id = mt.meeting_gbn) as meetingGbnNm
+			 , mt.title
+			 , mt.host_no		 as hostNo
+		 	 , (select concat(mb.name,'(',mb.nick_nm,')') 
+		 	      from member mb 
+		 	     where mb.member_no = mt.host_no) as hostNm
+		 	 , date_format(mt.dday, '%Y.%m.%d') as dday
+		 	 , mt.hour
+			 , mt.minute
+		 	 , concat(mt.hour, ':', mt.minute) as time
+		 	 , mt.place
+		 	 , mt.cost
+		 	 , mt.place_url 	as placeUrl
+		 	 , mt.attend_cnt	as attendCnt
+		 	 , mt.comment
+		 	 , c.account
+			 , c.bank_cd 		as bankCd
+		 	 , (select concat(mb.name,'(',mb.nick_nm,')') 
+		 	      from member mb 
+		 	     where mb.member_no = mt.frst_reg_no) 			as frstRegNm
+		 	 , date_format(mt.frst_reg_dt, '%Y.%m.%d %H:%i:%S') as frstRegDt
+		 	 , (select concat(mb.name,'(',mb.nick_nm,')') 
+		 	      from member mb 
+		 	     where mb.member_no = mt.last_upd_no) 			as lastUpdNm
+		 	 , date_format(mt.last_upd_dt, '%Y.%m.%d %H:%i:%S') as lastUpdDt
 		  from meeting mt
-		<include refid="meeingListWhere"></include>
+		  	   left join club c on c.club_no = mt.club_no
+		 where mt.meeting_no = #{meetingNo}
 	</select>
-	
+		
 	<!-- 모임 정보 -->
-	<select id="selectMeeting" parameterType="project.books.club.cmmn.SrchVO" resultType="project.books.sys.util.CamelMap">
-		/*meetingMapper.selectMeeting*/
+	<select id="selectMeetingInfo" parameterType="Integer" resultType="project.books.club.meeting.MeetingVO">
+		/*MeetingMapper.selectMeetingInfo*/
 		select mt.meeting_no
 			 , mt.club_no 
 		     , mt.title
@@ -50,56 +91,13 @@
 		     , c.account
 		     , c.bank_cd 
 		  from meeting mt
-		       left join club c on c.club_no = mt.club_no 
-		<include refid="meeingListWhere"></include>
+		       left join club c on c.club_no = mt.club_no
+		 where mt.meeting_no = #{meetingNo}
 	</select>
-	
-	<!-- 모임 목록 Where -->
-	<sql id="meeingListWhere">
-		where 1=1
-		<!-- 클럽 번호 -->
-		<if test='clubNo != null and clubNo != ""'>
-		  and mt.club_no = #{clubNo}
-		</if>
-		<!-- 모임 번호 -->
-		<if test='meetingNo != null and meetingNo != ""'>
-		  and mt.meeting_no = #{meetingNo}
-		</if>
-		<!-- 화면 구분 -->
-	  	<choose>
-	  		<!-- 모임 : info -->
-			<when test='srchPageGbn != null and srchPageGbn != "" and srchPageGbn == "info"'>
-	      	</when>
-	      	<!-- 모임 : review -->
-	      	<otherwise>			
-	  			<!-- 모임 구분 -->
-				<if test='srchGbn != null and srchGbn != ""'>
-		  and mt.meeting_gbn = #{srchGbn}
-				</if>
-				<!-- 검색어 -->
-				<if test='srchText != null and srchText != "" and srchText != null and srchText != ""'>
-					<if test='"M".equals(srchGbn)'>
-		  and mt.title like concat('%',#{srchText},'%')
-					</if>
-					<if test='"H".equals(srchGbn)'>
-		  and mt.nick_nm like concat('%',#{srchText},'%')
-					</if>
-					<if test='"P".equals(srchGbn)'>
-		  and mt.place like concat("%",#{srchText},'%')
-					</if>
-				</if>
-				<!-- 검색 기간 -->
-				<if test='srchStartDt != null and srchStartDt != ""'>
-		  and mt.dday between #{srchStartDt} and #{srchEndDt}
-				</if>
-	      	</otherwise>
-		</choose>
-	</sql>
-	
 	
 	<!-- 모임 생성 -->
 	<insert id="insertMeeting" useGeneratedKeys="true" keyProperty="meetingNo" parameterType="project.books.club.meeting.MeetingVO">
-		/*meetingMapper.insertMeeting*/
+		/*MeetingMapper.insertMeeting*/
 		insert into meeting(
 			  club_no
 			, host_no
@@ -137,7 +135,7 @@
 	
 	<!-- 모임 수정 -->
 	<update id="updateMeeting" parameterType="project.books.club.meeting.MeetingVO">
-		/*meetingMapper.updateMeeting*/
+		/*MeetingMapper.updateMeeting*/
 		update meeting
 		   set last_upd_no  = #{userNo}
 			 , last_upd_dt  = now()
@@ -174,30 +172,30 @@
 			<if test='comment != null and comment != ""'>
 			 , comment = #{comment}
 			</if>
+			<if test='reviewYn == true'>
 			 , review_yn = 'Y'
+			</if>
 		 where meeting_no = #{meetingNo}
 	</update>
 	
 	<!-- 모임 삭제 -->
 	<delete id="deleteMeeting" parameterType="project.books.club.meeting.MeetingVO">
-		/*meetingMapper.deleteMeeting*/
+		/*MeetingMapper.deleteMeeting*/
 		delete from meeting
 		 where meeting_no = #{meetingNo}  
 	</delete>
 	
 	<!-- 모임 참석자 목록 -->
 	<select id="selectMeetingMemberList" parameterType="project.books.club.cmmn.SrchVO" resultType="Integer">
-		/*meetingMapper.selectMeetingMemberList*/
+		/*MeetingMapper.selectMeetingMemberList*/
 		select mt.member_no
 		  from meeting_member mt
 		 where mt.meeting_no = #{meetingNo}
 	</select>
 	
-	
-	
 	<!-- 모임 참석자 등록 -->
 	<insert id="insertMeetingMember" parameterType="project.books.club.meeting.MeetingVO">
-		/*meetingMapper.insertMeetingMember*/
+		/*MeetingMapper.insertMeetingMember*/
 		insert into meeting_member(
 			  meeting_no
 			, member_no
@@ -225,48 +223,9 @@
 		 where meeting_no = #{meetingNo}
 	</delete>
 	
-	<!-- 모임 정보 -->
-	<select id="selectMeetingInfo" parameterType="Integer" resultType="project.books.club.meeting.MeetingVO">
-		/*meetingMapper.selectMeetingInfo*/
-		select mt.meeting_no 	as meetingNo
-			 , mt.club_no 		as clubNo
-			 , mt.meeting_gbn   as meetingGbn
-			 , (select code_dtl_nm 
-			      from cmmn_code_dtl ccd 
-			     where ccd.code_id = 'MEETING_GBN' 
-			       and ccd.code_dtl_id = mt.meeting_gbn) as meetingGbnNm
-			 , mt.title
-			 , mt.host_no		 as hostNo
-		 	 , (select concat(mb.name,'(',mb.nick_nm,')') 
-		 	      from member mb 
-		 	     where mb.member_no = mt.host_no) as hostNm
-		 	 , date_format(mt.dday, '%Y.%m.%d') as dday
-		 	 , mt.hour
-			 , mt.minute
-		 	 , concat(mt.hour, ':', mt.minute) as time
-		 	 , mt.place
-		 	 , mt.cost
-		 	 , mt.place_url 	as placeUrl
-		 	 , mt.attend_cnt	as attendCnt
-		 	 , mt.comment
-		 	 , c.account
-			 , c.bank_cd 		as bankCd
-		 	 , (select concat(mb.name,'(',mb.nick_nm,')') 
-		 	      from member mb 
-		 	     where mb.member_no = mt.frst_reg_no) 			as frstRegNm
-		 	 , date_format(mt.frst_reg_dt, '%Y.%m.%d %H:%i:%S') as frstRegDt
-		 	 , (select concat(mb.name,'(',mb.nick_nm,')') 
-		 	      from member mb 
-		 	     where mb.member_no = mt.last_upd_no) 			as lastUpdNm
-		 	 , date_format(mt.last_upd_dt, '%Y.%m.%d %H:%i:%S') as lastUpdDt
-		  from meeting mt
-		  	   left join club c on c.club_no = mt.club_no
-		 where mt.meeting_no = #{meetingNo}
-	</select>
-	
 	<!-- 모임 맴버별 한줄평 -->
 	<select id="selectMeetingReviewList" parameterType="Integer" resultType="project.books.sys.util.CamelMap">
-		/*meetingMapper.selectMeetingReviewList*/
+		/*MeetingMapper.selectMeetingReviewList*/
 		select mm.meeting_no
 			 , mm.member_no 
 			 , concat(m.name,'(',m.nick_nm,')') as member_nm
@@ -291,7 +250,7 @@
 	
 	<!-- 모임후기 대상 목록 -->
 	<select id="selectMeetingPopupList" resultType="project.books.sys.util.CamelMap">
-		/*meetingMapper.selectMeetingPopupList*/
+		/*MeetingMapper.selectMeetingPopupList*/
 		select *
 		  from (select mt.meeting_no
 		     		 , mt.title
