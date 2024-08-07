@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layout/basic">
+    <th:block layout:fragment="title">
+		<title>sms 문자보내기</title>
+   </th:block>
+    <th:block layout:fragment="content">
+		<form id="smsfrm">
+			보내는 사람 : <input type="text" id="from" name="from"/><br>   <!-- 보내는 사람 휴대폰 번호 -->
+			받는사람 : <input type="text" id="to" name="to"/><br>   		<!-- 받을사람 휴대폰 번호 -->
+			내용 : <input type="text" id="text" name="text"/> 			<!-- 내용 -->
+			<button type="button" id="send">전송</button><br> 			<!-- 문자보내는 전송버튼 -->
+		</form>
+			인증번호 : <input type="text" id="userNum">   					<!-- 인증번호 입력창 -->
+			<button type="button" id="enterBtn">확인</button>  			<!-- 인증번호와 내가 입력창에 입력한 인증번호 비교하는 창 -->		
+	</th:block>
+
+	<th:block layout:fragment="script">
+		<script type="text/javascript">
+			$('#send').click(function() {
+				
+				const data = $("#smsfrm").serializeObject();
+				$.ajax({
+					url: '/check/sendSMS.do',
+					type: 'POST',
+					data: JSON.stringify(data),
+					contentType:"application/json;charset=UTF-8",
+					async : false,
+					success: function(data) {
+						const checkNum = data;
+						alert('checkNum:'+ checkNum);
+						
+						$('#enterBtn').click(function() {	
+							const userNum = $('#userNum').val();
+							
+							if(checkNum === userNum) {
+								alert('인증 성공하였습니다.');
+							}
+							else {
+								alert('인증 실패하였습니다. 다시 입력해주세요.');
+							}
+						});
+						
+					},
+					error: function(request,status,error){
+						   alert("조회 실패");
+					}
+				});
+				
+			});
+		</script>
+	</th:block>
+	</html>
+
+</body>
+</html>

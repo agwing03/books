@@ -11,7 +11,6 @@ import project.books.club.book.BookMapper;
 import project.books.club.book.BookVO;
 import project.books.club.cmmn.MsgCodes;
 import project.books.club.cmmn.SrchVO;
-import project.books.sys.util.CamelMap;
 
 @Service
 @RequiredArgsConstructor
@@ -181,10 +180,8 @@ public class MeetingService {
 			
 			//리뷰 등록
 			for (BookVO review : reviewList) {
-				int bookNo; //도서번호
-				
 				//신규 도서 등록
-				if(review.getNewBook()) {
+				if(review.isNewBook()) {
 					mtBkICnt += bookMapper.insertBook(review);
 				}
 				
@@ -192,7 +189,7 @@ public class MeetingService {
 				review.setClubNo(clubNo);
 				review.setMeetingNo(meetingNo);
 				review.setUserNo(userNo); //접속자
-				if(!review.getProgressYn()) { //모임 진행자 제외
+				if(!review.isProgressYn()) { //모임 진행자 제외
 					mtRvICnt += bookMapper.insertBookEval(review);
 				}
 			}

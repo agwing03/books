@@ -224,8 +224,8 @@
 	</delete>
 	
 	<!-- 모임 맴버별 한줄평 -->
-	<select id="selectMeetingReviewList" parameterType="Integer" resultType="project.books.sys.util.CamelMap">
-		/*MeetingMapper.selectMeetingReviewList*/
+	<select id="selectMeetingMemberReviewList" parameterType="Integer" resultType="project.books.club.book.BookVO">
+		/*MeetingMapper.selectMeetingMemberReviewList*/
 		select mm.meeting_no
 			 , mm.member_no 
 			 , concat(m.name,'(',m.nick_nm,')') as member_nm

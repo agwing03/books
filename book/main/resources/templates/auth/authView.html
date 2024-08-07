@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layout/basic">
+    <th:block layout:fragment="title">
+        <title>this is view page</title>
+    </th:block>
+
+    <th:block layout:fragment="content">
+	    <form id="searchVO" name="searchVO" method="post">
+	    	<div class="search_field">
+			    <div class="search_field_loc">
+			    	<h5><strong>권한 상세</strong></h5>
+			    	<ul class="buttons">
+			    		<li><a onclick="fn_select_search();"><img src="/images/tapCmm/save.svg"><p>뒤로가기</p></a></li>
+		                <li><a th:href="@{/auth/write.do( authId=${auth.authId} )}"><img src="/images/tapCmm/edit.svg"><p>수정하기</p></a></li>
+		                <li><a onclick="fn_delete();"><img src="/images/tapCmm/trash.svg"><p>삭제하기</p></a></li>
+			    	</ul>
+			    </div>
+		    </div>
+	    	
+	        <div class="modify_user">
+	            <table>
+	            	<colgroup>
+	            		<col width="10%">
+	            		<col width="*%">
+	            	</colgroup>
+	            	<tbody>
+	            		<tr>
+	            			<th>권한 ID</th>
+	            			<td>
+	            				<p class="form-control" th:text="${auth.authId}"></p>
+	            			</td>
+	            		</tr>
+	            		<tr>
+	            			<th>권한명</th>
+	            			<td>
+	            				<p class="form-control" th:text="${auth.authNm}"></p>
+	            			</td>
+	            		</tr>
+	            	</tbody>
+	            </table>
+	        </div>
+	    </form>
+	    <form id="deleteForm" name="deleteForm" method="post">
+	    	<input type="hidden" name="authId" id="authId"/>
+	    </form>
+    </th:block>
+
+	<th:block layout:fragment="script">
+		<script th:inline="javascript">
+        /*<![CDATA[*/
+        	// 화면 이동
+        	function fn_select_search() {
+	        	$("#searchVO").attr("action", "/auth/list.do");
+	            $("#searchVO").submit();
+        	}
+        
+        	// 권한 삭제
+        	function fn_delete() {
+        		
+        		// 권한 삭제
+        		action_popup.confirm("권한을 삭제하시겠습니까?", fn_deleteAuthAjax);
+        	}
+        	
+        	// 권한 삭제ajax
+        	function fn_deleteAuthAjax() {
+        		
+        		const authId = [[ ${auth.authId} ]];
+        		$("#authId").val(authId);
+        		
+        		let data = $("#deleteForm").serializeObject();
+        		
+        		// 권한 삭제 ajax
+                $.ajax({
+                	url : "/auth/delete.do"
+               		,type : "POST"
+               		,data : JSON.stringify(data)
+               		,dataType : "text"
+               		,contentType : "application/json;charset=UTF-8"
+               		,async : false
+               		,success:function(data) {
+               			// 토스트 메시지 시간 나타내기
+               			sessionStorage.setItem("msg", data);
+               			// 화면 이동
+               			fn_select_search();
+               		},error:function(request,status,error){        
+            			alert("권한삭제중 오류발생"); 
+            		}
+                });
+        	}
+        
+        /*]]>*/
+        </script>
+	</th:block>
+</html>
+    

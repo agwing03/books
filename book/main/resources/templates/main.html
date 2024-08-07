@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layout/basic"
+xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <th:block layout:fragment="title">
+        <title>메인화면</title>
+    </th:block>
+
+    <th:block layout:fragment="content">
+        <div class="card-content">
+        	<div>인증객체 프로퍼티 값 호출
+        		<p th:text="${userInfo.userPk}"></th:text>
+        		<p th:text="${userInfo.userId}"></th:text>
+        		<p th:text="${userInfo.deptCd}"></th:text>
+        	</div>
+        	
+        	<div th:if="${isTest}">테스트권한존재</div>
+			<div sec:authorize="hasRole('ROLE_TEST')">프론트 변경 가능성 사용X (필요할때만)</div>
+			<div sec:authorize="hasRole('ROLE_ADMIN')">프론트 변경 가능성 사용X</div>
+			
+			
+			<div>layout공통 정보 출력
+        		<p th:text="${layout}"></th:text> 
+        		<p th:text="${layout[0]}"></th:text> 
+        		
+        		메뉴출력
+        		<p  th:each="row, status : ${layout[1]}" > 
+        			 <a th:href="@{${row.menuUrl}}" th:text="${row.menuNm}"></a>
+        		</p>
+			</div>
+			
+        </div>
+    </th:block>
+    
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+        /*<![CDATA[*/
+	   /*]]>*/ 
+        </script>    
+    </th:block>
+</html>

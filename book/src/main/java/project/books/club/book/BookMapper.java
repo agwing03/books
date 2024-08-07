@@ -1,6 +1,5 @@
 package project.books.club.book;
 
-import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -20,7 +19,7 @@ public interface BookMapper {
 	List<CamelMap> selectBookList(SrchVO vo);
 	
     /**
-	 * 도서 등록
+	 * 도서 등록	
 	 * @param MemberVO
 	 * @return integer
      */
@@ -38,7 +37,7 @@ public interface BookMapper {
 	 * @param MemberVO
 	 * @return integer
      */
-	void deleteBook(BookVO vo);
+	int deleteBook(BookVO vo);
 	
 	/**
 	 * 도서 서평 등록

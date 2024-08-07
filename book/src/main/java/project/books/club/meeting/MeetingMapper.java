@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import project.books.club.book.BookVO;
 import project.books.club.cmmn.SrchVO;
 import project.books.sys.util.CamelMap;
 
@@ -58,7 +59,7 @@ public interface MeetingMapper {
 	 * @param int meetingNo
 	 * @return List<CamelMap>
 	 */ 
-	List<CamelMap> selectMeetingMemberReviewList(int meetingNo);
+	List<BookVO> selectMeetingMemberReviewList(int meetingNo);
 	
 	/**
 	 * 참석자 등록(모임 등록, 수정)

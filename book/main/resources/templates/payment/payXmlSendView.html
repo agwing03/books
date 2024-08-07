@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layout/basic">
+    <th:block layout:fragment="title">
+        <title>리스트 페이지</title>
+    </th:block>
+    <th:block layout:fragment="content">
+		<div class="search_field">
+			<div class="search_field_loc">
+				<h5><strong>주문번호 받아서 XML로 전송<strong></h5>
+		     </div>
+		</div>
+		<div class="modify_user" >
+			<table>
+				<colgroup>
+					<col width="8%"/>
+       				<col width="10%"/>
+      				<col width="8%"/>
+       				<col width="8%"/>
+       				<col width="8%"/>
+       				<col width="8%"/>
+       				<col width="8%"/>
+       				<col width="8%"/>
+       				<col width="8%"/>
+       				<col width="*%"/>
+               </colgroup>
+       			<tbody>
+		        	<tr>
+		        		<th>주문번호</th>
+	   						<td>
+	       						<input type="text"  id="orderNo" name="orderNo"/> 
+	       					</td>
+		    				<td>
+								<ul class="buttons">
+									<li><a href="#" onclick="fnXmlSend()"><img src="/images/tapCmm/search.svg"><p>전송</p></a></li>
+								</ul>
+		   					</td>
+		   				</tr>
+	   			</tbody>
+	   		</table>
+	   	</div>
+    </th:block>
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+        /*<![CDATA[*/
+	        function fnXmlSend(){
+        		let orderNo = $("#orderNo").val();
+	        	$.ajax({
+	        	    url: "/payment/payXmlSend.do",
+	        	    type: "post",
+	        	    data: JSON.stringify(orderNo),
+	        	    dataType: "json",
+	        	    contentType:"application/json;charset=UTF-8",
+	        	    async: false,
+	        	    success: function(data){
+	        	    	console.log(data);
+	        	    },
+	        	    error: function(xhr, status, error){
+	        	    	alert(xhr.responseText);
+	        	    },
+	        	    complete: function(xhr, status){
+	        	    	
+	        	    }
+	            });
+	        }
+        /*]]>*/
+        </script>
+    </th:block>
+</html>

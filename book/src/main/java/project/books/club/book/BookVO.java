@@ -17,4 +17,8 @@ public class BookVO extends CmmnVO{
 	//books_eval
 	private String bookScore;	//평점
 	private String bookEval;	//서평
+	
+	//추가
+	private String bookInfo;	//평점
+	private String memberNm;	//맴버이름
 }

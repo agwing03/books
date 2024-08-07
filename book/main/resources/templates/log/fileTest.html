@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layout/basic">
+    <th:block layout:fragment="title">
+        <title>사용자 등록</title>
+    </th:block>
+    <th:block layout:fragment="content">
+    <form id="saveFrm" name="saveFrm" method="post" enctype="multipart/form-data">
+    	 <div class="search_field">
+         <div class="search_field_loc">
+             <h5><strong>사용자 등록</strong></h5>
+             <ul class="buttons">
+                 <li><a th:onclick="fn_saveFile();"><img src="/images/tapCmm/save.svg"><p>저장</p></a></li>
+             </ul>
+         </div>
+	         <div class="modify_user" style="margin-top:50px;">
+	        	<table>
+	        		<colgroup>
+                       <col width="10%">
+                       <col width="40%">
+                       <col width="*">
+                   </colgroup>
+                   <tr>
+                   		<th>파일첨부테스트</th>
+                   		<td><input type="file" id="fileId" name="fileId" /></td>
+                   		<td><input type="submit" id="submit" value="저장" class="btn"></td>
+                   </tr>
+	        	</table>
+			</div>
+		</div>
+		</form>
+		
+     </th:block>
+     <th:block layout:fragment="script">
+        <script th:inline="javascript">
+        /*<![CDATA[*/
+	        $(document).ready(function() {
+	        });
+	   /*]]>*/ 
+        
+        /*<![CDATA[*/
+        	function fn_saveFile(){
+        		$("#saveFrm").attr("action","/file/upLoad.do");
+        		$("#saveFrm").submit();
+        	}
+        /*]]>*/
+        </script>
+     </th:block>
+</html>

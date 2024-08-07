@@ -1,0 +1,134 @@
+@charset "utf-8";
+
+/* 왼쪽 사이드 메뉴 */
+#sidebar,
+#sidebar ul,
+#sidebar ul li,
+#sidebar ul li a {
+  list-style: none;
+  line-height: 1;
+  display: block;
+  position: relative;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+#sidebar {
+    position: absolute;
+    left: 0;
+    width: 220px;
+    padding-left: 20px;
+    box-sizing: border-box;
+    color: #ffffff;
+    float: left;
+}
+#sidebar ul ul {
+  display: none;
+}
+.align-right {
+  float: right;
+}
+/*메뉴 1댑 제목 */
+#sidebar > ul > li > a {
+  padding: 15px 20px;
+  cursor: pointer;
+  z-index: 2;
+  font-size: 13px;
+  text-decoration: none;
+  color: #444;
+  background: #fff;
+}
+
+/* 1댑 */
+#sidebar > ul > li.open{border-bottom: 1px solid #E2E3E4;}
+#sidebar>ul>li>a{border-bottom: 1px solid #E2E3E4;}
+#sidebar>ul>li.has-sub>a:first-child{border-top: none;}
+#sidebar > ul > li > a:hover,
+#sidebar > ul > li.active > a,
+#sidebar > ul > li.open > a {
+  color: #00489B;
+}
+#sidebar > ul > li.open > a {
+    border-bottom: 3px solid #00489B;
+}
+#sidebar > ul > li.open >a:n
+.holder {
+  width: 0;
+  height: 0;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.holder::after{
+    display: block;
+    position: absolute;
+    content: "";
+    width: 13px;
+    height: 13px;
+    right: 20px;
+    z-index: 10;
+    background: url("/images/tapCmm/sidebar-more.svg") no-repeat center;
+}
+.holder::after {
+  top: 20px;
+}
+#sidebar > ul > li > a:hover > span::after,
+#sidebar > ul > li.active > a > span::after,
+#sidebar > ul > li.open > a > span::after {
+    background: url("/images/tapCmm/sidebar-close.svg") no-repeat center;
+}
+.holder::before {
+  top: 20px;
+}
+/* 메뉴 2댑 3댑 공통 */
+#sidebar ul ul li a {
+    cursor: pointer;
+    padding: 10px 20px 10px 30px;
+    box-sizing: border-box;
+    z-index: 1;
+    text-decoration: none;
+    font-size: 12px;
+    color: #444;
+}
+#sidebar>ul>li>ul{padding: 10px 0;}
+
+/* 메뉴 2댑 */
+#sidebar>ul>li>ul>li>a{
+    background: #fff url("/images/tapCmm/sidebar-point.svg") no-repeat 20px center;
+    background-size: 3px;
+} 
+#sidebar ul ul li:hover > a,
+#sidebar ul ul li.open > a,
+#sidebar ul ul li.active > a {
+  color: #00489B;
+}
+
+/* 메뉴 3댑*/
+#sidebar>ul>li>ul>li>ul{
+    margin: 0 15px;
+    padding: 0px 0;
+    box-sizing: border-box;
+}
+#sidebar ul ul ul li a {
+    padding-left: 25px;
+    box-sizing: border-box;
+}
+
+/* + - 버튼*/
+#sidebar ul ul li.has-sub > a::after {
+    display: block;
+    position: absolute;
+    content: "";
+    width: 13px;
+    height: 13px;
+    right: 20px;
+    z-index: 10;
+    top: 11.5px;
+    /* background: url("/images/tapCmm/sidebar-more.svg") no-repeat center; */
+    box-sizing: border-box;
+}
+#sidebar ul ul li.active > a::after,
+#sidebar ul ul li.open > a::after,
+#sidebar ul ul li > a:hover::after {
+    /* background: url("/images/tapCmm/sidebar-close.svg") no-repeat center; */
+}

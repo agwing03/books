@@ -1,19 +1,17 @@
 package project.books.club.member;
 
-import java.util.List;
-
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import ch.qos.logback.classic.Logger;
 import lombok.RequiredArgsConstructor;
-import project.books.club.club.ClubVO;
 import project.books.club.cmmn.MsgCodes;
 import project.books.club.cmmn.SrchVO;
-import project.books.club.meeting.MeetingVO;
 
 @Service
 @RequiredArgsConstructor
 public class MemberService {
-	
+	private static final Logger log = (Logger) LoggerFactory.getLogger(MemberService.class);
 	private final MemberMapper memberMapper;
 	
 	/**
@@ -29,44 +27,12 @@ public class MemberService {
 	}
 	
 	/**
-	 * 맴버 상세 조회
-	 * @param SrchVO
-	 * @return SrchVO
-	 * @throw Exception
-	 */
-	public SrchVO selectMemberDtl(SrchVO vo) throws Exception{
-		vo.setDataMap(memberMapper.selectMemberDtl(vo));
-		return vo;
-	}
-	
-	/**
-	 * 맴버 저장
-	 * @param MemberVO
-	 * @return MemberVO
-	 * @throw Exception
-	 */
-	public MemberVO insertMember(MemberVO vo) throws Exception{
-		int setCnt = 0;
-		if(vo.getSaveFlag().equals("I")) {
-			//member 등록
-			setCnt += memberMapper.insertMember(vo);
-			
-			//club_member 등록
-			setCnt += memberMapper.insertClubMember(vo);
-		}else {
-			setCnt += memberMapper.updateMember(vo);
-		}
-		vo.setProcCnt(setCnt);
-		return vo;
-	}
-	
-	/**
 	 * 맴버 등록
 	 * @param MemberVO
 	 * @return MemberVO
 	 * @throw Exception
 	 */
-	public MemberVO insertMember(ClubVO vo) throws Exception{
+	public MemberVO insertMember(MemberVO vo) throws Exception{
 		int mmICnt = 0, cmICnt = 0;
 		//처리 건수
 		vo.setProcCnt(memberMapper.insertMember(vo));

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tccins.template.auth.mapper.AuthMapper">
+    
+	<!-- 목록 리스트 조회 -->
+    <select id="findAll" parameterType="com.tccins.template.common.dto.SearchDto" resultType="com.tccins.template.auth.AuthVO">
+        SELECT
+            AUTH_ID
+        	,AUTH_NM 
+        FROM
+            auth
+        WHERE
+        	1 = 1
+        LIMIT #{pagination.limitStart}, #{recordSize}
+    </select>
+
+ 	<!-- 목록 수 카운팅 -->
+    <select id="count" parameterType="com.tccins.template.common.dto.SearchDto" resultType="int">
+        SELECT
+            COUNT(*)
+        FROM
+            auth
+        WHERE
+			1 = 1
+    </select>
+    
+ 	<!-- 권한ID 중복체크  카운팅 -->
+    <select id="checkAuthId" parameterType="com.tccins.template.common.CamelMap" resultType="int">
+        SELECT
+            COUNT(*)
+        FROM
+            auth
+        WHERE
+        	AUTH_ID = #{authId}
+    </select>
+    
+    <!-- 권한 상세정보 조회 -->
+    <select id="findById" parameterType="com.tccins.template.common.CamelMap" resultType="com.tccins.template.auth.AuthVO">
+        SELECT
+             AUTH_ID
+        	,AUTH_NM 
+        FROM
+            auth
+        WHERE
+            AUTH_ID = #{authId}
+    </select>
+    
+    
+    <!-- 권한 등록 -->
+    <insert id="save" parameterType="com.tccins.template.common.CamelMap">
+	    INSERT INTO auth (
+	    	 AUTH_ID
+	    	,AUTH_NM	
+	        ) VALUES (
+	              #{authId}
+	             ,#{authNm}
+	        )
+    </insert>
+    
+    <update id="update" parameterType="com.tccins.template.common.CamelMap">
+    	UPDATE auth set
+    		AUTH_NM = #{authNm}
+    	WHERE AUTH_ID = #{authId}
+    </update>
+    
+    
+    <delete id="deleteById" parameterType="com.tccins.template.common.CamelMap">
+    	DELETE FROM auth
+    	WHERE AUTH_ID = #{authId} 
+    </delete>
+    
+    
+</mapper>

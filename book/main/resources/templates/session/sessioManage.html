@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layout/basic">
+    <th:block layout:fragment="title">
+        <title>세션관리 및 로그인 관리 페이지</title>
+    </th:block>
+
+    <th:block layout:fragment="content">
+        <div class="card-content">
+        	<form id="saveForm" class="form-horizontal" method="post" autocomplete="off">
+	            <div class="form-group">
+                    <label for="isNotice" class="col-sm-2 control-label">세션 허용 시간</label>
+                    <div class="col-sm-10">
+                        <input type="text" id="sessionMin" name="sessionMin" class="form-control" maxlength="5" style="width:80%;" th:value="${resultVO.sessionMin}"/>
+                    </div>
+                </div>
+	
+	            <div class="form-group">
+                    <label for="isNotice" class="col-sm-2 control-label">로그인 잠김 시간</label>
+                    <div class="col-sm-10">
+                        <input type="text" id="loginFailCount" name="loginFailCount" class="form-control" maxlength="5" style="width:80%;" th:value="${resultVO.loginFailCount}"/>
+                    </div>
+                </div>
+	
+	            <div class="form-group">
+                    <label for="isNotice" class="col-sm-2 control-label">로그인 실패 횟수</label>
+                    <div class="col-sm-10">
+                        <input type="text" id="loginFailLockTime" name="loginFailLockTime" class="form-control" maxlength="10" style="width:80%;" th:value="${resultVO.loginFailLockTime}"/>
+                    </div>
+                </div>
+	
+	            <div class="btn_wrap text-center">
+	                <button type="button" class="btn btn-primary waves-effect waves-light" onclick="fn_save();" th:if="${userId == 'tst'}">저장하기</button>
+	            </div>
+            </form>
+        </div>
+    </th:block>
+
+    
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+        /*<![CDATA[*/
+            // 받아온 값 변경하기
+            function fn_save(){
+        		if(confirm("설정을 변경하시겠습니까?")){
+	        		$.ajax({
+	        			url : "/session/registUpdate.do"
+	        			,type : "post"
+	        			,data : $("#saveForm").serialize()
+	        			,async : false
+	        			,success : function(data){
+	        				alert(data);
+	        				clearTime($("#sessionMin").val());
+	        				location.reload();
+	        			},error : function(data){
+	        				alert("변경 중 에러가 발생하였습니다.\n관리자에게 문의 바랍니다.");
+	        			}
+	        		});
+        		}
+        	}
+        /*]]>*/
+        </script>
+    </th:block>
+</html>
+
+

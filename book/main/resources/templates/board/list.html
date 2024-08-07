@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layout/basic">
+    <th:block layout:fragment="title">
+        <title>리스트 페이지</title>
+    </th:block>
+    <th:block layout:fragment="content">
+        <div class="table-responsive clearfix">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>번호</th>
+                        <th>제목</th>
+                        <th>작성자</th>
+                        <th>등록일</th>
+                        <th>조회 수</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:if="${not #lists.isEmpty( response.list )}" th:each="row, status : ${response.list}" 
+                    	th:with="num=${response.pagination.totalRecordCount - (params.page -1) * params.recordSize}">
+                        <td th:text="${row.noticeYn == true ? '공지' : num - status.index}"></td>
+                        <td class="text-left"><a th:href="@{/board/view.do( id=${row.id} )}" th:text="${row.title}"></a></td>
+                        <td th:text="${row.writer}"></td>
+                        <td th:text="${#temporals.format( row.createdDate, 'yyyy-MM-dd HH:mm:ss' )}"></td>
+                        <td th:text="${row.viewCnt}"></td>
+                    </tr>
+                    <tr th:unless="${not #lists.isEmpty( response.list )}">
+                        <td colspan="5">검색된 결과가 없습니다.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="btn_wrap text-right">
+                <a th:href="@{/board/write.do}" class="btn btn-primary waves-effect waves-light">등록</a>
+            </div>
+
+            <th:block layout:fragment="paging">
+                <nav aria-label="Page navigation" class="text-center">
+                    <ul class="pagination">
+                    	<th:block th:if="${response.pagination.existPrevPage}"> 
+                    	    <li><a href="javascript:void(0)" th:onclick="movePage(1);" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+                        	<li><a href="javascript:void(0)" th:onclick="|movePage('${response.pagination.startPage - 1}');|" aria-label="Previous"><span aria-hidden="true">&lsaquo;</span></a></li>
+                    	</th:block>
+                    	
+                    	<th:block th:each="i : ${#numbers.sequence(response.pagination.startPage,response.pagination.endPage)}">
+                    		<li><a href="javascript:void(0)" th:onclick="|movePage('${i}');|" th:text="${i}"></a></li>
+                    	</th:block>
+                        
+                        <th:block th:if="${response.pagination.existNextPage}"> 
+                        	<li th:if="${response.pagination.existNextPage}"><a href="javascript:void(0)" th:onclick="|movePage('${response.pagination.endPage + 1}');|" aria-label="Next"><span aria-hidden="true">&rsaquo;</span></a></li>
+                        	<li th:if="${response.pagination.existNextPage}"><a href="javascript:void(0)" th:onclick="|movePage('${response.pagination.totalPageCount}');|" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
+                    	</th:block>
+                    </ul>
+                </nav>
+            </th:block>
+        </div>
+    </th:block>
+    
+     <th:block layout:fragment="script">
+        <script th:inline="javascript">
+        /*<![CDATA[*/
+	        $(document).ready(function() {
+	        });
+	   /*]]>*/ 
+        
+        /*<![CDATA[*/
+            // 페이지 이동
+            function movePage(page) {
+                const queryParams = {
+                    page: (page) ? page : 1,
+                    recordSize: 10,
+                    pageSize: 10
+                }
+                location.href = location.pathname + '?' + new URLSearchParams(queryParams).toString();
+            }
+
+        /*]]>*/
+        </script>
+     </th:block>
+        
+</html>

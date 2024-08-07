@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+	<table cellpadding="0" cellspacing="0" border="0" width="640"
+		style="margin: 0 auto">
+
+		<tbody>
+			<tr>
+				<td style="background-color: #00c9e3">
+					<table cellpadding="0" cellspacing="0" border="0" width="640">
+						<tbody>
+							<tr>
+								<td width="35"></td>
+								<td
+									style="font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, '돋움', sans-serif; font-size: 34px; color: #ffffff; font-weight: bold; text-align: left; vertical-align: top; letter-spacing: -3px; padding-top: 20px; padding-bottom: 30px">
+									결제요청에 따른 결제 요청 정보 안내
+								</td>
+								<td width="35"></td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+			<!-- 메일내용 -->
+			<tr>
+				<td>
+
+					<table cellpadding="0" cellspacing="0" border="0" width="640">
+						<tbody>
+							<tr>
+								<td width="35"></td>
+								<td>
+									<p
+										style="font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, '돋움', sans-serif; font-size: 22px; color: #575757; font-weight: bold; letter-spacing: -1px; padding: 0; margin: 0; padding-bottom: 15px">안녕하세요,
+										<span th:text="${buyrName}"></span>님</p>
+										
+									<p
+										style="font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, '돋움', sans-serif; font-size: 20px; color: #434a53; font-weight: normal; letter-spacing: -1px; padding: 0; margin: 0; text-align: left; line-height: 30px">
+										<span th:text="${ordrdate}"></span> 일 결제한 결제 정보입니다.
+									</p>
+								</td>
+								<td width="35"></td>
+							</tr>
+							<tr>
+								<td><br/></td>
+								<td><br/></td>
+							</tr>
+							<tr>
+								<td><br/></td>
+								<td><br/></td>
+							</tr>
+							<tr>
+								<td width="35"></td>
+								<td>
+									<p style="font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, '돋움', sans-serif; font-size: 22px; color: #575757; font-weight: bold; letter-spacing: -1px; padding: 0; margin: 0; padding-bottom: 15px">
+										주문번호 : <span th:text="${ordrIdxx}"></span>
+									</p>	
+								</td>
+								<td width="35"></td>
+							</tr>
+							<tr>
+								<td width="35"></td>
+								<td>
+									<p style="font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, '돋움', sans-serif; font-size: 22px; color: #575757; font-weight: bold; letter-spacing: -1px; padding: 0; margin: 0; padding-bottom: 15px">
+										상품명 : <span th:text="${goodName}"></span>
+									</p>	
+								</td>
+								<td width="35"></td>
+							</tr>
+							<tr>
+								<td width="35"></td>
+								<td>
+									<p style="font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, '돋움', sans-serif; font-size: 22px; color: #575757; font-weight: bold; letter-spacing: -1px; padding: 0; margin: 0; padding-bottom: 15px">
+										상품금액 : <span th:text="${goodMny}+원"></span>
+									</p>	
+								</td>
+								<td width="35"></td>
+							</tr>
+							<tr>
+								<td width="35"></td>
+								<td>
+									<p style="font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, '돋움', sans-serif; font-size: 22px; color: #575757; font-weight: bold; letter-spacing: -1px; padding: 0; margin: 0; padding-bottom: 15px">
+										주문자명 : <span th:text="${buyrName}"></span>
+									</p>	
+								</td>
+								<td width="35"></td>
+							</tr>
+							<tr>
+								<td width="35"></td>
+								<td>
+									<p style="font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, '돋움', sans-serif; font-size: 22px; color: #575757; font-weight: bold; letter-spacing: -1px; padding: 0; margin: 0; padding-bottom: 15px">
+										휴대폰번호 : <span th:text="${buyrTel2}"></span>
+									</p>	
+								</td>
+								<td width="35"></td>
+							</tr>
+							<tr>
+								<td width="35"></td>
+								<td>
+									<p style="font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, '돋움', sans-serif; font-size: 22px; color: #575757; font-weight: bold; letter-spacing: -1px; padding: 0; margin: 0; padding-bottom: 15px">
+										이메일 : <span th:text="${buyrMail}"></span>
+									</p>	
+								</td>
+								<td width="35"></td>
+							</tr>
+							<tr>
+								<td width="35"></td>
+								<td>
+									<p style="font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, '돋움', sans-serif; font-size: 22px; color: #575757; font-weight: bold; letter-spacing: -1px; padding: 0; margin: 0; padding-bottom: 15px">
+										주문일시 : <span th:text="${ordrdate}"></span>
+									</p>	
+								</td>
+								<td width="35"></td>
+							</tr>
+							<tr>
+								<td width="35"></td>
+								<td>
+									<p style="font-family: AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, '돋움', sans-serif; font-size: 22px; color: #575757; font-weight: bold; letter-spacing: -1px; padding: 0; margin: 0; padding-bottom: 15px">
+										배송지명 : <span th:text="${ordrArr}"></span>
+									</p>	
+								</td>
+								<td width="35"></td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+				<tr>
+					<td colspan="3" height="70">
+						<a th:href="@{http://localhost:8090/test/testRedirect.do(buyrMail=${buyrMail},buyrTel2=${buyrTel2},ordrIdxx=${ordrIdxx},goodName=${goodName},buyrName=${buyrName},ordrdate=${ordrdate},ordrArr=${ordrArr},goodMny=${goodMny})}" 
+						style="margin-left:150px;position:relative;border: none;display: inline-block;padding: 15px 30px;border-radius: 15px;font-family:paybooc-Light, sans-serif;box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);text-decoration: none;font-weight: 600;transition: 0.25s;">결제하기</a>
+					</td>
+				</tr>
+		</tbody>
+	</table>
+</body>
+</html>

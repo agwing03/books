@@ -2,13 +2,13 @@ package project.books.club.book;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import project.books.club.club.ClubVO;
-import project.books.club.club.ResponseEntity;
 import project.books.club.cmmn.SrchVO;
 import project.books.sys.util.CamelMap;
 
@@ -85,7 +85,7 @@ public class BookController {
 	public ResponseEntity<List<CamelMap>> selectBookRealTimeSrch(
 			@RequestBody SrchVO vo
 		) throws Exception {
-		vo = memberService.selectBookRealTimeSrch(vo);
+		vo = bookService.selectBookRealTimeSrch(vo);
 		return ResponseEntity.ok(vo.getDataList());
 	}
 }

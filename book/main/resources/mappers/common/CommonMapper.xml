@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tccins.template.common.mapper.CommonMapper">
+
+   <!--상단 메뉴 조회 -->
+    <select id="selectTopMenuList"  parameterType="com.tccins.template.common.dto.CommonDto" resultType="com.tccins.template.common.dto.CommonDto">
+		SELECT DISTINCT A.MENU_ID
+			  ,A.MENU_NM
+			  ,A.MENU_URL
+		FROM MENU A LEFT OUTER JOIN AUTH_MENU B ON	A.MENU_ID = B.MENU_ID
+		AND UPPER_MENU_ID = 'ROOT'
+		WHERE B.AUTH_ID IN(
+			SELECT
+				AUTH_ID
+			FROM
+				USER_AUTH
+			WHERE
+				USER_PK = #{userPk}
+		)
+		ORDER BY MENU_ORDER
+	</select>
+	
+	 <!--선택한 메뉴정보 조회 -->
+	<select id="selectMenuInfo"  parameterType="String" resultType="com.tccins.template.common.dto.CommonDto">
+		SELECT
+			 ROOT_MENU_ID
+			,MENU_ID
+			,UPPER_MENU_ID
+		FROM MENU
+		WHERE MENU_URL = #{url}
+		AND MENU_LEVEL = '2'
+	</select>
+	
+	 <!--좌측메뉴(상위) 리스트 조회 -->
+    <select id="selectLeftUpperMenuList"  parameterType="com.tccins.template.common.dto.CommonDto" resultType="com.tccins.template.common.dto.CommonDto">
+		SELECT DISTINCT M1.MENU_ID
+			  ,M1.MENU_NM
+		FROM 		
+			MENU M1
+		LEFT OUTER JOIN AUTH_MENU B ON	M1.MENU_ID = B.MENU_ID
+		WHERE M1.UPPER_MENU_ID = #{rootMenuId}
+		AND B.AUTH_ID IN(
+							SELECT
+								AUTH_ID
+							FROM
+								USER_AUTH
+							WHERE
+								USER_PK = #{userPk}
+						)
+		ORDER BY M1.MENU_ORDER
+	</select>
+	
+ 	<!--좌측메뉴(하위) 리스트 조회 -->
+    <select id="selectLeftMenuList"  parameterType="com.tccins.template.common.dto.CommonDto" resultType="com.tccins.template.common.dto.CommonDto">
+		SELECT 
+				 DISTINCT M1.MENU_ID
+				,M1.MENU_URL
+				,M1.MENU_NM
+				,M1.UPPER_MENU_ID 
+		FROM 		
+			MENU M1
+		LEFT OUTER JOIN AUTH_MENU B ON	M1.MENU_ID = B.MENU_ID
+		LEFT JOIN 	MENU M2 on M2.MENU_ID = M1.UPPER_MENU_ID
+		LEFT JOIN 	MENU M3 on M3.MENU_ID = M2.UPPER_MENU_ID
+		WHERE B.AUTH_ID IN(
+							SELECT
+								AUTH_ID
+							FROM
+								USER_AUTH
+							WHERE
+								USER_PK = #{userPk}
+						)
+		AND M3.MENU_ID = #{rootMenuId}
+		ORDER BY M2.MENU_ORDER, M1.MENU_ORDER
+	</select>
+	 
+	 <!--공통코드로 상세코드 리스트조회 -->
+    <select id="selectCmCodeList"  parameterType="String" resultType="com.tccins.template.common.CamelMap">
+		SELECT dt_code
+			,dt_code_nm
+		FROM 		
+			dtcode
+		WHERE cm_code = #{cmCode}
+		ORDER BY dt_code_nm
+	</select>
+	
+	<!--상세코드로 상세코드 이름 조회 -->
+    <select id="selectDtCodeNm"  parameterType="String" resultType="String">
+		SELECT dt_code_nm
+		FROM 
+			dtcode
+		WHERE dt_code = #{dtCode}
+	</select>
+ 
+</mapper>

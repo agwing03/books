@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<th:block th:fragment="sideFragment(layout)">
+	<th:block th:if="${not #lists.isEmpty( layout[3] )}">
+		<div  id="leftmenu">
+			<!-- 메뉴 시작 -->
+			<div id="sidebar">
+				<ul>
+					<li class="has-sub" th:each="upperMenu, status : ${layout[3]}">
+						<a th:id="${upperMenu.menuId}"><span th:text="${upperMenu.menuNm}"></span></a>
+						<ul>
+							<th:block th:each="menu, status : ${layout[4]}">
+								<th:block th:if="${upperMenu.menuId == menu.upperMenuId}">
+									<li th:id="${menu.menuId}" class="has-sub">
+										<a th:href="@{${menu.menuUrl}}">
+											<span th:text="${menu.menuNm}"></span>
+										</a>
+									</li>
+								</th:block>
+							</th:block>	
+						</ul>
+					</li>
+				</ul>
+			</div>			
+		</div>
+	</th:block>
+</th:block>
+</html>

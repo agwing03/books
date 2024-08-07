@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layout/basic">
+	
+	<th:block layout:fragment="title">
+        <title>송장조회 페이지</title>
+    </th:block>
+
+
+	<th:block layout:fragment="content">
+		<div class="search_field">
+		    <div class="search_field_loc">
+		    	<h5><strong>택배 송장번호 조회</strong></h5>
+		    	<ul class="buttons">
+		    		<li><a id="myButton1"><img src="/images/tapCmm/save.svg"><p>조회</p></a></li>
+		    	</ul>
+		    </div>
+	    </div>
+	    <div class="modify_user">
+	    	<table>
+	    		<colgroup>
+	    			<col width="10%">
+	    			<col width="20%">
+	    			<col width="10%">
+	    			<col width="20%">
+	    		</colgroup>
+	    		<tbody>
+	    			<tr>
+	    				<th>택배회사명: </th>
+	    				<td>
+	    					<select id="tekbeCompnayList" name="tekbeCompnayList"></select>
+	    				</td>
+	    				<th>운송장번호: </th>
+	    				<td>
+	    					<input type="text" id="invoiceNumberText" name="invoiceNumberText">				
+	    				</td>
+	    			</tr>
+	    		</tbody>
+	    	</table>
+	    </div>
+	    <div class="default_tablestyle" style="margin-bottom: 65px;">
+			<table>
+				<colgroup>
+					<col width="20%">
+					<col width="20%">
+					<col width="20%">
+					<col width="20%">
+					<col width="20%">
+				</colgroup>
+				<thead id="resultHead">
+					
+				</thead>
+				<tbody id="resultBody">
+				
+				</tbody>
+			</table>
+		</div>
+		
+		<div class="default_tablestyle">
+			<table>
+				<colgroup>
+					<col width="20%">
+					<col width="20%">
+					<col width="40%">
+					<col width="20%">
+				</colgroup>
+				<thead id="myTagHead">
+					
+				</thead>
+				<tbody id="myTagBody">
+				
+				</tbody>
+			</table>
+		</div>
+	</th:block>
+	
+	<th:block layout:fragment="script">
+        <script th:inline="javascript">
+        /*<![CDATA[*/
+        	$(document).ready(function() {
+        		// api 주소로 택배 리스트 가져오기
+				$.ajax({
+		            type:"GET",
+		            dataType : "json",
+		            url:"https://apis.tracker.delivery/carriers",
+		            success:function(data){
+			            
+			            // JSON.parse 이용하기
+			            var parseData = JSON.parse(JSON.stringify(data));
+			            
+			            var myData="";
+			            
+			            // 택배 리스트 가져와서 select에 삽입
+			            $.each(parseData,function(key,value) {
+			            	myData += ('<option value='+value.id+'>'+value.name+ '</option>');
+			            });
+			            
+			            // select option 데이터 추가
+			            $("#tekbeCompnayList").html(myData);
+		            }
+		        });
+				
+				
+				// 배송조회 클릭시 진행
+				// api 주소로 데이터 보내서 송장 조회
+				$("#myButton1").click(function() {
+					// carriers => 택배사 종류
+		            var carriers = $('#tekbeCompnayList option:selected').attr('value');
+					
+					// tracks => 송장 번호
+		            var tracks = $('#invoiceNumberText').val();
+					
+		            $.ajax({
+		                type:"GET",
+		                url:'https://apis.tracker.delivery/carriers/'+carriers+'/tracks/'+tracks,
+		                data: {},
+		                success:function(data){
+		                	console.log(data);
+		                	// 배송 상태 state
+		                	// 배송 보낸사람 from
+		                	// 배송 받는사람 to
+		                	// 송장번호 정보 carrier
+		                	// 상품 상태 확인 progresses
+		                	
+		                	// 운송장번호, 보내는분, 받는분 출력 부분
+		                	var resultHead = "";
+		                	var resultBody = "";
+		                	
+		                	resultHead += ('<tr>');                
+		                	resultHead += ('<th>'+"운송장 번호"+'</th>');
+		                	resultHead += ('<th>'+"보내는분"+'</th>');
+		                	resultHead += ('<th>'+"받는분"+'</th>');
+		                	resultHead += ('<th>'+"택배사"+'</th>');
+		                	resultHead += ('<th>'+"택배사 전화번호"+'</th>');
+		                	resultHead += ('</tr>');
+		                    
+		                    resultBody += ('<tr>');
+		                    resultBody += ('<td>'+data.carrier.id+'</td>');
+		                    resultBody += ('<td>'+data.from.name+'</td>');
+		                    resultBody += ('<td>'+data.to.name+'</td>');
+		                    resultBody += ('<td>'+data.carrier.name+'</td>');
+		                    resultBody += ('<td>'+data.carrier.tel+'</td>');
+		                    resultBody += ('</tr>');
+		                    
+		                    $("#resultHead").html(resultHead);
+		                	$("#resultBody").html(resultBody);
+		                	
+		                	// 상품 상태 확인 변수 지정
+		                	var trackingDetail = data.progresses;
+		                	
+		                	// table head 데이터 넣는 변수
+		                	var header ="";
+		                	
+		                	// table 내용 데이터 넣는 변수
+		                	var tracking = "";
+		                	
+		                    header += ('<tr>');                
+		                    header += ('<th>'+"단계"+'</th>');
+		                    header += ('<th>'+"처리"+'</th>');
+		                    header += ('<th>'+"상품상태"+'</th>');
+		                    header += ('<th>'+"담당 점소"+'</th>');
+		                    header += ('</tr>');
+		                	
+		                	$.each(trackingDetail,function(key, value){
+		                		
+		                		// 시간쪼개서 날짜와 시간으로 분리시켜 출력
+		            		    var date = value.time.substr(0,10);				//날짜
+		                		var time = value.time.substring(11,19);			//시간
+		                		
+		                		// 택배 송장 상태 데이터가 없을경우 상태 공백
+		                		if(typeof value.status == "undefined" || value.status == null){
+		                			tracking += ('<tr>');
+			                		tracking += ('<td></td>');
+			                		tracking += ('<td>'+date+'&nbsp;'+time+'</td>');
+			                		tracking += ('<td>'+value.description+'</td>');
+			                		tracking += ('<td>'+value.location.name+'</td>');
+			                		tracking += ('</tr>');
+			                	// 택배 송장 상태 데이터 있을경우 정상 출력
+		                		} else {
+		                			tracking += ('<tr>');
+			                		tracking += ('<td>'+value.status.text+'</td>');
+			                		tracking += ('<td>'+date+'&nbsp;'+time+'</td>');
+			                		tracking += ('<td>'+value.description+'</td>');
+			                		tracking += ('<td>'+value.location.name+'</td>');
+			                		tracking += ('</tr>');
+		                		}
+		                		
+		                	});
+		                	
+		                	$("#myTagHead").html(header);
+		                	$("#myTagBody").html(tracking);
+		                	
+		                },error:function(request,status,error){   
+		                	// error메세지 json parse 해서 alert창으로 띄우기     
+		                	var obj = JSON.parse(request.responseText);
+		                	alert(obj.message);       
+		                }
+		            });
+		        });
+		
+			});//ready end
+        	
+        /*]]>*/
+        </script>
+    </th:block>
+</html>

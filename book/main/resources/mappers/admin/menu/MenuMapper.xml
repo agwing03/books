@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tccins.template.admin.menu.mapper.MenuMapper">
+
+	
+	<!-- 메뉴 목록 ajax  -->
+	<select id="selectAjaxMenuList" parameterType="com.tccins.template.admin.menu.MenuVO" resultType="com.tccins.template.admin.menu.MenuVO">
+		SELECT 
+			  UPPER_MENU_ID       	AS upperMenuId
+			, MENU_ID				AS menuId 
+			, MENU_NM				AS menuNm     
+			, MENU_ORDER			AS menuOrder
+			, MENU_URL				AS menuUrl
+			, USE_YN				AS useYn
+			, IFNULL(MENU_DESC,"")	AS menuDesc
+			, MENU_LEVEL			AS menuLevel
+			, ROOT_MENU_ID			AS rootMenuId
+		FROM MENU
+		WHERE 1=1
+		AND UPPER_MENU_ID = #{menuId}
+		ORDER BY UPPER_MENU_ID ASC
+	</select>
+	
+	<!-- 하위 메뉴 갯수 -->
+	<select id="selectLowLevMenuCount" parameterType="com.tccins.template.admin.menu.MenuVO" resultType="int">
+		SELECT 
+			COUNT(MENU_ID)
+		FROM MENU
+		WHERE 1=1
+		AND UPPER_MENU_ID = #{menuId}
+	</select>
+	
+	<select id="checkMenuId" parameterType="com.tccins.template.admin.menu.MenuVO" resultType="int">
+		SELECT COUNT(MENU_ID) 
+		FROM MENU
+		WHERE MENU_ID = #{menuId}
+	</select>
+	
+	
+	<insert id="insertMenu" parameterType="com.tccins.template.admin.menu.MenuVO" >
+	INSERT INTO MENU
+	(  
+	  UPPER_MENU_ID 
+	, MENU_ID		
+	, MENU_NM		
+	, MENU_ORDER	
+	, MENU_URL		
+	, USE_YN		
+	, MENU_DESC		
+	, MENU_LEVEL	
+	, ROOT_MENU_ID	
+	)VALUES(
+	 #{upperMenuId}
+	,#{menuId} 
+	,#{menuNm} 
+	,#{menuOrder} 
+	,#{menuUrl} 
+	,#{useYn} 
+	,#{menuDesc} 
+	,#{menuLevel} 
+	,#{rootMenuId} 
+	)
+	</insert>
+	
+	<update id="updateMenu" parameterType="com.tccins.template.admin.menu.MenuVO">
+		UPDATE  menu
+		SET   
+		   MENU_NM      = #{menuNm}
+		 , MENU_ORDER   = #{menuOrder}
+     	 , MENU_URL	    = #{menuUrl}
+     	 , USE_YN	    = #{useYn}
+         , MENU_DESC	= #{menuDesc}
+		WHERE  MENU_ID  = #{menuId}
+	</update>
+	
+	
+	<delete id="deleteRootMenu" parameterType="com.tccins.template.admin.menu.MenuVO">
+	DELETE FROM menu 
+	WHERE 
+		MENU_ID = #{menuId}
+	</delete>
+	
+	
+</mapper>

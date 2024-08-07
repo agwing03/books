@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tccins.template.dept.mapper.DeptMapper">
+
+	<!-- dept 테이블 전체 컬럼 -->
+    <sql id="deptColumns">
+         COM_CD
+        ,DEPT_CD
+        ,DEPT_NM	
+        ,UPPER_DEPT_CD
+        ,DEPT_LEVEL
+        ,USE_YN
+        ,REG_ID
+        ,REG_DATE
+        ,UPD_ID
+        ,UPD_DATE
+    </sql>
+    
+	<!-- 부서 리스트 조회 -->
+	<select id="deptList" parameterType="com.tccins.template.common.dto.SearchDto" resultType="com.tccins.template.common.CamelMap">
+		SELECT 
+			COM_CD
+			,DEPT_CD
+			,DEPT_NM
+			,UPPER_DEPT_CD
+			,(SELECT DEPT_NM FROM DEPT B WHERE B.DEPT_CD = A.UPPER_DEPT_CD) UPPER_DEPT_NM
+			,DEPT_LEVEL
+			,USE_YN
+			,REG_ID
+			,REG_DATE
+			,UPD_ID
+			,UPD_DATE
+		FROM DEPT A
+		WHERE USE_YN = 'Y'
+			AND DEPT_CD IS NOT NULL 
+			<if test="searchType == ''">and (DEPT_CD LIKE CONCAT ('%', #{keyword},'%') or DEPT_NM LIKE CONCAT ('%', #{keyword},'%'))</if>
+			<if test="searchType == 'deptCd'">and DEPT_CD LIKE CONCAT ('%', #{keyword}, '%')</if>
+			<if test="searchType == 'deptNm'">and DEPT_NM LIKE CONCAT ('%', #{keyword}, '%')</if>
+			
+			<if test="srchBgnDtm !=null and srchBgnDtm !=''">and REG_DATE <![CDATA[>=]]> date(#{srchBgnDtm})</if>
+			<if test="srchEndDtm !=null and srchEndDtm !=''">and REG_DATE <![CDATA[<=]]> date(#{srchEndDtm})</if>
+		ORDER BY  UPPER_DEPT_CD ,DEPT_LEVEL 
+	</select>
+	
+	<!-- 부서 갯수 조회 -->
+	<select id="deptCount" parameterType="com.tccins.template.common.dto.SearchDto" resultType="Integer">
+		SELECT
+			COUNT(*)
+		FROM
+			DEPT
+		WHERE USE_YN = 'Y'
+		AND DEPT_CD IS NOT NULL 
+			<if test="searchType == ''">and (DEPT_CD LIKE CONCAT ('%', #{keyword},'%') or DEPT_NM LIKE CONCAT ('%', #{keyword},'%'))</if>
+			<if test="searchType == 'deptCd'">and DEPT_CD LIKE CONCAT ('%', #{keyword}, '%')</if>
+			<if test="searchType == 'deptNm'">and DEPT_NM LIKE CONCAT ('%', #{keyword}, '%')</if>
+			
+			<if test="srchBgnDtm !=null and srchBgnDtm !=''">and REG_DATE <![CDATA[>=]]> date(#{srchBgnDtm})</if>
+			<if test="srchEndDtm !=null and srchEndDtm !=''">and REG_DATE <![CDATA[<=]]> date(#{srchEndDtm})</if>
+	</select>
+	
+	<!-- 부서 상세정보 조회 -->
+    <select id="findDeptByDeptCd" parameterType="String" resultType="com.tccins.template.dept.DeptVO">
+        SELECT COM_CD
+			,DEPT_CD
+			,DEPT_NM
+			,UPPER_DEPT_CD
+			,(SELECT DEPT_NM FROM DEPT B WHERE B.DEPT_CD = A.UPPER_DEPT_CD) UPPER_DEPT_NM
+			,DEPT_LEVEL
+			,USE_YN
+			,REG_ID
+			,REG_DATE
+			,UPD_ID
+			,UPD_DATE
+        FROM
+            DEPT A
+        WHERE
+            DEPT_CD = #{deptCd}
+    </select>
+    
+    <!-- 부서 저장 -->
+    <insert id="saveDept" parameterType="com.tccins.template.dept.DeptVO">
+        INSERT INTO DEPT (COM_CD
+			,DEPT_CD
+			,DEPT_NM
+			,UPPER_DEPT_CD
+			,DEPT_LEVEL
+			,USE_YN
+			,REG_ID
+			,REG_DATE
+        ) VALUES (
+        	null
+			, #{deptCd}
+			, #{deptNm}
+			, #{upperDeptCd}
+			, (SELECT DEPT_LEVEL FROM DEPT B WHERE B.DEPT_CD = #{upperDeptCd})+1
+			, #{useYn}
+			, #{regId}
+            , NOW()
+        )
+    </insert>
+    
+    <!-- 권한ID 중복체크  카운팅 -->
+    <select id="checkDeptCd" parameterType="String" resultType="int">
+        SELECT
+            COUNT(*)
+        FROM
+            dept
+        WHERE
+        	DEPT_CD = #{deptCd}
+    </select>
+    
+    <update id="updateDept" parameterType="com.tccins.template.dept.DeptVO">
+    	UPDATE dept set
+    		COM_CD			= #{comCd}
+			,DEPT_CD		= #{deptCd}
+			,DEPT_NM		= #{deptNm}
+			,UPPER_DEPT_CD	= #{upperDeptCd}
+			,USE_YN			= #{useYn}
+			,UPD_ID			= #{updId}
+	        ,UPD_DATE		= NOW()
+    	WHERE DEPT_CD 		= #{deptCd}
+    </update>
+    
+    
+    <delete id="deleteDept" parameterType="String">
+    	DELETE FROM dept
+    	WHERE DEPT_CD = #{deptCd} 
+    </delete>
+    
+	
+</mapper>

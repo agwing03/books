@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layout/basic">
+    <th:block layout:fragment="title">
+        <title>부서 상세</title>
+    </th:block>
+    <th:block layout:fragment="content">
+	    <form id="searchVO" name="searchVO" method="post">
+	    	<div class="search_field">
+			    <div class="search_field_loc">
+			    	<h5><strong>부서 상세</strong></h5>
+			    	<ul class="buttons">
+			    		<li><a th:href="@{/dept/deptList.do}"><img src="/images/tapCmm/save.svg"><p>뒤로가기</p></a></li>
+		                <li><a th:href="@{/dept/deptWrite.do( deptCd=${dept.deptCd} )}"><img src="/images/tapCmm/edit.svg"><p>수정하기</p></a></li>
+			    		<li><a onclick="fn_deleteDept();"><img src="/images/tapCmm/trash.svg"><p>삭제하기</p></a></li>
+			    	</ul>
+			    </div>
+		    </div>
+	        <div class="modify_user">
+	            <table>
+	            	<colgroup>
+	            		<col width="10%">
+	            		<col width="*%">
+	            	</colgroup>
+	            	<tbody>
+	            		<tr>
+	            			<th>부서코드</th>
+	            			<td>
+	            				<p class="form-control" id="deptCd" th:text="${dept.deptCd}"></p>
+	            			</td>
+	            		</tr>
+	            		<tr>
+	            			<th>상위부서</th>
+	            			<td>
+	            				<p class="form-control" id="upperDeptCd" th:text="${dept.upperDeptCd}"></p>
+	            			</td>
+	            		</tr>
+	            		<tr>
+	            			<th>부서명</th>
+	            			<td>
+	            				<p class="form-control" id="deptNm" th:text="${dept.deptNm}"></p>
+	            			</td>
+	            		</tr>
+	            		<tr>
+	            			<th>사용여부</th>
+	            			<td>
+	            				<p class="form-control" id="useYn" th:text="${dept.useYn}"></p>
+	            			</td>
+	            		</tr>
+	            		<tr>
+	            			<th>생성자ID</th>
+	            			<td>
+	            				<p class="form-control" id="useYn" th:text="${dept.regId}"></p>
+	            			</td>
+	            		</tr>
+	            		<tr>
+	            			<th>생성일자</th>
+	            			<td>
+	            				<p class="form-control" id="useYn" th:text="${dept.regDate}"></p>
+	            			</td>
+	            		</tr>
+	            		<tr>
+	            			<th>수정자ID</th>
+	            			<td>
+	            				<p class="form-control" id="useYn" th:text="${dept.updId}"></p>
+	            			</td>
+	            		</tr>
+	            		<tr>
+	            			<th>수정일자</th>
+	            			<td>
+	            				<p class="form-control" id="useYn" th:text="${dept.updDate}"></p>
+	            			</td>
+	            		</tr>
+	            	</tbody>
+	            </table>
+	        </div>
+	    </form>
+    </th:block>
+	<th:block layout:fragment="script">
+		<script th:inline="javascript">
+		/*<![CDATA[*/
+			// 게시글 삭제
+			function fn_deleteDept() {
+				const deptCd = [[ ${dept.deptCd} ]];
+                const deptNm = [[ ${dept.deptNm} ]];
+                
+                var param= deptCd;
+                action_popup.confirm(deptNm + "을 삭제할까요?",fn_deleteAjax,param);
+             
+			}
+			
+            function fn_deleteAjax(param){
+				$.ajax({
+					url:"/dept/deleteDept.do"
+					,type:"POST"
+					,data:{"deptCd":param}
+					,dataType:"text"
+					,success:function(msg) {
+						action_popup.alert(msg);
+						$("#searchVO").attr("action", "/dept/deptList.do");
+						$("#searchVO").submit();
+					},error:function(request,status,error){       
+					alert("부서삭제중 오류발생"); 
+					}
+				});
+			}
+		/*]]>*/
+		</script>
+	</th:block>
+</html>
+    

@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tccins.template.user.mapper.UserMapper">
+
+   <!-- 로그인 사용자정보 조회 -->
+    <select id="selectUserPk" parameterType="String" resultType="String">
+  		SELECT
+  			USER_PK
+  		FROM USER
+  		WHERE USER_ID = #{id}
+  	</select>
+    
+    <!-- 로그인 사용자정보 조회 -->
+    <select id="selectUser" parameterType="com.tccins.template.config.CustomUserDetails" resultType="com.tccins.template.config.CustomUserDetails">
+       SELECT
+			USER_ID
+			,USER_PASSWORD
+			,USER_PK
+			,USER_NM
+			,DEPT_CD
+			,USE_YN
+			,CASE 
+				WHEN LOCK_YN > 0 THEN 'Y'
+				ELSE 'N'
+			 END IS_LOCK
+			,FAIL_COUNT
+			,TIMESTAMPDIFF(MINUTE,NOW(),UNLOCK_TIME) UNLOCK_TIME
+			,LOGIN_FAIL_COUNT
+			,LOGIN_FAIL_LOCK_TIME
+		FROM
+			(
+			SELECT 
+				USER_ID
+				,USER_NM
+				,USER_PASSWORD
+				,USER_PK
+				,DEPT_CD
+				,USE_YN
+				,IS_LOCK
+				,FAIL_COUNT
+				,LOCK_TIME
+				,DATE_ADD(LOCK_TIME, INTERVAL (SELECT LOGIN_FAIL_LOCK_TIME FROM SESSION_MANAGE) MINUTE) UNLOCK_TIME 
+				,CASE 
+					WHEN DATE_ADD(LOCK_TIME, INTERVAL (SELECT LOGIN_FAIL_LOCK_TIME FROM SESSION_MANAGE) MINUTE) > NOW() THEN 1
+					ELSE 0
+				END LOCK_YN
+				,(SELECT LOGIN_FAIL_COUNT FROM SESSION_MANAGE) LOGIN_FAIL_COUNT
+				,(SELECT LOGIN_FAIL_LOCK_TIME FROM SESSION_MANAGE) LOGIN_FAIL_LOCK_TIME
+			FROM USER
+		    WHERE
+            USER_PK = #{userPk}
+			) A
+    </select>
+    
+    <!-- 로그인 사용자권한 목록 조회 -->
+	<select id="selectAuthorities" parameterType="String" resultType="String">
+        SELECT
+        	AUTH_ID
+        FROM
+            USER_AUTH
+        WHERE
+            USER_ID = #{id}
+	</select>
+	
+    <!-- 로그인 성공시 실패 횟수 초기화 -->
+    <update id="resetFailCnt" parameterType="String">
+    	UPDATE USER
+    	SET
+    		FAIL_COUNT = 0
+    		,IS_LOCK = 'N'
+    		,LOCK_TIME = NULL
+    	WHERE USER_ID = #{userId}
+    </update>
+    
+    <!-- 계정 잠김 카운트 증가 -->
+    <update id="updateFailCnt" parameterType="com.tccins.template.config.CustomUserDetails">
+    	<selectKey keyProperty="failCount" order="BEFORE" resultType="int">
+    		SELECT CAST(IFNULL(MAX(FAIL_COUNT),0)+1 AS INTEGER) FROM USER WHERE USER_ID = #{userId}
+    	</selectKey>
+    	UPDATE USER
+    	SET
+    		FAIL_COUNT = #{failCount}
+    	WHERE
+    		USER_ID = #{userId}
+    </update>
+    
+    <!-- 계정 잠금 -->
+    <update id="updateUserLock" parameterType="String">
+    	UPDATE USER
+    	SET
+    		IS_LOCK = 'Y'
+    		,LOCK_TIME = DATE_FORMAT(NOW(),'%Y%m%d%H%i%s')
+    		,FAIL_COUNT = (SELECT LOGIN_FAIL_COUNT FROM SESSION_MANAGE)
+    	WHERE
+    		USER_ID = #{userId}
+    </update>
+    
+    <!--  세션 시간 받아오기 -->
+    <select id="selectSessionMin" resultType="int">
+    	SELECT SESSION_MIN FROM SESSION_MANAGE
+    </select>
+    
+    <!-- 계정 실패 횟수 1로 변경 -->
+    <update id="updateFailCntReset" parameterType="String">
+    	UPDATE USER 
+    	SET
+    		IS_LOCK = 'N'
+    		,LOCK_TIME = NULL
+    		,FAIL_COUNT = 1
+    	WHERE  USER_ID = #{userId}
+    </update>
+    
+    <!-- 유저 리스트 조회 -->
+	<select id="selectUserList" parameterType="com.tccins.template.common.dto.SearchDto" resultType="com.tccins.template.config.CustomUserDetails">
+		SELECT
+			USER_ID
+			,USER_PASSWORD
+			,USER_PK
+			,USER_NM
+			,DEPT_NM
+			,DEPT_CD
+			,USE_YN
+			,AUTH_NM
+			,CASE 
+				WHEN LOCK_YN > 0 THEN 'Y'
+				ELSE 'N'
+			 END IS_LOCK
+			,FAIL_COUNT
+			,LOCK_TIME
+			,CASE 
+				WHEN TIMESTAMPDIFF(MINUTE,NOW(),UNLOCK_TIME) > 0 THEN  TIMESTAMPDIFF(MINUTE,NOW(),UNLOCK_TIME)
+				ELSE 0
+			END	UNLOCK_TIME
+			,LOGIN_FAIL_COUNT
+			,REG_DATE
+		FROM
+			(
+			SELECT 
+				USER_ID
+				,USER_PASSWORD
+				,USER_PK
+	        	,USER_NM
+				,(SELECT DEPT_NM FROM DEPT B WHERE A.DEPT_CD  = B.DEPT_CD ) DEPT_NM
+				,DEPT_CD
+				,USE_YN
+				,IS_LOCK
+				,FAIL_COUNT
+				,LOCK_TIME
+				,(SELECT AUTH_NM FROM AUTH WHERE AUTH_ID = A.AUTHOR_CODE) AUTH_NM
+				,DATE_ADD(LOCK_TIME, INTERVAL (SELECT LOGIN_FAIL_LOCK_TIME FROM SESSION_MANAGE) MINUTE) UNLOCK_TIME 
+				,CASE 
+					WHEN DATE_ADD(LOCK_TIME, INTERVAL (SELECT LOGIN_FAIL_LOCK_TIME FROM SESSION_MANAGE) MINUTE) > NOW() THEN 1
+					ELSE 0
+				END LOCK_YN
+				,(SELECT LOGIN_FAIL_COUNT FROM SESSION_MANAGE) LOGIN_FAIL_COUNT
+				,DATE_FORMAT(REG_DATE,'%Y%m%d%H%i%s') REG_DATE
+			FROM USER A
+			) A
+		WHERE 1=1
+			<if test="searchType != null and searchType != ''">
+				<choose>
+					<when test="searchType.equals('deptNm')">
+						AND  UPPER(DEPT_NM) LIKE CONCAT('%',UPPER(#{keyword}),'%')
+					</when>
+					<when test="searchType.equals('userNm')">
+						AND UPPER(USER_NM) LIKE CONCAT('%',UPPER(#{keyword}),'%')
+					</when>
+				</choose>
+			</if>
+		ORDER BY CASE WHEN USE_YN = 'Y' THEN 1 ELSE 2 END ASC , REG_DATE DESC
+	</select>
+	
+	<!-- 유저 갯수 -->
+	<select id="count" parameterType="com.tccins.template.common.dto.SearchDto" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM USER
+		WHERE 1=1
+			<if test="searchType != null and searchType != ''">
+				<choose>
+					<when test="searchType.equals('deptNm')">
+						AND  UPPER((SELECT DEPT_NM FROM DEPT B WHERE A.DEPT_CD  = B.DEPT_CD )) LIKE CONCAT('%',UPPER(#{keyword}),'%')
+					</when>
+					<when test="searchType.equals('userNm')">
+						AND UPPER(USER_NM) LIKE CONCAT('%',UPPER(#{keyword}),'%')
+					</when>
+				</choose>
+			</if>
+	</select>
+	
+	<!-- 유저 삭제하기 -->
+	<delete id="userDelete" parameterType="com.tccins.template.common.CamelMap">
+		DELETE FROM USER WHERE USER_PK = #{userPk}
+	</delete>
+	
+	<!-- 유저 권한 삭제하기 -->
+	<delete id="userAuthDelete" parameterType="com.tccins.template.common.CamelMap">
+		DELETE FROM USER_AUTH WHERE USER_PK = #{userPk}
+	</delete>
+	
+	<!-- 유저 잠금 해제 -->
+	<update id="userUnLockUpdate" parameterType="com.tccins.template.common.CamelMap">
+		UPDATE USER
+		SET
+			FAIL_COUNT = 0
+			,LOCK_TIME = NULL
+			,IS_LOCK = 'N'
+			,UPD_ID = #{userId}
+			,UPD_DATE = DATE_FORMAT(NOW(),'%Y%m%d%H%i%s')
+		WHERE 
+			USER_PK = #{userPk}
+	</update>
+	
+	<!-- 유저 사용여부 변경 -->
+	<update id="userUseUpdate" parameterType="com.tccins.template.common.CamelMap">
+		UPDATE USER
+		SET
+			USE_YN = #{useYn}
+			,UPD_ID = #{userId}
+			,UPD_DATE = DATE_FORMAT(NOW(),'%Y%m%d%H%i%s')
+		WHERE 
+			USER_PK = #{userPk}
+	</update>
+	
+	<!-- 유저 비밀번호 변경 -->
+	<update id="userPwUpdate" parameterType="com.tccins.template.common.CamelMap">
+		UPDATE USER
+		SET
+			USER_PASSWORD = #{userPw}
+			,UPD_ID = #{userId}
+			,UPD_DATE = DATE_FORMAT(NOW(),'%Y%m%d%H%i%s')
+		WHERE 
+			USER_PK = #{userPk}
+	</update>
+
+	<!-- 부서 리스트 조회 -->
+	<select id="userDpetList" resultType="com.tccins.template.common.CamelMap">
+		SELECT 
+			DEPT_CD 
+			,DEPT_NM 
+		FROM 
+			DEPT 
+		WHERE USE_YN = 'Y'
+		ORDER BY DEPT_CD ASC 
+	</select>
+	
+	<!-- 권한 리스트 조회 -->
+	<select id="userAuthList" resultType="com.tccins.template.common.CamelMap">
+		SELECT 
+			AUTH_ID
+			,AUTH_NM
+		FROM 
+			AUTH 
+	</select>
+	
+	<!-- 아이디 중복체크 -->
+	<select id="userIdSelect" parameterType="String" resultType="Integer">
+		SELECT 
+			COUNT(*)
+		FROM
+			USER
+		WHERE USER_ID = #{userId}
+	</select>
+
+	<!-- 유저 정보 저장 -->
+	<insert id="userSave" parameterType="java.util.Map">
+		<selectKey keyProperty="userPk" resultType="java.lang.String" order="BEFORE">
+			SELECT LPAD(IFNULL(MAX(USER_PK),0)+1,10,'0') FROM USER
+		</selectKey>
+		INSERT INTO USER(
+			USER_ID
+			,USER_NM
+			,USER_PASSWORD
+			,DEPT_CD
+			,REG_ID
+			,REG_DATE
+			,UPD_ID
+			,UPD_DATE
+			,USE_YN
+			,USER_PK	
+			,AUTHOR_CODE
+		)VALUES(
+			#{userId}
+			,#{userNm}
+			,#{userPassword}
+			,#{deptCd}
+			,#{regId}
+			,DATE_FORMAT(NOW(),'%Y%m%d%H%i%s')
+			,#{regId}
+			,DATE_FORMAT(NOW(),'%Y%m%d%H%i%s')
+			,#{useYn}
+			,#{userPk}	
+			,#{authorCode}
+		)
+	</insert>
+	
+	<!-- 권한 정보 저장 -->
+	<insert id="userAuthSave" parameterType="com.tccins.template.common.CamelMap">
+		<selectKey keyProperty="authNm" order="BEFORE" resultType="String">
+			SELECT AUTH_NM FROM AUTH WHERE AUTH_ID = #{authId}
+		</selectKey>
+		INSERT INTO USER_AUTH(
+			AUTH_ID
+			,USER_ID
+			,AUTH_NM
+			,USER_PK
+		)VALUES(
+			#{authId}
+			,#{userId}
+			,#{authNm}
+			,#{userPk}
+		)
+	</insert>
+	
+	<!-- 로그인 성공 실패 데이터 저장 -->
+	<insert id="userInsertLog" parameterType="com.tccins.template.common.CamelMap">
+		<selectKey resultType="String" order="BEFORE" keyProperty="loginLogId">
+			SELECT LPAD(IFNULL(MAX(LOGIN_LOG_ID),0)+1,6,'0') FROM LOGIN_LOG
+		</selectKey>
+		INSERT INTO LOGIN_LOG(
+			LOGIN_LOG_ID
+			,LOGIN_USER_ID
+			,LOGIN_GBN
+			,LOGIN_LOG_CONTENTS
+			,LOGIN_FRST_DTTM
+			,LOGIN_IP_ADDR
+		)VALUES(
+			#{loginLogId}
+			,#{loginUserId}
+			,#{loginGbn}
+			,#{loginLogContents}
+			,DATE_FORMAT(NOW(),'%Y%m%d%H%i%s')
+			,#{loginIpAddr}
+		)
+	</insert>
+
+</mapper>

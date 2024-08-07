@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tccins.template.code.mapper.CodeMapper">
+
+    <!-- 분류코드 리스트 -->
+    <select id="selectClCodeList" parameterType="com.tccins.template.code.CodeVO"  resultType="com.tccins.template.code.CodeVO">
+        SELECT
+            cl_code 				as code
+	        , cl_code_Nm 			as codeNm
+	        , cl_code_dc			as codeDc
+	        , use_yn 				as useYn	
+	        , reg_id				
+	        , reg_date
+	        , upd_id
+	        , upd_date
+        FROM
+            clcode
+        WHERE
+            delete_yn = 0
+        ORDER BY cl_code DESC
+    </select>
+    
+    <!--  공통코드 리스트 -->
+    <select id="selectCmCodeList" parameterType="com.tccins.template.code.CodeVO"  resultType="com.tccins.template.code.CodeVO">
+        SELECT 
+        	cm_code					as code
+	        , cm_code_Nm			as codeNm
+	        , cm_code_dc			as codeDc
+	        , use_yn 				as useYn
+	        , reg_id
+	        , reg_date
+	        , upd_id
+	        , upd_date
+        FROM
+            cmcode
+        WHERE
+            delete_yn = 0
+		and	cl_code = #{code}
+        ORDER BY cm_code DESC
+    </select>
+    
+    <!--  상세코드 리스트 -->
+    <select id="selectDtCodeList" parameterType="com.tccins.template.code.CodeVO"  resultType="com.tccins.template.code.CodeVO">
+        SELECT 
+        	dt_code					as code
+	        , dt_code_Nm			as codeNm
+	        , dt_code_dc			as codeDc
+	        , use_yn 
+	        , reg_id
+	        , reg_date
+	        , upd_id
+	        , upd_date
+        FROM
+            dtcode
+        WHERE
+            delete_yn = 0
+		and	cm_code = #{code}
+        ORDER BY cm_code DESC
+    </select>
+    
+    <!--  분류코드 갯수 -->
+    <select id="selectClCodeCnt" parameterType="com.tccins.template.code.CodeVO" resultType="int">
+        SELECT 
+			count(cl_code)
+        FROM
+            clcode
+        WHERE
+			cl_code = #{code}
+    </select>
+    
+    <!--  공통코드 갯수 -->
+    <select id="selectCmCodeCnt" parameterType="com.tccins.template.code.CodeVO" resultType="int">
+        SELECT 
+			count(cm_code)
+        FROM
+            cmcode
+        WHERE cl_code = #{upperCode}
+			<if test="code != null">and cm_code = #{code}</if>
+    </select>
+    
+    <!--  상세코드 갯수 -->
+    <select id="selectDtCodeCnt" parameterType="com.tccins.template.code.CodeVO" resultType="int">
+        SELECT 
+			count(dt_code)
+        FROM
+            dtcode
+        WHERE
+			cm_code = #{upperCode}
+			<if test="code != null">and dt_code = #{code}</if>
+    </select>
+    
+    <!-- 분류코드 저장 -->
+   	<insert id="insertClCode" parameterType="com.tccins.template.code.CodeVO">
+	    INSERT 
+	    INTO  clcode
+	         (  cl_code
+	         ,  cl_code_nm
+	         ,  cl_code_dc
+	         ,  use_yn
+	         ,  reg_id
+	         ,  reg_date
+	         ) 
+	    VALUES  
+	         (  #{code}
+	         ,  #{codeNm}
+	         ,  #{codeDc}
+	         ,  #{useYn}
+	         ,  #{regId}
+	         ,  sysdate()
+	         ) 
+	</insert>
+	
+    <!-- 공통코드 저장 -->
+       	<insert id="insertCmCode" parameterType="com.tccins.template.code.CodeVO">
+	    INSERT 
+	    INTO  cmcode
+	         (  cl_code
+	         ,	cm_code
+	         ,  cm_code_nm
+	         ,  cm_code_dc
+	         ,  use_yn
+	         ,  reg_id
+	         ,  reg_date
+	         ) 
+	    VALUES  
+	         (  #{upperCode}
+	         ,  #{code}
+	         ,  #{codeNm}
+	         ,  #{codeDc}
+	         ,  #{useYn}
+	         ,  #{regId}
+	         ,  sysdate()
+	         ) 
+	</insert>
+	
+    <!-- 상세코드 저장 -->
+   	<insert id="insertDtCode" parameterType="com.tccins.template.code.CodeVO">
+	    INSERT 
+	    INTO  dtcode
+	         (  cm_code
+	         ,	dt_code
+	         ,  dt_code_nm
+	         ,  dt_code_dc
+	         ,  use_yn
+	         ,  reg_id
+	         ,  reg_date
+	         ) 
+	    VALUES  
+	         (  #{upperCode}
+	         ,  #{code}
+	         ,  #{codeNm}
+	         ,  #{codeDc}
+	         ,  #{useYn}
+	         ,  #{regId}
+	         ,  sysdate()
+	         ) 
+	</insert>
+	
+    <!-- 분류코드 수정 -->
+    <update id="updateClCode" parameterType="com.tccins.template.code.CodeVO">
+		UPDATE  clcode 
+		   SET  cl_code				= #{code}
+		   	 ,  cl_code_nm			= #{codeNm}
+		     ,  cl_code_dc			= #{codeDc}
+		     ,  use_yn				= #{useYn}
+		     ,  upd_date			= sysdate()
+		     ,  upd_id				= #{updId}
+		WHERE  cl_code				= #{hdCode} 
+	</update>
+	
+    <!-- 공통코드 수정 -->
+	<update id="updateCmCode" parameterType="com.tccins.template.code.CodeVO">
+		UPDATE  cmcode 
+		   SET  cm_code				= #{code}
+		   	 ,  cm_code_nm			= #{codeNm}
+		     ,  cm_code_dc			= #{codeDc}
+		     ,  use_yn				= #{useYn}
+		     ,  upd_date			= sysdate()
+		     ,  upd_id				= #{updId}
+		WHERE  cm_code				= #{hdCode} 
+	</update>
+    
+    <!-- 상세코드 수정 -->
+    <update id="updateDtCode" parameterType="com.tccins.template.code.CodeVO">
+		UPDATE  dtcode 
+		   SET  dt_code				= #{code}
+		   	 ,  dt_code_nm			= #{codeNm}
+		     ,  dt_code_dc			= #{codeDc}
+		     ,  use_yn				= #{useYn}
+		     ,  upd_date			= sysdate()
+		     ,  upd_id				= #{updId}
+		WHERE  dt_code				= #{hdCode} 
+	</update>
+	
+    <!--  뷴류코드 삭제 -->
+    <update id="deleteClCode" parameterType="com.tccins.template.code.CodeVO">
+		UPDATE  clcode
+			SET  delete_yn  = '1'
+		     ,  upd_id = #{updId}
+		     ,  upd_date = sysdate()
+		WHERE  cl_code   = #{code}
+	</update>
+	
+	<!--  공통코드 삭제 -->
+    <update id="deleteCmCode" parameterType="com.tccins.template.code.CodeVO">
+		UPDATE  cmcode
+			SET  delete_yn  = '1'
+		     ,  upd_id = #{updId}
+		     ,  upd_date = sysdate()
+		WHERE  cm_code   = #{code}
+	</update>
+	
+	<!--  상세코드 삭제 -->
+    <update id="deleteDtCode" parameterType="com.tccins.template.code.CodeVO">
+		UPDATE  dtcode
+			SET  delete_yn  = '1'
+		     ,  upd_id = #{updId}
+		     ,  upd_date = sysdate()
+		WHERE  dt_code   = #{code}
+	</update>
+    
+
+</mapper>

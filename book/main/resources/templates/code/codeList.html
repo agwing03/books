@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layout/basic">
+    <th:block layout:fragment="title">
+        <title>리스트 페이지</title>
+    </th:block>
+
+    <th:block layout:fragment="content">
+		<div class="search_field" style="float: left; width: 30%; margin-right:40px;">
+			<div class="search_field_loc">
+				<h5><strong>분류코드</strong></h5>
+			</div>
+			<div class="inline_tablestyle">
+				<table>
+					<thead>
+						<tr>
+							<th>분류코드</th>
+							<th>분류코드명</th>
+							<th>사용여부</th>
+						</tr>
+					</thead>
+					<tbody id="clCodeList" class="scroll_box">
+					
+					</tbody>
+				</table>
+			</div>
+			<br>
+			<!-- 버튼부분 -->
+			<div style="float: right; margin: 10px;">
+				<ul class="buttons">
+					<li><a href="#" onclick="javascript:fn_fresh('clCode');"><img src="/images/tapCmm/save.svg"><p>신규</p></a></li>
+					<li><a href="#" onclick="javascript:fn_regist('clCode');"><img src="/images/tapCmm/save.svg"><p>저장</p></a></li>
+					<li><a href="#" onclick="javascript:fn_delete('clCode');"><img src="/images/tapCmm/trash.svg"><p>삭제</p></a></li>
+				</ul>
+			</div>
+			 <!-- 분류코드 detail부분 -->
+			<form id="clCodefrm">
+				<div class="modify_user" style="width:100%;">
+				<!--<input id="hdclCode" name="hdclCode"/>-->
+					<input type='hidden' id="codeType" name="codeType" value="clCode"/>
+					<input type='hidden' id="hdclCode" name="hdCode"/>
+					<span class="alr" id="clCodeAlert"></span>
+					<table>
+						<tr>
+							<th width="20%" height="23" class="required_text" scope="row" nowrap ><label for="clCode">분류코드</label><img src="/images/required.gif" alt="필수"  width="15" height="15"></th>          
+							<td width="80%" nowrap colspan="3">
+								<input  id="clCode" name="code" width="100%" size="3" maxlength="3" onkeyup="fn_duplicate(`clCode`,this);"/>
+							</td>
+						</tr> 
+						<tr>
+							<th width="20%" height="23" class="required_text" scope="row" nowrap ><label for="clCodeNm">분류코드명</label><img src="/images/required.gif" alt="필수"  width="15" height="15"></th>          
+							<td width="80%" nowrap="nowrap">
+								<input id="clCodeNm" name="codeNm" maxlength="60"/>
+							</td>    
+						</tr> 
+						<tr> 
+							<th height="23" class="required_text" scope="row" ><label for="clCodeDc">분류코드설명</label></th>
+							<td>
+								<input id="clCodeDc" name="codeDc" maxlength="300"/>
+							</td>
+						</tr> 
+						<tr> 
+							<th width="20%" height="23" class="required_text" scope="row" nowrap ><label for="useYn">사용여부</label><img src="/images/required.gif" alt="필수"  width="15" height="15"></th>
+							<td width="30%" nowrap class="title_left" colspan="3">
+								<select id="clUseYn" name="useYn">
+									<option value="Y" label="Yes"/>
+									<option value="N" label="No"/>
+								</select>
+							</td>    
+						</tr>     
+					</table>
+				</div>
+			</form>
+        </div><!-- search_field(분류코드 div) end -->
+		<!-- 공통코드 -->
+		<div class="search_field" style="float: left; width: 30%; margin-right:40px;">
+			<div class="search_field_loc">
+	       		<h5><strong>공통코드</strong></h5>
+			</div>
+		<!-- 공통코드 list -->
+		<div class="inline_tablestyle">
+			<table>
+				<thead>
+					<tr>
+						<th>공통코드</th>
+						<th>공통코드명</th>
+						<th>사용여부</th>
+					</tr>
+				</thead>
+				<tbody id="cmCodeList" class="scroll_box">
+				             
+				</tbody>
+			</table>
+		</div>
+		<!-- 버튼부분 -->
+		<div style="float: right; margin: 10px;">
+			<ul class="buttons">
+				<li><a href="#" onclick="javascript:fn_fresh('cmCode');"><img src="/images/tapCmm/save.svg"><p>신규</p></a></li>
+				<li><a href="#" onclick="javascript:fn_regist('cmCode');"><img src="/images/tapCmm/save.svg"><p>저장</p></a></li>
+				<li><a href="#" onclick="javascript:fn_delete('cmCode');"><img src="/images/tapCmm/trash.svg"><p>삭제</p></a></li>
+			</ul>
+		</div>
+		<!-- 공통코드 detail부분 -->
+        <form id="cmCodefrm">
+	        <div class="modify_user" id="commlist">
+				<!--<input id="hdcmCode" name="hdcmCode"/> -->
+			 	<input type='hidden' id="codeType" name="codeType" value="cmCode"/>
+		   		<input type='hidden' id="hdcmCode" name="hdCode"/>
+		   		<span class="alr" id="cmCodeAlert"></span>
+		     	<table>
+			        <tr>
+						<th width="20%" height="23" class="required_text" scope="row" nowrap ><label for="clCode">분류코드</label><img src="/images/required.gif" alt="필수"  width="15" height="15"></th>          
+						<td width="80%" nowrap colspan="3">
+							<input  id="cmclCode" name="upperCode" width="100%" size="3" maxlength="3" readonly/>
+						</td>
+					</tr> 
+					<tr>
+						<th width="20%" height="23" class="required_text" scope="row" nowrap ><label for="codeId">공통코드</label><img src="/images/required.gif" alt="필수"  width="15" height="15"></th>          
+						<td width="80%" nowrap colspan="3">
+			    			<input  id="cmCode" name="code" width="100%" size="3" maxlength="3" onkeyup="fn_duplicate(`cmCode`,this);"/>
+						</td>
+					</tr> 
+					<tr>
+						<th width="20%" height="23" class="required_text" scope="row" nowrap ><label for="codeIdNm">공통코드명</label><img src="/images/required.gif" alt="필수"  width="15" height="15"></th>          
+						<td width="80%" nowrap="nowrap">
+							<input id="cmCodeNm" name="codeNm" maxlength="60"/>
+						</td>    
+					</tr>
+					<tr> 
+						<th height="23" class="required_text" scope="row" ><label for="codeIdDc">공통코드설명</label></th>
+						<td>
+							<input id="cmCodeDc" name="codeDc" maxlength="300"/>
+						</td>
+					</tr>
+					<tr> 
+						<th width="20%" height="23" class="required_text" scope="row" nowrap ><label for="useYn">사용여부</label><img src="/images/required.gif" alt="필수"  width="15" height="15"></th>
+						<td width="30%" nowrap class="title_left" colspan="3">
+							<select id="cmUseYn" name="useYn">
+								<option value="Y" label="Yes"/>
+								<option value="N" label="No"/>
+							</select>
+						</td>    
+					</tr>        
+				</table>
+			</div>
+		</form>
+        </div>  
+        <!-- search_field(공통코드 div) end -->    
+		<!-- 상세코드 -->
+		<div class="search_field" style="float: left; width: 30%; margin-right:40px;">
+			<div class="search_field_loc">
+	       		<h5><strong>상세코드</strong></h5>
+			</div>
+		<!-- 상세코드 list -->
+		<div class="inline_tablestyle">
+			<table>
+				<thead>
+					<tr>
+						<th>상세코드</th>
+						<th>상세코드명</th>
+						<th>사용여부</th>
+					</tr>
+				</thead>
+				<tbody id="dtCodeList" class="scroll_box">
+				          
+				</tbody>
+			</table>
+		</div>
+		<!-- 버튼부분 -->
+		<div style="float: right; margin: 10px;">
+			<ul class="buttons">
+				<li><a href="#" onclick="javascript:fn_fresh('dtCode');"><img src="/images/tapCmm/save.svg"><p>신규</p></a></li>
+				<li><a href="#" onclick="javascript:fn_regist('dtCode');"><img src="/images/tapCmm/save.svg"><p>저장</p></a></li>
+				<li><a href="#" onclick="javascript:fn_delete('dtCode');"><img src="/images/tapCmm/trash.svg"><p>삭제</p></a></li>
+			</ul>
+		</div>
+		<!-- 공통코드 detail부분 -->
+        <form id="dtCodefrm">
+	        <div class="modify_user" id="commlist">
+		   		<!-- <input id="hddtCode" name="hddtCode"/> -->
+			    <input type='hidden' id="codeType" name="codeType" value="dtCode"/>
+			    <input type='hidden' id="hddtCode" name="hdCode"/>
+		   		<span class="alr" id="dtCodeAlert"></span>
+		     	<table>
+			        <tr>
+						<th width="20%" height="23" class="required_text" scope="row" nowrap ><label for="clCode">공통코드</label><img src="/images/required.gif" alt="필수"  width="15" height="15"></th>          
+						<td width="80%" nowrap colspan="3">
+							<input  id="dtcmCode" name="upperCode" width="100%" size="3" maxlength="3" readonly/>
+						</td>
+					</tr> 
+					<tr>
+						<th width="20%" height="23" class="required_text" scope="row" nowrap ><label for="codeId">상세코드</label><img src="/images/required.gif" alt="필수"  width="15" height="15"></th>          
+						<td width="80%" nowrap colspan="3">
+			    			<input  id="dtCode" name="code" width="100%" size="3" maxlength="3" onkeyup="fn_duplicate(`dtCode`,this);"/>
+						</td>
+					</tr> 
+					<tr>
+						<th width="20%" height="23" class="required_text" scope="row" nowrap ><label for="codeIdNm">상세코드명</label><img src="/images/required.gif" alt="필수"  width="15" height="15"></th>          
+						<td width="80%" nowrap="nowrap">
+							<input id="dtCodeNm" name="codeNm" maxlength="60"/>
+						</td>    
+					</tr>
+					<tr> 
+						<th height="23" class="required_text" scope="row" ><label for="codeIdDc">상세코드설명</label></th>
+						<td>
+							<input id="dtCodeDc" name="codeDc" maxlength="300"/>
+						</td>
+					</tr>
+					<tr> 
+						<th width="20%" height="23" class="required_text" scope="row" nowrap ><label for="useYn">사용여부</label><img src="/images/required.gif" alt="필수"  width="15" height="15"></th>
+						<td width="30%" nowrap class="title_left" colspan="3">
+							<select id="dtUseYn" name="useYn">
+								<option value="Y" label="Yes"/>
+								<option value="N" label="No"/>
+							</select>
+						</td>    
+					</tr>        
+				</table>
+			</div>
+		</form>
+        </div>      
+    </th:block>
+    
+	<th:block layout:fragment="script">
+	<link th:href="@{/css/code.css}" rel="stylesheet" />
+		<script th:src="@{/scripts/jquery-ui.js}"></script>
+		<script th:inline="javascript">
+        /*<![CDATA[*/
+        codeList('clCode');
+        
+        /* 하이라이트 */
+        function HighLightTR(target) {
+        	var tbody = target.parentNode;
+        	var orgBColor = '#ffffff';
+           	var orgTColor = '#000000';
+        	var backColor = '#d8dceb';
+        	var textColor = 'cc3333';
+        	var trs = tbody.getElementsByTagName('tr');
+         	for ( var i = 0; i < trs.length; i++ ) {
+        	  	if ( trs[i] != target ) {
+        		  	trs[i].style.backgroundColor = orgBColor;
+        		  	trs[i].style.color = orgTColor;
+        	  	} else {
+        		  	trs[i].style.backgroundColor = backColor;
+        		  	trs[i].style.color = textColor;
+        	  	}
+        	} 
+        }
+        
+		/* 코드 리스트*/
+		function codeList(codeType,code){
+		   	$.ajax({
+				url:"/code/selectCodeList.do",
+				type:"POST",
+				dataType:"json",
+				data:{ "codeType" : codeType , "code" : code},
+				cache:false,
+				success: function(data){
+						//분류코드
+						if(codeType=='clCode'){
+							$("#clCodeList").empty();
+							for (var i = 0; i < data.length; i++) {
+								clCode		=	data[i].code;
+								clCodeNm	=	data[i].codeNm;
+								clUseYn		=	data[i].useYn;
+								clCodeDc	=	data[i].codeDc;
+								html='<tr onclick="clcodeDetail(\''+ clCode + '\',\'' + clCodeNm + '\',\'' + clCodeDc + '\',\'' + clUseYn + '\'); HighLightTR(this);">'
+							    +'	<td>'+clCode+'</td>'
+							    +'	<td>'+clCodeNm+'</td>'
+							    +'	<td>'+clUseYn+'</td>'
+							    +'</tr>'
+							$("#clCodeList").append(html);
+							}
+						}
+						//공통코드
+						if(codeType=='cmCode'){
+							$("#cmCodeList").empty();
+								var html,clCode,clCodeNm,codeId,codeIdNm,codeIdDc,useYn;
+								for (var i = 0; i < data.length; i++) {
+									cmCode		=	data[i].code;
+									cmCodeNm	=	data[i].codeNm;
+									cmCodeDc	=	data[i].codeDc;
+									cmUseYn		=	data[i].useYn;
+									html='<tr onclick="cmcodeDetail(\''+ cmCode + '\',\'' + cmCodeNm + '\',\'' +  cmCodeDc +  '\',\''+ cmUseYn+ '\'); HighLightTR(this);">'
+									    +'	<td>'+cmCode+'</td>'
+									    +'	<td>'+cmCodeNm+'</td>'
+									    +'	<td>'+cmUseYn+'</td>'
+									    +'</tr>';
+									$("#cmCodeList").append(html);
+								}
+						}
+						//상세코드
+						if(codeType=='dtCode'){
+							$("#dtCodeList").empty();
+								var html,dtCode,dtCodeNm,dtUseYn,dtCodeDc;
+								for (var i = 0; i < data.length; i++) {
+									dtCode		=	data[i].code;
+									dtCodeNm	=	data[i].codeNm;
+									dtUseYn		=	data[i].useYn;
+									dtCodeDc	=	data[i].codeDc;
+									html='<tr onclick="dtCodeDetail(\''+ dtCode + '\',\'' + dtCodeNm + '\',\'' +  dtCodeDc +  '\',\'' +  dtUseYn +  '\'); HighLightTR(this);">'
+									    +'	<td>'+dtCode+'</td>'
+									    +'	<td>'+dtCodeNm+'</td>'
+									    +'	<td>'+dtUseYn+'</td>'
+									    +'</tr>';
+									$("#dtCodeList").append(html);
+								}	
+						}
+						
+					},
+			   error: function(request,status,error){
+				   action_popup.alert("조회 실패");
+					}
+			 });
+		}
+		
+		/* 분류코드 상세보기 */
+		function clcodeDetail(clCode,clCodeNm,clCodeDc,clUseYn){
+ 			$("#clCodeAlert").text('');
+ 			$("#hdclCode").val(clCode);
+ 			$("#clCode").attr("readonly",true);
+ 			$("#clCode").val(clCode);
+ 			$("#clCodeNm").val(clCodeNm);
+ 			$("#clCodeDc").val(clCodeDc);
+ 			$("#clUseYn").val(clUseYn);
+ 			
+ 			//공통코드영역
+ 			fn_fresh('cmCode');
+ 			$("#cmclCode").val(clCode);
+ 			$("#cmCodeList").empty();
+ 			codeList('cmCode',clCode);
+
+ 			//상세코드영역
+ 			fn_fresh('dtCode');
+ 			$("#dtCodeList").empty();
+		}
+		
+		/* 공통코드 상세보기 */
+		function cmcodeDetail(cmCode,cmCodeNm,cmCodeDc,cmUseYn){
+			$("#cmCodeAlert").text('');
+			$("#hdcmCode").val(cmCode);
+			$("#cmCode").val(cmCode);
+			$("#cmCodeNm").val(cmCodeNm);
+			$("#cmCodeDc").val(cmCodeDc);
+			$("#cmUseYn").val(cmUseYn);
+	
+			//상세코드영역
+			fn_fresh('dtCode');
+			$("#dtcmCode").val(cmCode);
+			codeList('dtCode',cmCode);
+		}
+		
+		/* 상세코드 상세보기 */
+		function dtCodeDetail(dtCode,dtCodeNm,dtCodeDc,dtUseYn){
+			$("#dtCodeAlert").text('');
+			$("#hddtCode").val(dtCode);
+			$("#dtCode").val(dtCode);
+			$("#dtCodeNm").val(dtCodeNm);
+			$("#dtCodeDc").val(dtCodeDc);
+			$("#dtUseYn").val(dtUseYn);
+		}
+		
+		/* 신규버튼 */
+		function fn_fresh(codeType){
+			if(codeType == 'clCode'){		//분류코드
+				clcodeDetail('','','','Y');
+ 				$("#clCode").attr("readonly",false);  
+
+			}
+			if(codeType == 'cmCode'){		//공통코드
+				cmcodeDetail('','','','Y');
+				$("#cmCode").attr("readonly",false); 
+
+			}
+			if(codeType == 'dtCode'){//상세코드
+				dtCodeDetail('','','','Y');
+				$("#dtCode").attr("readonly",false); 
+			}
+		}
+		
+		/* 분류코드 중복값 확인 함수 */
+		function fn_duplicate(codeType,obj){
+
+			var hdcode,upperCode;
+			var code =  obj.value;
+			
+			if(codeType =='clCode'){
+				hdcode = $("#hdclCode").val();
+			}
+			
+			if(codeType =='cmCode'){
+				upperCode = $("#cmclCode").val();
+				hdcode = $("#hdcmCode").val();
+			}
+			
+			if(codeType =='dtCode'){
+				upperCode = $("#dtcmCode").val();
+				hdcode = $("#hddtCode").val();
+			}
+
+			$.ajax({
+				url:"/selectCodeCnt.do",
+				type:"POST",
+				cache:false,
+				data:{"codeType" : codeType ,"code" : code , "upperCode" : upperCode}, 
+				success: function(codeCount){
+					if(codeCount=='1' && hdcode!=code){			// 중복된 분류코드가 있음 && 분류코드를  수정하려고함
+						$("#"+codeType+"Alert").text("같은 이름의 코드가 존재합니다.");
+					}else{
+						$("#"+codeType+"Alert").text("");
+					}
+						
+				},
+				error: function(request,status,error){
+				action_popup.alert("조회 실패");
+				}
+			}); 
+
+		}//fn_duplicate() end
+		
+		/* 유효성검사 */
+		function validator(codeType){
+			const form = document.getElementById(codeType+'frm');
+			const fields = [form.code, form.codeNm, form.codeDc, form.useYn];
+	        var fieldNames = [];
+	        
+			if(codeType == 'clCode'){fieldNames = ['분류코드', '분류코드명','분류코드설명','사용여부'];}
+			if(codeType == 'cmCode'){fieldNames = ['공통코드', '공통코드명','공통코드설명','사용여부'];}
+			if(codeType == 'dtCode'){fieldNames = ['상세코드', '상세코드명','상세코드설명','사용여부'];}
+			
+			// fields순서대로 id,name 여부 조회
+			for (let i = 0, len = fields.length; i < len; i++) {
+                if ( !isValid(fields[i], fieldNames[i]) ) {
+                     return false;
+                }
+            }
+		 	return true;
+		}	
+
+		/* 저장버튼 */
+		function fn_regist(codeType){
+			var upperCode,hdcode='';
+			
+			if(codeType =='clCode'){hdcode = $("#hdclCode").val();}
+			if(codeType =='cmCode'){hdcode = $("#hdcmCode").val(); upperCode = $("#cmclCode").val();}
+			if(codeType =='dtCode'){hdcode = $("#hddtCode").val(); upperCode = $("#dtcmCode").val();}
+			
+			if(codeType =='cmCode'&& upperCode ==''){
+				action_popup.alert("분류코드를 입력해주세요.");
+				return false;
+			}
+			if(codeType =='dtCode'&& upperCode ==''){
+				action_popup.alert("공통코드를 입력해주세요.");
+				return false;
+			}
+			
+			var ckval = validator(codeType);//유효성검사
+			var duplicateChk = $("#"+codeType+"Alert").text();
+			
+			var length = duplicateChk.length;
+			if(ckval && length!=0){
+				action_popup.alert("중복된 코드가 있습니다.");
+				$("#"+codeType).focus();
+			}
+			
+			
+			var params = $("#" + codeType + "frm").serialize();
+			params = decodeURIComponent(params);
+			
+			if(ckval && length==0){
+				var msg = (hdcode == ''|| typeof hdcode == "undefined" || hdcode ==null)? "등록하시겠습니까?" : "수정하시겠습니까?"; 
+				
+				var param= [];
+				param[0] = codeType;
+				param[1] = upperCode;
+				
+				//저장 ajax
+				action_popup.confirm(msg,fn_saveAjax,param);
+			}
+		}
+		
+		/* 저장 ajax */
+		function fn_saveAjax(param){
+			const codeType = param[0];
+			const upperCode = param[1];
+			
+		 	var params = $("#" + codeType + "frm").serialize();
+			params = decodeURIComponent(params);
+			
+			$.ajax({
+				url:		"/saveCode.do",
+				type:		"POST",
+				cache:		false,
+				data:		params,
+				success: function(msg){
+					action_popup.alert(msg);
+					$("#"+codeType+"List").empty();
+					codeList(codeType,upperCode);
+					fn_fresh(codeType);
+					
+				},
+				error: function(request,status,error){
+					action_popup.alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+					action_popup.alert("저장실패");
+				} 
+			}); 
+		}	
+		
+		/* 삭제버튼 */
+		function fn_delete(codeType){
+			var upperCode,hdcode='';
+			
+			if(codeType =='clCode'){hdcode = $("#hdclCode").val();}
+			if(codeType =='cmCode'){hdcode = $("#hdcmCode").val(); upperCode = $("#clCode").val();}
+			if(codeType =='dtCode'){hdcode = $("#hddtCode").val(); upperCode = $("#cmCode").val();}
+			
+			if(hdcode==''){
+				action_popup.alert("삭제할 항목을 선택해주세요.")
+			}else{
+				var msg = "삭제하시겠습니까?";	
+				
+				var param= [];
+				param[0] = codeType;
+				param[1] = upperCode;
+				
+				//삭제 ajax
+				action_popup.confirm(msg,fn_deleteAjax,param);
+			}
+		}
+		
+		/* 삭제 ajax */
+		function fn_deleteAjax(param){
+			const codeType = param[0];
+			const upperCode = param[1];
+			
+		 	var params = $("#" + codeType + "frm").serialize();
+			params = decodeURIComponent(params);
+			
+			$.ajax({
+					url:		"/code/deleteCode.do",
+					type:		"POST",
+					cache:		false,
+					data:		params,
+					success: function(msg){
+							action_popup.alert(msg);
+							$("#"+codeType+"List").empty();
+							codeList(codeType,upperCode);
+							fn_fresh(codeType);
+						},
+				   error: function(request,status,error){
+					   action_popup.alert("삭제 실패");
+					   }
+			}); 
+		}	
+		
+		
+		
+	   /*]]>*/ 
+        </script>
+     </th:block>
+</html>

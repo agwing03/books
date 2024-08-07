@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layout/basic">
+    <th:block layout:fragment="title">
+        <title>상세 페이지</title>
+    </th:block>
+    <th:block layout:fragment="content">
+   	 <div class="search_field">
+         <div class="search_field_loc">
+             <h5><strong>로그 관리 상세</strong></h5>
+             <ul class="buttons">
+                 <li><a th:onclick="fn_list();"><img src="/images/tapCmm/search.svg"><p>목록</p></a></li>
+             </ul>
+         </div>
+         <div class="modify_user" style="margin-top:30px;">
+        	 	
+			</div>
+			<div class="default_tablestyle">
+				<table>	
+					<colgroup>
+						<col width="15%">
+						<col width="35%">
+						<col width="15%">
+						<col width="35%">
+					</colgroup>
+					<thead></thead>
+					<tbody>
+	               		<tr>
+	               			<td><span>로그아이디</span></td>
+	               			<td colspan="2"><span th:text="${resultVO.logId}" ></span></td>
+	           			</tr>
+	               		<tr>
+	               			<td><span>사용자 아이디</span></td>
+	               			<td colspan="2"><span th:text="${resultVO.userId}"></span></td>
+	           			</tr>
+	           			<tr>
+	           				<td><span>사용자명</span></td>
+	               			<td colspan="2"><span th:text="${resultVO.userNm}"></span></td>
+	           			</tr>
+           				<tr>
+	           				<td><span>IP</span></td>
+	           				<td colspan="2"><span th:text="${resultVO.ipAddr}"></span></td>
+	           			</tr>
+	           			<tr>
+	           				<td><span>로그 입력일</span></td>
+	           				<td colspan="2">
+	           					<span th:text="${resultVO.frstDttm}"></span>
+	           				</td>
+	           			</tr>
+	           			<!-- 사용자 로그 -->
+	           			<th:block th:if="${param.type[0].equals('log')}">
+		           			<tr>
+		           				<td><span>메뉴 URL</span></td>
+		           				<td colspan="2"><span th:text="${resultVO.menuUrl}"></span></td>
+		           			</tr>
+	           			</th:block>
+	           			<!-- 에러 로그 -->
+	           			<th:block th:if="${param.type[0].equals('errorlog')}">
+	           				<tr>
+		           				<td><span>메뉴 URL</span></td>
+		           				<td colspan="2"><span th:text="${resultVO.menuUrl}"></span></td>
+		           			</tr>
+		           			<tr>
+		           				<td><span>에러 내용</span></td>
+		           				<td colspan="2"><span th:text="${resultVO.logContents}"></span></td>
+		           			</tr>
+	           			</th:block>
+	           			<!-- 접속 로그 -->
+	           			<th:block th:if="${param.type[0].equals('loginlog')}">
+	           				<tr>
+		           				<td><span>로그인 구분</span></td>
+		           				<td colspan="2"><span th:text="${resultVO.menuUrl}"></span></td>
+		           			</tr>
+		           			<tr>
+		           				<td><span>로그인 내용</span></td>
+		           				<td colspan="2"><span th:text="${resultVO.logContents}"></span></td>
+		           			</tr>
+	           			</th:block>
+           			</tbody>
+				</table>
+			</div>
+		</div>
+     </th:block>
+     <th:block layout:fragment="script">
+        <script th:inline="javascript">
+        /*<![CDATA[*/
+	        $(document).ready(function() {
+	        });
+	   /*]]>*/ 
+        
+        /*<![CDATA[*/
+        	// 뒤로가기
+           	function fn_list(){
+        	
+           		// 타입
+      			const type = [[${param.type[0]}]];
+      			// 메뉴타입
+      			const menuUrl = new Map();
+      			menuUrl.set("log","/log/logList.do");
+      			menuUrl.set("errorlog","/log/errorLogList.do");
+      			menuUrl.set("loginlog","/log/logLoginList.do");
+      			
+      			// URL
+      			const url = menuUrl.get(type);
+      			console.log(url);
+        	
+        		const newForm = $('<form></form>');
+      			newForm.attr("name","listFrm");
+      			newForm.attr("method","post");
+      			newForm.attr("action",url);
+      			// 동적 태그 내 input 추가
+      			newForm.append($('<input/>', {type: 'hidden', name: 'searchType', value: $("#searchType").val() }));
+      			newForm.append($('<input/>', {type: 'hidden', name: 'keyword', value: $("#keyword").val() }));
+      			newForm.append($('<input/>', {type: 'hidden', name: 'srchBgnDtm', value: $("#srchBgnDtm").val() }));
+      			newForm.append($('<input/>', {type: 'hidden', name: 'srchEndDtm', value: $("#srchEndDtm").val() }));
+      			// 동적 태그 추가
+      			newForm.appendTo('body');
+      			// 동적 태그 보내기
+      			newForm.submit();
+        	}
+        /*]]>*/
+        </script>
+     </th:block>
+</html>

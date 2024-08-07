@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layout/basic">
+    <th:block layout:fragment="title">
+        <title>부서 작성</title>
+    </th:block>
+    <th:block layout:fragment="content">
+    <form id="saveForm" name="saveForm" method="post">
+    	<div class="search_field">
+		    <div class="search_field_loc">
+		    	<h5 th:if="${dept != null}">
+		    		<strong>부서 수정</strong>
+		    	</h5>
+		    	<h5 th:if="${dept == null}">
+		    		<strong>부서 등록</strong>
+		    	</h5>
+		    	<ul class="buttons">
+		    		<li><a th:href="@{/dept/deptList.do}"><img src="/images/tapCmm/save.svg"><p>뒤로가기</p></a></li>
+	                <li><a onclick="fn_saveDept();"><img src="/images/tapCmm/edit.svg"><p>저장하기</p></a></li>
+		    	</ul>
+		    </div>
+	    </div>
+	    <div class="modify_user">
+            <table>
+            	<colgroup>
+            		<col width="10%">
+            		<col width="*%">
+            	</colgroup>
+            	<tbody>
+            		<tr>
+            			<th>부서코드</th>
+            			<td th:if="${dept == null}">
+            				<input type="text" id="deptCd" name="deptCd" class="form-control" maxlength="50" placeholder="부서코드를 입력해 주세요." />
+            			</td>
+            			<td th:if="${dept != null}">
+            				<input type="text" id="deptCd" name="deptCd" class="form-control" readonly="readonly" maxlength="50" placeholder="부서코드를 입력해 주세요." />
+            			</td>
+            		</tr>
+            		<tr>
+            			<th>상위부서</th>
+            			<td>
+            				<input type="text" id="upperDeptCd" name="upperDeptCd" class="form-control" maxlength="10" placeholder="상위부서를 입력해 주세요." />
+            			</td>
+            		</tr>
+            		<tr>
+            			<th>부서명</th>
+            			<td>
+            				<input type="text" id="deptNm" name="deptNm" class="form-control" maxlength="10" placeholder="부서명을 입력해 주세요." />
+            			</td>
+            		</tr>
+            		<tr>
+            			<th>사용여부</th>
+            			<td>
+			            	<select id="useYn" name="useYn">
+								<option value="Y" label="사용"/>
+								<option value="N" label="미사용"/>
+							</select>
+            			</td>
+            		</tr>
+            	</tbody>
+            </table>
+        </div>
+    </form>
+    </th:block>
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+         /*<![CDATA[*/
+        	$(document).ready(function() {
+            	renderPostInfo();
+            });
+            
+            // 부서 저장(수정)
+            function fn_saveDept(){
+                const form = document.getElementById('saveForm');
+                const fields = [form.deptCd, form.deptNm, form.upperDeptCd, form.useYn];
+                const fieldNames = ['부서코드','부서명', '상위코드', '사용여부'];
+				
+                //유효성점사
+                for (let i = 0, len = fields.length; i < len; i++) {
+                    if ( !isValid(fields[i], fieldNames[i]) ) {
+                        return false;
+                    }
+                }
+				
+                const url = [[ ${dept == null} ]] ? '/dept/saveDept.do' : '/dept/updateDept.do';
+                const msg = [[ ${dept == null} ]] ? '등록하시겠습니까?' : '수정하시겠습니까?';
+
+                var param= url;
+                action_popup.confirm(msg,fn_saveAjax,param);
+            }
+            
+            function fn_saveAjax(param){
+            	const formData = $("#saveForm").serialize();
+
+            	$.ajax({
+	 			  	url:param
+ 			 		,type:"POST"
+ 			 		,data:formData
+ 			 		,dataType:"text"
+ 			 		,success:function(msg) {
+ 			 			action_popup.alert(msg);
+ 			 			$("#saveForm").attr("action", "/dept/deptList.do");
+ 			 			$("#saveForm").submit();
+ 			 		},error:function(request,status,error){        
+ 					alert("오류발생"); 
+ 					}
+ 			  });
+            }
+                
+            // 부서 상세정보 렌더링
+            function renderPostInfo() {
+                const dept = [[ ${dept} ]];
+                if ( !dept ) {
+                    return false;
+                }
+
+                const form = document.getElementById('saveForm');
+                const fields = ['deptCd', 'deptNm' , 'upperDeptCd', 'useYn'];
+
+                fields.forEach(field => {
+                    form[field].value = dept[field];
+                })
+            }
+        /*]]>*/ 
+        
+        
+        </script>
+    </th:block>
+</html>

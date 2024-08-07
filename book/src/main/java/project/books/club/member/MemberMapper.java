@@ -18,6 +18,13 @@ public interface MemberMapper {
      */
 	List<CamelMap> selectMemberList(SrchVO vo);
 	
+	/**
+	 * 맴버 상세 조회
+	 * @param SrchVO
+	 * @return MemberVO
+     */
+	MemberVO selectMemberDtl(SrchVO vo);
+	
     /**
 	 * 맴버 저장
 	 * @param MemberVO

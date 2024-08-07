@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Error 페이지</title>
+</head>
+<body>
+<h1><span >Error 발생</span></h1>
+<a th:href="@{/}">메인 화면으로</a>
+<hr/>
+<table>
+	<tr>
+		<td>에러 발생시간 : [[${timeStamp}]]</td>
+	</tr>
+	<tr>
+		<td>에러 URL : [[${url}]]</td>
+	</tr>
+    <tr>
+       <td bgcolor="red" align="left">예외메시지:[[${exception}]]</td>
+    </tr>
+    <tr>
+    	<td><span>자세한 사항은 관리자에게 문의바랍니다.</span></td>
+    </tr>
+</table>
+<script th:src="@{/scripts/jquery.min.js}"></script>
+ <script th:inlne="javascript">
+    /*<![CDATA[*/
+    	$(document).ready(function() {
+    	});
+    /*]]>*/ 
+  </script>
+</body>
+</html>
