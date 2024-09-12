@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="project.books.sys.api.member.MemberMapper">
+	
+	<!-- 접속자 정보 조회 -->
+	<select id="selectConnetMemberInfo" parameterType="project.books.sys.api.member.MemberVO" resultType="project.books.sys.util.CamelMap">
+		/* MemberMapper.selectConnetMemberInfo */
+		select m.member_no 
+		     , m.member_id 
+		     , m.member_pwd 
+		     , m.author_id 
+		     , m.phon_no 
+		     , m.email 
+		     , m.leave_yn 
+		     , m.lock_yn
+		     , m.lock_time
+		     , m.login_fail_cnt 
+		     , m.un_lock_time 
+		  from club.member m 
+		 where 1=1 
+		   and (m.member_id = #{connetId}
+		        or m.email = #{connetId}
+		        or m.phon_no = #{connetId}) 
+		 limit 1
+	</select>
+	
+	<!-- 로그인 실패 횟수 & 계정 잠금 초기화 -->
+	<update id="updateResetFailCnt" parameterType="Integer">
+		/* MemberMapper.updateResetFailCnt */
+		 update club.member 
+		    set un_lock_time 	= 0
+		      , lock_yn 		= 'N'
+		      , login_fail_cnt 	= 0
+		  where member_no = #{memberNo}
+	</update>
+</mapper>

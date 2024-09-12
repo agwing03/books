@@ -22,6 +22,7 @@ public class ClubController {
 	 * 클럽 목록
 	 * @param SrchVO
 	 * @return ResponseEntity
+	 * @exception
 	 */
 	@RequestMapping("/selectClubList.do")
 	public ResponseEntity<List<CamelMap>> selectClubList(
@@ -35,6 +36,7 @@ public class ClubController {
 	 * 클럽 상세
 	 * @param SrchVO
 	 * @return ResponseEntity
+	 * @exception
 	 */
 	@RequestMapping("/selectClubDtl.do")
 	public ResponseEntity<CamelMap> selectClubDtl(
@@ -48,6 +50,7 @@ public class ClubController {
 	 * 클럽 등록
 	 * @param ClubVO
 	 * @return ResponseEntity
+	 * @exception
 	 */
 	@RequestMapping("/insertClub.do")
 	public ResponseEntity<?> insertClub(
@@ -61,6 +64,7 @@ public class ClubController {
 	 * 클럽 수정
 	 * @param ClubVO
 	 * @return ResponseEntity
+	 * @exception
 	 */
 	@RequestMapping("/updateClub.do")
 	public ResponseEntity<?> updateClub(
@@ -74,6 +78,7 @@ public class ClubController {
 	 * 클럽 삭제
 	 * @param ClubVO
 	 * @return ResponseEntity
+	 * @exception
 	 */
 	@RequestMapping("/deleteClub.do")
 	public ResponseEntity<?> deleteClub(

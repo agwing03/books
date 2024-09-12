@@ -3,7 +3,7 @@
 <mapper namespace="project.books.sys.cmmn.code.CodeMapper">
 	
 	<!-- 공통 코드 목록(상세) -->
-	<select id="selectCmmnCodeDtlList" parameterType="project.books.sys.cmmn.code.CodeVO" resultType="project.books.sys.util.CamelMap">
+	<select id="selectCmmnCodeDtlList" parameterType="project.books.sys.api.code.CodeVO" resultType="project.books.sys.util.CamelMap">
 		/*CodeMapper.selectCmmnCodeDtlList*/
 		select code_dtl_id as code  
 		     , code_dtl_nm as code_nm

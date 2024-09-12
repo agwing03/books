@@ -22,6 +22,7 @@ public class BookController {
 	 * 도서 목록 조회
 	 * @param SrchVO
 	 * @return ResponseEntity
+	 * @exception
 	 */
 	@RequestMapping("/selectBookList.do")
 	public ResponseEntity<List<CamelMap>> selectBookList(
@@ -35,12 +36,14 @@ public class BookController {
 	 * 도서 상세 조회
 	 * @param SrchVO
 	 * @return ResponseEntity
+	 * @exception
 	 */
 	
 	/**
 	 * 도서 등록
 	 * @param BookVO
 	 * @return ResponseEntity
+	 * @exception
 	 */
 	@RequestMapping("/insertBook.do")
 	public ResponseEntity<?> insertBook(
@@ -54,6 +57,7 @@ public class BookController {
 	 * 도서 수정
 	 * @param BookVO
 	 * @return ResponseEntity
+	 * @exception
 	 */
 	@RequestMapping("/updateBook.do")
 	public ResponseEntity<?> updateBook(
@@ -67,6 +71,7 @@ public class BookController {
 	 * 도서 삭제
 	 * @param BookVO
 	 * @return ResponseEntity
+	 * @exception
 	 */
 	@RequestMapping("/deleteBook.do")
 	public ResponseEntity<?> deleteBook(
@@ -80,6 +85,7 @@ public class BookController {
 	 * 도서 실시간 검색(공통모듈)
 	 * @param SrchVO
 	 * @return ResponseEntity
+	 * @exception
 	 */
 	@RequestMapping("/selectBookRealTimeSrch.do")
 	public ResponseEntity<List<CamelMap>> selectBookRealTimeSrch(
